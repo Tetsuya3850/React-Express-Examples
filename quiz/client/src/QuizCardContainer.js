@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { quiz } from "./data";
 import QuizCard from "./QuizCard";
+import Result from "./Result";
 
 class QuizCardContainer extends Component {
   constructor(props) {
@@ -13,15 +14,21 @@ class QuizCardContainer extends Component {
     };
   }
 
+  clearForm = () => {
+    var ele = document.getElementsByName("choice");
+    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
+    var btn = document.getElementById("submit");
+    btn.removeAttribute("disabled");
+  };
+
   nextQuiz = () => {
-    if (this.state.curr_q < 9) {
+    if (this.state.curr_q < 10) {
       this.setState(prevState => ({
         curr_q: prevState.curr_q + 1,
         result: ""
       }));
     }
-    var ele = document.getElementsByName("choice");
-    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
+    this.clearForm();
   };
 
   prevQuiz = () => {
@@ -31,8 +38,7 @@ class QuizCardContainer extends Component {
         result: ""
       }));
     }
-    var ele = document.getElementsByName("choice");
-    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
+    this.clearForm();
   };
 
   handleAnswer = (e, form) => {
@@ -56,14 +62,22 @@ class QuizCardContainer extends Component {
   };
 
   render() {
-    return (
-      <QuizCard
-        {...this.state}
-        onNext={this.nextQuiz}
-        onPrev={this.prevQuiz}
-        onAnswer={this.handleAnswer}
-      />
-    );
+    if (this.state.curr_q === 10) {
+      return (
+        <div>
+          <Result score={this.state.score} />
+        </div>
+      );
+    } else {
+      return (
+        <QuizCard
+          {...this.state}
+          onNext={this.nextQuiz}
+          onPrev={this.prevQuiz}
+          onAnswer={this.handleAnswer}
+        />
+      );
+    }
   }
 }
 

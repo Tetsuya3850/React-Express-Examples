@@ -29,7 +29,9 @@ class Quiz extends Component {
             />
           </div>
 
-          <h2 style={styles.question}>Q: {quiz[curr_q].question}</h2>
+          <h2 style={styles.question}>
+            Q{curr_q + 1}: {quiz[curr_q].question}
+          </h2>
 
           {allChoices}
 

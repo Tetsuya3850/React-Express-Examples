@@ -6,7 +6,7 @@ class Quiz extends Component {
 
     const allChoices = quiz[curr_q].choices.map(choice => (
       <label key={choice} style={styles.choice}>
-        <input type="checkbox" name="choice" value={choice} />
+        <input type="radio" name="choice" value={choice} />
         {choice}
       </label>
     ));
@@ -33,7 +33,12 @@ class Quiz extends Component {
 
           {allChoices}
 
-          <button type="submit" value="Submit" style={styles.submitBtn}>
+          <button
+            type="submit"
+            id="submit"
+            value="Submit"
+            style={styles.submitBtn}
+          >
             Submit
           </button>
 

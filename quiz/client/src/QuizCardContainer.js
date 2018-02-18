@@ -20,6 +20,8 @@ class QuizCardContainer extends Component {
         result: ""
       }));
     }
+    var ele = document.getElementsByName("choice");
+    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
   };
 
   prevQuiz = () => {
@@ -29,16 +31,15 @@ class QuizCardContainer extends Component {
         result: ""
       }));
     }
+    var ele = document.getElementsByName("choice");
+    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
   };
 
   handleAnswer = (e, form) => {
     e.preventDefault();
     const { quiz, curr_q } = this.state;
     const { choice } = form;
-    const checkboxArray = Array.prototype.slice.call(choice);
-    const checkedCheckboxes = checkboxArray.filter(input => input.checked);
-    const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
-    if (quiz[curr_q].answer === parseInt(checkedCheckboxesValues[0], 10)) {
+    if (quiz[curr_q].answer === parseInt(choice.value, 10)) {
       this.setState(prevState => ({
         score: prevState.score + 1,
         result: "Correct!"
@@ -48,6 +49,10 @@ class QuizCardContainer extends Component {
         result: "Wrong!"
       });
     }
+    var ele = document.getElementsByName("choice");
+    for (var i = 0; i < ele.length; i++) ele[i].checked = false;
+    var btn = document.getElementById("submit");
+    btn.setAttribute("disabled", true);
   };
 
   render() {

@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import QuizCardContainer from "./QuizCardContainer";
 
 class App extends Component {
   render() {
-    return <div className="App">Hello World!</div>;
+    return (
+      <div>
+        <QuizCardContainer />
+      </div>
+    );
   }
 }
 

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 class Quiz extends Component {
   render() {
-    const { quiz, curr_q, onPrev, onNext, onAnswer } = this.props;
+    const { quiz, curr_q, onPrev, onNext, onAnswer, result } = this.props;
+
     const allChoices = quiz[curr_q].choices.map(choice => (
       <label key={choice} style={styles.choice}>
         <input type="checkbox" name="checkbox" value="value" />
@@ -11,7 +12,7 @@ class Quiz extends Component {
     ));
     return (
       <div style={styles.container}>
-        <form onSubmit={e => onAnswer(e, 2)}>
+        <form onSubmit={e => onAnswer(e, 1)}>
           <div style={styles.navBox}>
             <i
               className="fa fa-caret-left fa-3x"
@@ -32,6 +33,8 @@ class Quiz extends Component {
           <button type="submit" value="Submit" style={styles.submitBtn}>
             Submit
           </button>
+
+          <div style={styles.result}>{result}</div>
         </form>
       </div>
     );
@@ -72,6 +75,10 @@ let styles = {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
+    marginBottom: 10
+  },
+  result: {
+    textAlign: "center",
     marginBottom: 10
   }
 };

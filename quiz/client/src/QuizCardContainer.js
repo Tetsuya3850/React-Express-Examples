@@ -8,14 +8,16 @@ class QuizCardContainer extends Component {
     this.state = {
       curr_q: 0,
       quiz,
-      score: 0
+      score: 0,
+      result: ""
     };
   }
 
   nextQuiz = () => {
     if (this.state.curr_q < 9) {
       this.setState(prevState => ({
-        curr_q: prevState.curr_q + 1
+        curr_q: prevState.curr_q + 1,
+        result: ""
       }));
     }
   };
@@ -23,7 +25,8 @@ class QuizCardContainer extends Component {
   prevQuiz = () => {
     if (this.state.curr_q > 0) {
       this.setState(prevState => ({
-        curr_q: prevState.curr_q - 1
+        curr_q: prevState.curr_q - 1,
+        result: ""
       }));
     }
   };
@@ -33,8 +36,13 @@ class QuizCardContainer extends Component {
     const { quiz, curr_q } = this.state;
     if (quiz[curr_q].answer === choice) {
       this.setState(prevState => ({
-        score: prevState.score + 1
+        score: prevState.score + 1,
+        result: "Correct!"
       }));
+    } else {
+      this.setState({
+        result: "Wrong!"
+      });
     }
   };
 

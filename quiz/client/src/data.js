@@ -1,82 +1,52 @@
 export const quiz = [
   {
     question: "1 + 1 = ",
-    A1: 1,
-    A2: 2,
-    A3: 3,
-    A4: 5,
-    answer: "A2"
+    choices: [1, 2, 3, 5],
+    answer: 1
   },
   {
     question: "1 + 2 = ",
-    A1: 1,
-    A2: 2,
-    A3: 3,
-    A4: 5,
-    answer: "A3"
+    choices: [1, 2, 3, 5],
+    answer: 2
   },
   {
     question: "1 + 4 = ",
-    A1: 1,
-    A2: 2,
-    A3: 3,
-    A4: 5,
-    answer: "A4"
+    choices: [1, 2, 3, 5],
+    answer: 3
   },
   {
     question: "2 + 1 = ",
-    A1: 3,
-    A2: 5,
-    A3: 7,
-    A4: 11,
-    answer: "A1"
+    choices: [3, 5, 7, 11],
+    answer: 0
   },
   {
     question: "2 + 3 = ",
-    A1: 3,
-    A2: 5,
-    A3: 7,
-    A4: 11,
-    answer: "A2"
+    choices: [3, 5, 7, 11],
+    answer: 1
   },
   {
     question: "2 + 5 = ",
-    A1: 3,
-    A2: 5,
-    A3: 7,
-    A4: 11,
-    answer: "A3"
+    choices: [3, 5, 7, 11],
+    answer: 2
   },
   {
     question: "2 + 9 = ",
-    A1: 3,
-    A2: 5,
-    A3: 7,
-    A4: 11,
-    answer: "A4"
+    choices: [3, 5, 7, 11],
+    answer: 3
   },
   {
     question: "3 + 5 = ",
-    A1: 8,
-    A2: 13,
-    A3: 124,
-    A4: 16,
-    answer: "A1"
+    choices: [8, 13, 124, 16],
+    answer: 0
   },
   {
     question: "8 + 5 = ",
-    A1: 8,
-    A2: 13,
-    A3: 124,
-    A4: 16,
-    answer: "A2"
+    choices: [8, 13, 124, 16],
+    answer: 1
   },
   {
     question: "8 + 8 = ",
-    A1: 8,
-    A2: 13,
-    A3: 124,
-    A4: 16,
-    answer: "A4"
+    choices: [8, 13, 124, 16],
+    answer: 3
   }
 ];

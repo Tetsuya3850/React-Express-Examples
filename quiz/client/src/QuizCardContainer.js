@@ -31,10 +31,14 @@ class QuizCardContainer extends Component {
     }
   };
 
-  handleAnswer = (e, choice) => {
+  handleAnswer = (e, form) => {
     e.preventDefault();
     const { quiz, curr_q } = this.state;
-    if (quiz[curr_q].answer === choice) {
+    const { choice } = form;
+    const checkboxArray = Array.prototype.slice.call(choice);
+    const checkedCheckboxes = checkboxArray.filter(input => input.checked);
+    const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
+    if (quiz[curr_q].answer === parseInt(checkedCheckboxesValues[0], 10)) {
       this.setState(prevState => ({
         score: prevState.score + 1,
         result: "Correct!"

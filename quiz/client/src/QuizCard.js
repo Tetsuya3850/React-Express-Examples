@@ -6,13 +6,16 @@ class Quiz extends Component {
 
     const allChoices = quiz[curr_q].choices.map(choice => (
       <label key={choice} style={styles.choice}>
-        <input type="checkbox" name="checkbox" value="value" />
+        <input type="checkbox" name="choice" value={choice} />
         {choice}
       </label>
     ));
     return (
       <div style={styles.container}>
-        <form onSubmit={e => onAnswer(e, 1)}>
+        <form
+          onSubmit={e => onAnswer(e, this.form)}
+          ref={form => (this.form = form)}
+        >
           <div style={styles.navBox}>
             <i
               className="fa fa-caret-left fa-3x"

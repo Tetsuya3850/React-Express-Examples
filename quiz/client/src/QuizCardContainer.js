@@ -11,8 +11,22 @@ class QuizCardContainer extends Component {
     };
   }
 
+  nextQuiz = () => {
+    this.setState(prevState => ({
+      curr_q: prevState.curr_q + 1
+    }));
+  };
+
+  prevQuiz = () => {
+    this.setState(prevState => ({
+      curr_q: prevState.curr_q - 1
+    }));
+  };
+
   render() {
-    return <QuizCard {...this.state} />;
+    return (
+      <QuizCard {...this.state} onNext={this.nextQuiz} onPrev={this.prevQuiz} />
+    );
   }
 }
 

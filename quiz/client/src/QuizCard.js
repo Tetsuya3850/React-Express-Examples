@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class Quiz extends Component {
   render() {
-    const { quiz, curr_q } = this.props;
+    const { quiz, curr_q, onPrev, onNext } = this.props;
     const allChoices = quiz[curr_q].choices.map(choice => (
       <label key={choice} style={styles.choice}>
         <input type="checkbox" name="checkbox" value="value" />
@@ -13,8 +13,16 @@ class Quiz extends Component {
       <div style={styles.container}>
         <form>
           <div style={styles.navBox}>
-            <i className="fa fa-caret-left fa-3x" style={styles.arrowLeft} />
-            <i className="fa fa-caret-right fa-3x" style={styles.arrowRight} />
+            <i
+              className="fa fa-caret-left fa-3x"
+              style={styles.arrowLeft}
+              onClick={onPrev}
+            />
+            <i
+              className="fa fa-caret-right fa-3x"
+              style={styles.arrowRight}
+              onClick={onNext}
+            />
           </div>
 
           <h2 style={styles.question}>Q: {quiz[curr_q].question}</h2>

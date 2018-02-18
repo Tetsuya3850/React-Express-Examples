@@ -7,25 +7,45 @@ class QuizCardContainer extends Component {
     super(props);
     this.state = {
       curr_q: 0,
-      quiz
+      quiz,
+      score: 0
     };
   }
 
   nextQuiz = () => {
-    this.setState(prevState => ({
-      curr_q: prevState.curr_q + 1
-    }));
+    if (this.state.curr_q < 9) {
+      this.setState(prevState => ({
+        curr_q: prevState.curr_q + 1
+      }));
+    }
   };
 
   prevQuiz = () => {
-    this.setState(prevState => ({
-      curr_q: prevState.curr_q - 1
-    }));
+    if (this.state.curr_q > 0) {
+      this.setState(prevState => ({
+        curr_q: prevState.curr_q - 1
+      }));
+    }
+  };
+
+  handleAnswer = (e, choice) => {
+    e.preventDefault();
+    const { quiz, curr_q } = this.state;
+    if (quiz[curr_q].answer === choice) {
+      this.setState(prevState => ({
+        score: prevState.score + 1
+      }));
+    }
   };
 
   render() {
     return (
-      <QuizCard {...this.state} onNext={this.nextQuiz} onPrev={this.prevQuiz} />
+      <QuizCard
+        {...this.state}
+        onNext={this.nextQuiz}
+        onPrev={this.prevQuiz}
+        onAnswer={this.handleAnswer}
+      />
     );
   }
 }

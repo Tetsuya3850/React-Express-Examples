@@ -7,7 +7,7 @@ const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
         onClick={onToggleClick}
         style={{
           textDecoration: done ? "line-through" : "none",
-          width: 140,
+          width: 120,
           display: "inline-block"
         }}
       >

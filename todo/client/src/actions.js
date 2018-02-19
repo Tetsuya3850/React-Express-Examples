@@ -17,7 +17,7 @@ const addNewTodo = task => async dispatch => {
     done: false
   };
   await api.addNewTodo(newTodo);
-  dispatch({ type: ADD_NEW_TODO, todo: newTodo });
+  dispatch({ type: ADD_NEW_TODO, todos: newTodo });
 };
 
 const toggleTodo = _id => async dispatch => {

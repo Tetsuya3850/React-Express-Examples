@@ -3,6 +3,7 @@ const app = express();
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
 require("dotenv").config();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
@@ -19,7 +20,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/todo", async (req, res) => {
-  const todos = await Todo.Find();
+  const todos = await Todo.find();
   res.json(todos);
 });
 
@@ -29,8 +30,8 @@ app.post("/add", async (req, res) => {
   res.json("Todo Saved!");
 });
 
-app.post("/toogle", async (req, res) => {
-  const todo = await Counter.findOne({ _id: req.body._id });
+app.post("/toggle", async (req, res) => {
+  const todo = await Todo.findOne({ _id: req.body._id });
   todo.done = !todo.done;
   await todo.save();
   res.json("toggled!");

@@ -14,8 +14,15 @@ async function addNewTodo(new_todo) {
   });
 }
 
-async function toggleTodo(todo) {
-  await fetch("/toggle", { method: "post", body: todo });
+async function toggleTodo(_id) {
+  await fetch("/toggle", {
+    method: "post",
+    body: JSON.stringify({ _id }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  });
 }
 
 const api = {

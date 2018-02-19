@@ -21,7 +21,7 @@ const todoAppReducer = (state = initialState, action) => {
     case RECEIVE_TODOS:
     case ADD_NEW_TODO:
       return {
-        counters: state.todos.concat(action.todos)
+        todos: state.todos.concat(action.todos)
       };
     case TOGGLE_TODO:
       return {

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import actions from "./actions";
+import actions from "../actions";
 import Todo from "./Todo";
 
 let TodoListContainer = ({ todos, onToggleTodo }) => (

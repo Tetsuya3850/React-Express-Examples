@@ -3,10 +3,19 @@ import { connect } from "react-redux";
 import actions from "../actions";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ todos, onToggleTodo }) => (
-  <ul>
+let TodoListContainer = ({ todos, onToggleTodo, onDeleteTodo }) => (
+  <ul
+    style={{
+      width: 170
+    }}
+  >
     {todos.map(todo => (
-      <Todo key={todo._id} {...todo} onClick={() => onToggleTodo(todo._id)} />
+      <Todo
+        key={todo._id}
+        {...todo}
+        onToggleClick={() => onToggleTodo(todo._id)}
+        onDeleteClick={() => onDeleteTodo(todo._id)}
+      />
     ))}
   </ul>
 );
@@ -21,6 +30,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onToggleTodo: _id => {
       dispatch(actions.toggleTodo(_id));
+    },
+    onDeleteTodo: _id => {
+      dispatch(actions.deleteTodo(_id));
     }
   };
 };

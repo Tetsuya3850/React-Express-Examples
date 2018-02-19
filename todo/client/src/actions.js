@@ -4,6 +4,7 @@ import api from "./api";
 export const RECEIVE_TODOS = "RECEIVE_TODOS";
 export const ADD_NEW_TODO = "ADD_NEW_TODO";
 export const TOGGLE_TODO = "TOGGLE_TODO";
+export const DELETE_TODO = "DELETE_TODO";
 
 const receiveTodos = () => async dispatch => {
   const todos = await api.receiveTodos();
@@ -25,9 +26,15 @@ const toggleTodo = _id => async dispatch => {
   dispatch({ type: TOGGLE_TODO, _id });
 };
 
+const deleteTodo = _id => async dispatch => {
+  await api.deleteTodo(_id);
+  dispatch({ type: DELETE_TODO, _id });
+};
+
 const actions = {
   receiveTodos,
   addNewTodo,
-  toggleTodo
+  toggleTodo,
+  deleteTodo
 };
 export default actions;

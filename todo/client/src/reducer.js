@@ -1,16 +1,9 @@
-import { RECEIVE_TODOS, ADD_NEW_TODO, TOGGLE_TODO } from "./actions";
-
-const todoReducer = (state, action) => {
-  switch (action.type) {
-    case TOGGLE_TODO:
-      if (state._id === action._id) {
-        return { ...state, done: !state.done };
-      }
-      return state;
-    default:
-      return state;
-  }
-};
+import {
+  RECEIVE_TODOS,
+  ADD_NEW_TODO,
+  TOGGLE_TODO,
+  DELETE_TODO
+} from "./actions";
 
 const initialState = {
   todos: []
@@ -25,7 +18,16 @@ const todoAppReducer = (state = initialState, action) => {
       };
     case TOGGLE_TODO:
       return {
-        todos: state.todos.map(todo => todoReducer(todo, action))
+        todos: state.todos.map(todo => {
+          if (todo._id === action._id) {
+            return { ...todo, done: !todo.done };
+          }
+          return todo;
+        })
+      };
+    case DELETE_TODO:
+      return {
+        todos: state.todos.filter(t => t._id !== action._id)
       };
     default:
       return state;

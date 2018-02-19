@@ -37,6 +37,11 @@ app.post("/toggle", async (req, res) => {
   res.json("toggled!");
 });
 
+app.post("/delete", async (req, res) => {
+  await Todo.findByIdAndRemove(req.body._id);
+  res.json("Todo Deleted");
+});
+
 app.use((err, request, response, next) => {
   console.log(err);
   response.status(500).send("Something broke!");

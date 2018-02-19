@@ -24,7 +24,7 @@ let AddTodo = ({ dispatch }) => {
         type="text"
         autoComplete="off"
       />
-      <button type="submit">Go</button>
+      <button type="submit">Go!</button>
     </form>
   );
 };

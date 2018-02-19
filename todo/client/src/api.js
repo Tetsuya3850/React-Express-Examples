@@ -25,9 +25,21 @@ async function toggleTodo(_id) {
   });
 }
 
+async function deleteTodo(_id) {
+  await fetch("/delete", {
+    method: "post",
+    body: JSON.stringify({ _id }),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  });
+}
+
 const api = {
   receiveTodos,
   addNewTodo,
-  toggleTodo
+  toggleTodo,
+  deleteTodo
 };
 export default api;

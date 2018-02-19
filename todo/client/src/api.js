@@ -3,8 +3,15 @@ async function receiveTodos() {
   return await response.json();
 }
 
-async function addTodo(new_todo) {
-  await fetch("/add", { method: "post", body: new_todo });
+async function addNewTodo(new_todo) {
+  await fetch("/add", {
+    method: "post",
+    body: JSON.stringify(new_todo),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    }
+  });
 }
 
 async function toggleTodo(todo) {
@@ -13,7 +20,7 @@ async function toggleTodo(todo) {
 
 const api = {
   receiveTodos,
-  addTodo,
+  addNewTodo,
   toggleTodo
 };
 export default api;

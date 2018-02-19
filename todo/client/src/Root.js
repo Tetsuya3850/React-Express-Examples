@@ -5,7 +5,7 @@ import App from "./App";
 
 const store = configureStore();
 
-export default class Root extends React.Component {
+class Root extends React.Component {
   render() {
     return (
       <Provider store={store}>
@@ -14,3 +14,5 @@ export default class Root extends React.Component {
     );
   }
 }
+
+export default Root;

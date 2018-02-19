@@ -24,3 +24,10 @@ const toggleTodo = _id => async dispatch => {
   await api.toggleTodo(_id);
   dispatch({ type: TOGGLE_TODO, _id });
 };
+
+const actions = {
+  receiveTodos,
+  addNewTodo,
+  toggleTodo
+};
+export default actions;

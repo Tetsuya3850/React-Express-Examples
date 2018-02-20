@@ -1,32 +1,35 @@
-import { SET_TIMER, TOGGLE_TIMER, RESET_TIMER } from "./actions";
+import {
+  TIMER_SET,
+  TIMER_START,
+  TIMER_TICK,
+  TIMER_STOP,
+  TIMER_RESET
+} from "./actions";
 
 const initialState = {
-  set_time: {
-    h: 0,
-    m: 5,
-    s: 0
-  },
-  remaining_time: {
-    h: 0,
-    m: 5,
-    s: 0
-  },
+  set_time: 300,
+  remaining_time: 300,
   isTimed: false
 };
 
 const timerAppReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_TIMER:
+    case TIMER_SET:
       return {
         set_time: action.set_time
       };
-    case TOGGLE_TIMER:
+    case TIMER_START:
+    case TIMER_STOP:
       return {
         isTimed: !state.isTimed
       };
-    case RESET_TIMER:
+    case TIMER_TICK:
       return {
-        remaining_time: { ...state.set_time }
+        remaining_time: (state.remaining_time -= 1)
+      };
+    case TIMER_RESET:
+      return {
+        remaining_time: state.set_time
       };
     default:
       return state;

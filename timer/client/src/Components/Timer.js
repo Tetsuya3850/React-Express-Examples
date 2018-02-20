@@ -16,6 +16,10 @@ class Timer extends Component {
   editModeOn = () => {
     this.props.onResetTimer();
     this.setState({ edit_mode: true });
+    var handles = document.getElementsByName("handles");
+    for (var i = 0; i < handles.length; i++) {
+      handles[i].setAttribute("disabled", true);
+    }
   };
 
   handleFormSubmit = e => {
@@ -29,6 +33,10 @@ class Timer extends Component {
     m.value = "";
     s.value = "";
     this.setState({ edit_mode: false });
+    var handles = document.getElementsByName("handles");
+    for (var i = 0; i < handles.length; i++) {
+      handles[i].removeAttribute("disabled");
+    }
   };
 
   render() {
@@ -91,11 +99,17 @@ class Timer extends Component {
         )}
         <div style={styles.handles}>
           {is_timed ? (
-            <p onClick={() => onStopTimer()}>Stop</p>
+            <button name="handles" onClick={() => onStopTimer()}>
+              Stop
+            </button>
           ) : (
-            <p onClick={() => onStartTimer()}>Start</p>
+            <button name="handles" onClick={() => onStartTimer()}>
+              Start
+            </button>
           )}
-          <p onClick={() => onResetTimer()}>Reset</p>
+          <button name="handles" onClick={() => onResetTimer()}>
+            Reset
+          </button>
         </div>
       </div>
     );
@@ -123,7 +137,8 @@ let styles = {
   },
   handles: {
     display: "flex",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
+    margin: 10
   }
 };
 

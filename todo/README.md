@@ -2,7 +2,8 @@ A one and only... todo app.
 
 ## Requirements
 
-* Able to save todos to MongoDB server
+* Todos can be added to and deleted from Redux store & MongoDB.
+* The state of done or not is editable as well.
 
 ## Mock
 

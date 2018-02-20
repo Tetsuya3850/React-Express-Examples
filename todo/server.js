@@ -8,12 +8,12 @@ require("dotenv").config();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
 
-var todoSchema = mongoose.Schema({
+const todoSchema = mongoose.Schema({
   _id: String,
   task: String,
   done: Boolean
 });
-var Todo = mongoose.model("Todo", todoSchema);
+const Todo = mongoose.model("Todo", todoSchema);
 
 app.use(helmet());
 app.use(bodyParser.json());

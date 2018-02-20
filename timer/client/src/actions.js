@@ -6,19 +6,15 @@ export const TIMER_RESET = "TIMER_RESET";
 
 let timer = null;
 
-const setTime = set_time => {
-  type: TIMER_SET, set_time;
+const setTimer = set_timer => {
+  type: TIMER_SET, set_timer;
 };
 
 const startTimer = () => dispatch => {
   clearInterval(timer);
-  timer = setInterval(() => dispatch(tickTimer()), 1000);
+  timer = setInterval(() => dispatch({ type: TIMER_TICK }), 1000);
   dispatch({ type: TIMER_START });
-  dispatch(tickTimer());
-};
-
-const tickTimer = () => {
-  type: TIMER_TICK;
+  dispatch({ type: TIMER_TICK });
 };
 
 const stopTimer = () => {
@@ -32,9 +28,8 @@ const resetTimer = () => {
 };
 
 const actions = {
-  setTime,
+  setTimer,
   startTimer,
-  tickTimer,
   stopTimer,
   resetTimer
 };

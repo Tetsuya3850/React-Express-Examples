@@ -4,6 +4,13 @@ import actions from "../actions";
 import Todo from "./Todo";
 
 class TimerContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      remaining_time: this.props.timer.remaining_time,
+    };
+  }
+
   render() {
     return <Timer {...this.state, ...this.props} />;
   }
@@ -11,23 +18,23 @@ class TimerContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    todos: state.todos
+    timer: state
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onToggleTodo: _id => {
-      dispatch(actions.toggleTodo(_id));
+    onToggleTimer: () => {
+      dispatch(actions.toggleTimer());
     },
-    onDeleteTodo: _id => {
-      dispatch(actions.deleteTodo(_id));
+    onResetTimer: () => {
+      dispatch(actions.resetTimer());
     }
   };
 };
 
-TodoListContainer = connect(mapStateToProps, mapDispatchToProps)(
-  TodoListContainer
+TimerContainer = connect(mapStateToProps, mapDispatchToProps)(
+  TimerContainer
 );
 
-export default TodoListContainer;
+export default TimerContainer;

@@ -17,13 +17,18 @@ const timerAppReducer = (state = initialState, action) => {
     case TIMER_SET:
       return {
         ...state,
-        set_time: action.set_time
+        set_time: action.set_time,
+        remaining_time: action.set_time
       };
     case TIMER_START:
+      return {
+        ...state,
+        is_timed: true
+      };
     case TIMER_STOP:
       return {
         ...state,
-        is_timed: !state.is_timed
+        is_timed: false
       };
     case TIMER_TICK:
       return {
@@ -33,7 +38,7 @@ const timerAppReducer = (state = initialState, action) => {
     case TIMER_RESET:
       return {
         ...state,
-        is_timed: !state.is_timed,
+        is_timed: false,
         remaining_time: state.set_time
       };
     default:

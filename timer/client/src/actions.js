@@ -6,8 +6,11 @@ export const TIMER_RESET = "TIMER_RESET";
 
 let timer = null;
 
-const setTimer = set_timer => {
-  type: TIMER_SET, set_timer;
+const setTimer = set_time => {
+  return {
+    type: TIMER_SET,
+    set_time
+  };
 };
 
 const startTimer = () => dispatch => {

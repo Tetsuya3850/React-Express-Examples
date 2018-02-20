@@ -1,28 +1,100 @@
 import React, { Component } from "react";
+import { timeFormatter, toSeconds } from "../helper";
+
+let h;
+let m;
+let s;
 
 class Timer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      edit_mode: false
+    };
+  }
+
+  editModeOn = () => {
+    this.props.onResetTimer();
+    this.setState({ edit_mode: true });
+  };
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+    if (!h.value.trim() || !m.value.trim() || !s.value.trim()) {
+      return;
+    }
+    const seconds = toSeconds(h.value, m.value, s.value);
+    this.props.onSetTimer(seconds);
+    h.value = "";
+    m.value = "";
+    s.value = "";
+    this.setState({ edit_mode: false });
+  };
+
   render() {
     const {
-      set_time,
       remaining_time,
       is_timed,
       onStartTimer,
       onStopTimer,
-      onResetTimer,
-      onSetTimer
+      onResetTimer
     } = this.props;
 
-    let startOrStop;
-    if (is_timed) {
-      startOrStop = <p onClick={() => onStopTimer()}>Stop</p>;
-    } else {
-      startOrStop = <p onClick={() => onStartTimer()}>Start</p>;
-    }
     return (
       <div style={styles.container}>
-        <p style={styles.timer}> Remaining time is : {remaining_time}</p>
+        {this.state.edit_mode ? (
+          <form style={styles.editForm} onSubmit={this.handleFormSubmit}>
+            <input
+              ref={node => {
+                h = node;
+              }}
+              id="h"
+              size="3"
+              type="text"
+              autoComplete="off"
+              defaultValue="0"
+            />
+            <label htmlFor="h">h</label>
+            <input
+              ref={node => {
+                m = node;
+              }}
+              id="m"
+              size="3"
+              type="text"
+              autoComplete="off"
+              defaultValue="0"
+            />
+            <label htmlFor="m">m</label>
+            <input
+              ref={node => {
+                s = node;
+              }}
+              id="s"
+              size="3"
+              type="text"
+              autoComplete="off"
+              defaultValue="0"
+            />
+            <label htmlFor="s">s</label>
+            <input type="submit" style={{ display: "none" }} />
+          </form>
+        ) : (
+          <p style={styles.timer}>
+            {timeFormatter(remaining_time)}{" "}
+            <i
+              className="fa fa-edit"
+              style={styles.editBtn}
+              onClick={this.editModeOn}
+            />
+          </p>
+        )}
         <div style={styles.handles}>
-          {startOrStop}
+          {is_timed ? (
+            <p onClick={() => onStopTimer()}>Stop</p>
+          ) : (
+            <p onClick={() => onStartTimer()}>Start</p>
+          )}
           <p onClick={() => onResetTimer()}>Reset</p>
         </div>
       </div>
@@ -41,6 +113,13 @@ let styles = {
   },
   timer: {
     textAlign: "center"
+  },
+  editForm: {
+    textAlign: "center",
+    margin: 16
+  },
+  editBtn: {
+    margin: 2
   },
   handles: {
     display: "flex",

@@ -16,12 +16,13 @@ class Questionnaire extends Component {
 
   handleFormSubmit = async e => {
     e.preventDefault();
-    if (!this.name.value.trim() || !this.email.value.trim()) {
-    }
     const { colors } = this.form;
     const checkboxArray = Array.prototype.slice.call(colors);
     const checkedCheckboxes = checkboxArray.filter(input => input.checked);
     const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
+    if (this.validateCheckbox(checkedCheckboxesValues)) {
+      return;
+    }
     const payLoad = {
       name: this.name.value,
       email: this.email.value,
@@ -42,6 +43,17 @@ class Questionnaire extends Component {
       this.setState(err);
     }
     this.clearForm();
+  };
+
+  validateCheckbox = checkedCheckboxesValues => {
+    let err = { errors: {} };
+    if (checkedCheckboxesValues.length === 0) {
+      err.errors["colors.0"] = "Choose a color!";
+      console.log(checkedCheckboxesValues);
+      this.setState(err);
+      return true;
+    }
+    return false;
   };
 
   clearForm = () => {
@@ -84,6 +96,7 @@ class Questionnaire extends Component {
               ref={node => {
                 this.name = node;
               }}
+              required
             />
             <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>
@@ -93,11 +106,12 @@ class Questionnaire extends Component {
 
             <label>Email Address</label>
             <input
-              type="text"
+              type="email"
               style={{ margin: 10 }}
               ref={node => {
                 this.email = node;
               }}
+              required
             />
             <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>
@@ -109,6 +123,7 @@ class Questionnaire extends Component {
               ref={node => {
                 this.gender = node;
               }}
+              required
             >
               <option value="">What is your gender?</option>
               {allGenderChoices}

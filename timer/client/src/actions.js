@@ -23,11 +23,15 @@ const startTimer = () => dispatch => {
       dispatch({ type: TIMER_RESET });
       window.alert("Time Over!");
     } else {
-      dispatch({ type: TIMER_TICK });
+      dispatch(tickTimer());
     }
   }, 1000);
   dispatch({ type: TIMER_START });
-  dispatch({ type: TIMER_TICK });
+  dispatch(tickTimer());
+};
+
+const tickTimer = () => {
+  return { type: TIMER_TICK };
 };
 
 const stopTimer = () => {

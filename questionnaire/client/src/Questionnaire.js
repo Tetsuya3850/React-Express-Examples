@@ -49,7 +49,6 @@ class Questionnaire extends Component {
     let err = { errors: {} };
     if (checkedCheckboxesValues.length === 0) {
       err.errors["colors.0"] = "Choose a color!";
-      console.log(checkedCheckboxesValues);
       this.setState(err);
       return true;
     }

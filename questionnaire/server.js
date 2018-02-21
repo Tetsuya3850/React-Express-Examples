@@ -9,10 +9,34 @@ const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
 
 const responseSchema = mongoose.Schema({
-  name: String,
-  email: String,
-  gender: String,
-  colors: [String],
+  name: {
+    type: String,
+    required: [true, "Required!"],
+    maxlength: [100, "Too Long!"]
+  },
+  email: {
+    type: String,
+    required: [true, "Required!"],
+    maxlength: [100, "Too Long!"],
+    unique: true
+  },
+  gender: {
+    type: String,
+    enum: {
+      values: ["male", "female", "other"],
+      message: "Invalid Choice!"
+    },
+    required: [true, "Required!"]
+  },
+  colors: {
+    type: [
+      {
+        type: String,
+        enum: { values: ["red", "green", "blue"], message: "Invalid Choice!" }
+      }
+    ],
+    required: [true, "Required!"]
+  },
   comments: String
 });
 const Response = mongoose.model("Response", responseSchema);
@@ -28,8 +52,12 @@ app.get("/response", async (req, res) => {
 
 app.post("/add", async (req, res) => {
   const newResponse = new Response(req.body);
-  await newResponse.save();
-  res.json("Response Saved!");
+  try {
+    await newResponse.save();
+    res.json("Response Added!");
+  } catch (err) {
+    res.json(err);
+  }
 });
 
 app.use((err, request, response, next) => {

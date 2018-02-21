@@ -5,7 +5,6 @@ class Questionnaire extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     if (!this.name.value.trim() || !this.email.value.trim()) {
-      return;
     }
     const { colors } = this.form;
     const checkboxArray = Array.prototype.slice.call(colors);
@@ -18,6 +17,14 @@ class Questionnaire extends Component {
       colors: checkedCheckboxesValues,
       comments: this.comments.value
     };
+    const fakePayLoad = {
+      name: "Tetsuya Hasegawa",
+      email: "tetsuya.bachicago@gmail.com",
+      gender: "male",
+      colors: ["re", "blue"],
+      comments: ""
+    };
+    api.addNewResponse(fakePayLoad);
     this.clearForm();
   };
 

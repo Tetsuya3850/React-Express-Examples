@@ -4,7 +4,7 @@ async function receiveResponses() {
 }
 
 async function addNewResponse(new_response) {
-  await fetch("/add", {
+  const response = await fetch("/add", {
     method: "post",
     body: JSON.stringify(new_response),
     headers: {
@@ -12,6 +12,7 @@ async function addNewResponse(new_response) {
       "Content-Type": "application/json"
     }
   });
+  console.log(await response.json());
 }
 
 const api = {

@@ -32,10 +32,10 @@ const responseSchema = mongoose.Schema({
     type: [
       {
         type: String,
+        required: [true, "Required!"],
         enum: { values: ["red", "green", "blue"], message: "Invalid Choice!" }
       }
-    ],
-    required: [true, "Required!"]
+    ]
   },
   comments: String
 });
@@ -50,19 +50,19 @@ app.get("/response", async (req, res) => {
   res.json(responses);
 });
 
-app.post("/add", async (req, res) => {
+app.post("/add", async (req, res, next) => {
   const newResponse = new Response(req.body);
   try {
     await newResponse.save();
     res.json("Response Added!");
   } catch (err) {
-    res.json(err);
+    return next(err);
   }
 });
 
 app.use((err, request, response, next) => {
   console.log(err);
-  response.status(500).send("Something broke!");
+  response.send(err);
 });
 
 app.listen(port, () => {

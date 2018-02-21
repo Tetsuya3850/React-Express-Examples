@@ -2,7 +2,19 @@ import React, { Component } from "react";
 import api from "./api";
 
 class Questionnaire extends Component {
-  handleFormSubmit = e => {
+  constructor(props) {
+    super(props);
+    this.state = {
+      errors: {
+        name: "",
+        email: "",
+        gender: "",
+        "color.0": ""
+      }
+    };
+  }
+
+  handleFormSubmit = async e => {
     e.preventDefault();
     if (!this.name.value.trim() || !this.email.value.trim()) {
     }
@@ -17,14 +29,18 @@ class Questionnaire extends Component {
       colors: checkedCheckboxesValues,
       comments: this.comments.value
     };
-    const fakePayLoad = {
-      name: "Tetsuya Hasegawa",
-      email: "tetsuya.bachicago@gmail.com",
-      gender: "male",
-      colors: ["re", "blue"],
-      comments: ""
-    };
-    api.addNewResponse(fakePayLoad);
+    const status = await api.addNewResponse(payLoad);
+    let err = { errors: {} };
+    if (status !== "Response Added!") {
+      if (status.code === 11000) {
+        err.errors.email = "Duplicate email!";
+      } else {
+        Object.keys(status.errors).map(key => {
+          err.errors[key] = status.errors[key].message;
+        });
+      }
+      this.setState(err);
+    }
     this.clearForm();
   };
 
@@ -70,6 +86,9 @@ class Questionnaire extends Component {
               }}
             />
             <span style={{ color: "red" }}>*</span>
+            <span style={{ color: "red", marginLeft: 8 }}>
+              {this.state.errors.name}
+            </span>
             <br />
 
             <label>Email Address</label>
@@ -81,6 +100,9 @@ class Questionnaire extends Component {
               }}
             />
             <span style={{ color: "red" }}>*</span>
+            <span style={{ color: "red", marginLeft: 8 }}>
+              {this.state.errors.email}
+            </span>
             <br />
 
             <select
@@ -92,10 +114,16 @@ class Questionnaire extends Component {
               {allGenderChoices}
             </select>
             <span style={{ color: "red" }}> *</span>
+            <span style={{ color: "red", marginLeft: 8 }}>
+              {this.state.errors.gender}
+            </span>
             <br />
 
             <label style={{ display: "inline-block", marginTop: 10 }}>
-              What colors do you like? <span style={{ color: "red" }}> *</span>
+              What colors do you like? <span style={{ color: "red" }}>*</span>
+              <span style={{ color: "red", marginLeft: 8 }}>
+                {this.state.errors["colors.0"]}
+              </span>
             </label>
             <br />
             {allColorChoices}

@@ -12,7 +12,7 @@ async function addNewResponse(new_response) {
       "Content-Type": "application/json"
     }
   });
-  console.log(await response.json());
+  return await response.json();
 }
 
 const api = {

@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import Questionnaire from "./Questionnaire";
 
 class App extends Component {
   render() {
-    return <div>Hello World!</div>;
+    return (
+      <div>
+        <Questionnaire />
+      </div>
+    );
   }
 }
 

@@ -8,6 +8,11 @@ require("dotenv").config();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
 
+const validateEmail = email => {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email);
+};
+
 const responseSchema = mongoose.Schema({
   name: {
     type: String,
@@ -17,6 +22,7 @@ const responseSchema = mongoose.Schema({
   email: {
     type: String,
     required: [true, "Required!"],
+    validate: [validateEmail, "Invalid address!"],
     maxlength: [100, "Too Long!"],
     unique: true
   },

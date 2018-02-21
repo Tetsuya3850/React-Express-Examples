@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { timeFormatter, toSeconds } from "../helper";
 
-let h;
-let m;
-let s;
-
 class Timer extends Component {
   constructor(props) {
     super(props);
@@ -22,21 +18,25 @@ class Timer extends Component {
     }
   };
 
-  handleFormSubmit = e => {
-    e.preventDefault();
-    if (!h.value.trim() || !m.value.trim() || !s.value.trim()) {
-      return;
-    }
-    const seconds = toSeconds(h.value, m.value, s.value);
-    this.props.onSetTimer(seconds);
-    h.value = "";
-    m.value = "";
-    s.value = "";
+  editModeOff = () => {
+    this.h.value = "";
+    this.m.value = "";
+    this.s.value = "";
     this.setState({ edit_mode: false });
     var handles = document.getElementsByName("handles");
     for (var i = 0; i < handles.length; i++) {
       handles[i].removeAttribute("disabled");
     }
+  };
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+    if (!this.h.value.trim() || !this.m.value.trim() || !this.s.value.trim()) {
+      return;
+    }
+    const seconds = toSeconds(this.h.value, this.m.value, this.s.value);
+    this.props.onSetTimer(seconds);
+    this.editModeOff();
   };
 
   render() {
@@ -54,37 +54,34 @@ class Timer extends Component {
           <form style={styles.editForm} onSubmit={this.handleFormSubmit}>
             <input
               ref={node => {
-                h = node;
+                this.h = node;
               }}
-              id="h"
               size="3"
               type="text"
               autoComplete="off"
               defaultValue="0"
             />
-            <label htmlFor="h">h</label>
+            <label>h</label>
             <input
               ref={node => {
-                m = node;
+                this.m = node;
               }}
-              id="m"
               size="3"
               type="text"
               autoComplete="off"
               defaultValue="0"
             />
-            <label htmlFor="m">m</label>
+            <label>m</label>
             <input
               ref={node => {
-                s = node;
+                this.s = node;
               }}
-              id="s"
               size="3"
               type="text"
               autoComplete="off"
               defaultValue="0"
             />
-            <label htmlFor="s">s</label>
+            <label>s</label>
             <input type="submit" style={{ display: "none" }} />
           </form>
         ) : (

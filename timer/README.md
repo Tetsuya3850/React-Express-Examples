@@ -2,8 +2,9 @@ A timer app.
 
 ## Requirements
 
-* Able to time whatever duration up to 23h 59m 59s.
-* Start, Stop, and Reset button.
+* You can custom set the time. Default is 5 minutes.
+* When you press start, button changes to stop.
+* While setting time, start and reset buttons are disabled.
 
 ## Mock
 

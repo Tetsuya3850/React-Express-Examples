@@ -9,7 +9,8 @@ class Questionnaire extends Component {
         name: "",
         email: "",
         gender: "",
-        "color.0": ""
+        "color.0": "",
+        comments: ""
       }
     };
   }
@@ -96,6 +97,7 @@ class Questionnaire extends Component {
                 this.name = node;
               }}
               required
+              maxLength="100"
             />
             <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>
@@ -111,6 +113,7 @@ class Questionnaire extends Component {
                 this.email = node;
               }}
               required
+              maxLength="100"
             />
             <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>
@@ -145,6 +148,9 @@ class Questionnaire extends Component {
 
             <label style={{ display: "inline-block", marginTop: 10 }}>
               Any other comments?
+              <span style={{ color: "red", marginLeft: 8 }}>
+                {this.state.errors.comments}
+              </span>
             </label>
             <textarea
               style={{ width: "100%", marginBottom: 10 }}
@@ -152,6 +158,7 @@ class Questionnaire extends Component {
               ref={node => {
                 this.comments = node;
               }}
+              maxLength="1000"
             />
 
             <input

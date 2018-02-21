@@ -43,7 +43,10 @@ const responseSchema = mongoose.Schema({
       }
     ]
   },
-  comments: String
+  comments: {
+    type: String,
+    maxlength: [1000, "Too Long!"]
+  }
 });
 const Response = mongoose.model("Response", responseSchema);
 

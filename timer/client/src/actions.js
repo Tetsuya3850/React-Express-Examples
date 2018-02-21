@@ -1,3 +1,5 @@
+import { store } from "./Root";
+
 export const TIMER_SET = "TIMER_SET";
 export const TIMER_START = "TIMER_START";
 export const TIMER_TICK = "TIMER_TICK";
@@ -15,7 +17,15 @@ const setTimer = set_time => {
 
 const startTimer = () => dispatch => {
   clearInterval(timer);
-  timer = setInterval(() => dispatch({ type: TIMER_TICK }), 1000);
+  timer = setInterval(() => {
+    if (store.getState().remaining_time === 0) {
+      clearInterval(timer);
+      dispatch({ type: TIMER_RESET });
+      window.alert("Time Over!");
+    } else {
+      dispatch({ type: TIMER_TICK });
+    }
+  }, 1000);
   dispatch({ type: TIMER_START });
   dispatch({ type: TIMER_TICK });
 };

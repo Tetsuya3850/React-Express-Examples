@@ -57,9 +57,10 @@ class Timer extends Component {
                 this.h = node;
               }}
               size="3"
-              type="text"
-              autoComplete="off"
+              type="number"
               defaultValue="0"
+              min="0"
+              max="23"
             />
             <label>h</label>
             <input
@@ -67,9 +68,10 @@ class Timer extends Component {
                 this.m = node;
               }}
               size="3"
-              type="text"
-              autoComplete="off"
+              type="number"
               defaultValue="0"
+              min="0"
+              max="59"
             />
             <label>m</label>
             <input
@@ -77,9 +79,10 @@ class Timer extends Component {
                 this.s = node;
               }}
               size="3"
-              type="text"
-              autoComplete="off"
+              type="number"
               defaultValue="0"
+              min="0"
+              max="59"
             />
             <label>s</label>
             <input type="submit" style={{ display: "none" }} />

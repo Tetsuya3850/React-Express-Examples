@@ -98,6 +98,7 @@ class Questionnaire extends Component {
               }}
               required
               maxLength="100"
+              autoFocus
             />
             <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>

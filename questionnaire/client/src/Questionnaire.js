@@ -5,22 +5,13 @@ class Questionnaire extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {
-        name: "",
-        email: "",
-        gender: "",
-        "color.0": "",
-        comments: ""
-      }
+      errors: {}
     };
   }
 
   handleFormSubmit = async e => {
     e.preventDefault();
-    const { colors } = this.form;
-    const checkboxArray = Array.prototype.slice.call(colors);
-    const checkedCheckboxes = checkboxArray.filter(input => input.checked);
-    const checkedCheckboxesValues = checkedCheckboxes.map(input => input.value);
+    const checkedCheckboxesValues = this.processCheckbox();
     if (this.validateCheckbox(checkedCheckboxesValues)) {
       return;
     }
@@ -32,18 +23,14 @@ class Questionnaire extends Component {
       comments: this.comments.value
     };
     const status = await api.addNewResponse(payLoad);
-    let err = { errors: {} };
-    if (status !== "Response Added!") {
-      if (status.code === 11000) {
-        err.errors.email = "Duplicate email!";
-      } else {
-        Object.keys(status.errors).map(key => {
-          err.errors[key] = status.errors[key].message;
-        });
-      }
-      this.setState(err);
-    }
-    this.clearForm();
+    this.handleStatus(status);
+  };
+
+  processCheckbox = () => {
+    const { colors } = this.form;
+    const checkboxArray = Array.prototype.slice.call(colors);
+    const checkedCheckboxes = checkboxArray.filter(input => input.checked);
+    return checkedCheckboxes.map(input => input.value);
   };
 
   validateCheckbox = checkedCheckboxesValues => {
@@ -54,6 +41,22 @@ class Questionnaire extends Component {
       return true;
     }
     return false;
+  };
+
+  handleStatus = status => {
+    if (status !== "Response Added!") {
+      let err = { errors: {} };
+      if (status.code === 11000) {
+        err.errors.email = "Duplicate email!";
+      } else {
+        Object.keys(status.errors).map(key => {
+          err.errors[key] = status.errors[key].message;
+        });
+      }
+      this.setState(err);
+    } else {
+      this.clearForm();
+    }
   };
 
   clearForm = () => {
@@ -88,86 +91,84 @@ class Questionnaire extends Component {
           <h2 style={{ textAlign: "center" }}>Questionnaire</h2>
           <hr />
 
-          <div style={{}}>
-            <label>Full Name</label>
-            <input
-              type="text"
-              style={{ margin: 10 }}
-              ref={node => {
-                this.name = node;
-              }}
-              required
-              maxLength="100"
-              autoFocus
-            />
-            <span style={{ color: "red" }}>*</span>
+          <label>Full Name</label>
+          <input
+            type="text"
+            style={{ margin: 10 }}
+            ref={node => {
+              this.name = node;
+            }}
+            required
+            maxLength="100"
+            autoFocus
+          />
+          <span style={{ color: "red" }}>*</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {this.state.errors.name}
+          </span>
+          <br />
+
+          <label>Email Address</label>
+          <input
+            type="email"
+            style={{ margin: 10 }}
+            ref={node => {
+              this.email = node;
+            }}
+            required
+            maxLength="100"
+          />
+          <span style={{ color: "red" }}>*</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {this.state.errors.email}
+          </span>
+          <br />
+
+          <select
+            ref={node => {
+              this.gender = node;
+            }}
+            required
+          >
+            <option value="">What is your gender?</option>
+            {allGenderChoices}
+          </select>
+          <span style={{ color: "red" }}> *</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {this.state.errors.gender}
+          </span>
+          <br />
+
+          <label style={{ display: "inline-block", marginTop: 10 }}>
+            What colors do you like? <span style={{ color: "red" }}>*</span>
             <span style={{ color: "red", marginLeft: 8 }}>
-              {this.state.errors.name}
+              {this.state.errors["colors.0"]}
             </span>
-            <br />
+          </label>
+          <br />
+          {allColorChoices}
+          <br />
 
-            <label>Email Address</label>
-            <input
-              type="email"
-              style={{ margin: 10 }}
-              ref={node => {
-                this.email = node;
-              }}
-              required
-              maxLength="100"
-            />
-            <span style={{ color: "red" }}>*</span>
+          <label style={{ display: "inline-block", marginTop: 10 }}>
+            Any other comments?
             <span style={{ color: "red", marginLeft: 8 }}>
-              {this.state.errors.email}
+              {this.state.errors.comments}
             </span>
-            <br />
+          </label>
+          <textarea
+            style={{ width: "100%", marginBottom: 10 }}
+            rows="4"
+            ref={node => {
+              this.comments = node;
+            }}
+            maxLength="1000"
+          />
 
-            <select
-              ref={node => {
-                this.gender = node;
-              }}
-              required
-            >
-              <option value="">What is your gender?</option>
-              {allGenderChoices}
-            </select>
-            <span style={{ color: "red" }}> *</span>
-            <span style={{ color: "red", marginLeft: 8 }}>
-              {this.state.errors.gender}
-            </span>
-            <br />
-
-            <label style={{ display: "inline-block", marginTop: 10 }}>
-              What colors do you like? <span style={{ color: "red" }}>*</span>
-              <span style={{ color: "red", marginLeft: 8 }}>
-                {this.state.errors["colors.0"]}
-              </span>
-            </label>
-            <br />
-            {allColorChoices}
-            <br />
-
-            <label style={{ display: "inline-block", marginTop: 10 }}>
-              Any other comments?
-              <span style={{ color: "red", marginLeft: 8 }}>
-                {this.state.errors.comments}
-              </span>
-            </label>
-            <textarea
-              style={{ width: "100%", marginBottom: 10 }}
-              rows="4"
-              ref={node => {
-                this.comments = node;
-              }}
-              maxLength="1000"
-            />
-
-            <input
-              type="submit"
-              value="Submit!"
-              style={{ display: "block", margin: "auto" }}
-            />
-          </div>
+          <input
+            type="submit"
+            value="Submit!"
+            style={{ display: "block", margin: "auto" }}
+          />
         </form>
       </div>
     );

@@ -3,7 +3,8 @@ A questionnaire app.
 ## Requirements
 
 * Clients can post a response to the server.
-* All previous responses can be displayed.
+* POST validation is done both client-side and server-side.
+* Error messages are displayed.
 
 ## Mock
 

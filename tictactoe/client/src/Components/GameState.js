@@ -19,7 +19,7 @@ const GameState = ({ turn, hasWon, isFair }) => {
         onClick={() => {
           window.location.reload();
         }}
-        sylte={styles.playAgain}
+        style={styles.playAgain}
       >
         Play Again?
       </p>

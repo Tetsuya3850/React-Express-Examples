@@ -1,30 +1,26 @@
-import React, { Component } from "react";
+import React from "react";
 
-class Cell extends Component {
-  handleMoveClick = () => {
-    const { state, hasWon, isFair, onMoveClick } = this.props;
+const Cell = ({ state, hasWon, isFair, onMoveClick }) => {
+  const handleMoveClick = () => {
     if (hasWon || isFair || state === true || state === false) {
       return;
     }
     onMoveClick();
   };
 
-  render() {
-    const { state } = this.props;
-    let renderState = <span style={styles.mark} />;
-    if (state === true) {
-      renderState = <span style={styles.mark}>&#9675;</span>;
-    } else if (state === false) {
-      renderState = <span style={styles.mark}>&#10799;</span>;
-    }
-
-    return (
-      <div style={styles.container} onClick={this.handleMoveClick}>
-        {renderState}
-      </div>
-    );
+  let renderState = <span style={styles.mark} />;
+  if (state === true) {
+    renderState = <span style={styles.mark}>&#9675;</span>;
+  } else if (state === false) {
+    renderState = <span style={styles.mark}>&#10799;</span>;
   }
-}
+
+  return (
+    <div style={styles.container} onClick={handleMoveClick}>
+      {renderState}
+    </div>
+  );
+};
 
 let styles = {
   container: {
@@ -32,11 +28,9 @@ let styles = {
     height: 100,
     border: "solid",
     borderWidth: "0.02px",
-    borderColor: "black",
     textAlign: "center"
   },
   mark: {
-    width: "100%",
     margin: "auto",
     fontSize: "80px"
   }

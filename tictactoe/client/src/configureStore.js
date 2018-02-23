@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import timerAppReducer from "./reducer";
+import ticTacToeReducer from "./reducer";
 
 export default function configureStore(preloadedState) {
   return createStore(
-    timerAppReducer,
+    ticTacToeReducer,
     preloadedState,
     applyMiddleware(thunkMiddleware)
   );

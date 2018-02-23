@@ -1,14 +1,14 @@
 import { SET_MOVE, CHANGE_TURN, HAS_WON } from "./actions";
 
 const initialState = {
-  ticTacToe: [[null, null, null], [null, null, null], [null, null, null]],
+  ticTacToe: [null, null, null, null, null, null, null, null, null],
   turn: true,
   hasWon: false
 };
 
 const set_move_helper = (state, pos, player) => {
   const newTicTacToe = state.slice();
-  newTicTacToe[pos[0]][pos[1]] = player;
+  newTicTacToe[pos] = player;
   return newTicTacToe;
 };
 

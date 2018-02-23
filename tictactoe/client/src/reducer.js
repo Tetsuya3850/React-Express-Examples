@@ -17,7 +17,7 @@ const ticTacToeReducer = (state = initialState, action) => {
     case SET_MOVE:
       return {
         ...state,
-        ticTacToe: set_move_helper(state.ticTacToe, action.pos, actions.player)
+        ticTacToe: set_move_helper(state.ticTacToe, action.pos, action.player)
       };
     case CHANGE_TURN:
       return {

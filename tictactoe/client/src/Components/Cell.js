@@ -1,17 +1,25 @@
 import React, { Component } from "react";
 
 class Cell extends Component {
+  handleMoveClick = () => {
+    const { state, hasWon, isFair, onMoveClick } = this.props;
+    if (hasWon || isFair || state === true || state === false) {
+      return;
+    }
+    onMoveClick();
+  };
+
   render() {
-    const { pos, state, turn, onMoveClick } = this.props;
-    let renderState = null;
+    const { state } = this.props;
+    let renderState = <span style={styles.mark} />;
     if (state === true) {
-      renderState = <span>&#9675;</span>;
+      renderState = <span style={styles.mark}>&#9675;</span>;
     } else if (state === false) {
-      renderState = <span>&#10799;</span>;
+      renderState = <span style={styles.mark}>&#10799;</span>;
     }
 
     return (
-      <div style={styles.container} onClick={onMoveClick}>
+      <div style={styles.container} onClick={this.handleMoveClick}>
         {renderState}
       </div>
     );
@@ -24,7 +32,13 @@ let styles = {
     height: 100,
     border: "solid",
     borderWidth: "0.02px",
-    borderColor: "black"
+    borderColor: "black",
+    textAlign: "center"
+  },
+  mark: {
+    width: "100%",
+    margin: "auto",
+    fontSize: "80px"
   }
 };
 

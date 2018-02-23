@@ -5,12 +5,17 @@ import Cell from "./Cell";
 
 class TicTacToe extends Component {
   render() {
-    const { ticTacToe, turn, hasWon, onMove } = this.props;
-    const renderTurn = this.props.turn ? (
-      <span>&#9675;</span>
-    ) : (
-      <span>&#10799;</span>
-    );
+    const { ticTacToe, turn, hasWon, isFair, onMove } = this.props;
+    const renderTurn = turn ? <span>&#9675;</span> : <span>&#10799;</span>;
+    let gameState = null;
+    if (hasWon) {
+      gameState = <p>{renderTurn} has Won!</p>;
+    } else if (isFair) {
+      gameState = <p>Game is Fair!</p>;
+    } else {
+      gameState = <p>{renderTurn} &#39;s Turn</p>;
+    }
+
     return (
       <div style={styles.container}>
         <h1 style={styles.title}>Tic Tac Toe</h1>
@@ -21,11 +26,29 @@ class TicTacToe extends Component {
               pos={index}
               state={cell}
               turn={turn}
+              hasWon={hasWon}
+              isFair={isFair}
               onMoveClick={() => onMove(index, turn)}
             />
           ))}
         </div>
-        <p style={styles.gameState}>{renderTurn}s Turn</p>
+        <div style={styles.gameState}>
+          <div>{gameState}</div>
+          <div>
+            {hasWon || isFair ? (
+              <p
+                onClick={() => {
+                  window.location.reload();
+                }}
+                style={styles.playAgain}
+              >
+                Play Again?
+              </p>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </div>
     );
   }
@@ -50,6 +73,9 @@ let styles = {
   },
   gameState: {
     textAlign: "center"
+  },
+  playAgain: {
+    cursor: "pointer"
   }
 };
 

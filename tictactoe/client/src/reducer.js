@@ -1,15 +1,15 @@
-import { SET_MOVE, CHANGE_TURN, HAS_WON } from "./actions";
+import { SET_MOVE, CHANGE_TURN, HAS_WON, IS_FAIR } from "./actions";
 
 const initialState = {
   ticTacToe: [null, null, null, null, null, null, null, null, null],
   turn: true,
-  hasWon: false
+  hasWon: false,
+  isFair: false
 };
 
 const set_move_helper = (state, pos, turn) => {
   const newTicTacToe = state.slice();
   newTicTacToe[pos] = turn;
-  console.log(newTicTacToe);
   return newTicTacToe;
 };
 
@@ -29,6 +29,11 @@ const ticTacToeReducer = (state = initialState, action) => {
       return {
         ...state,
         hasWon: !state.hasWon
+      };
+    case IS_FAIR:
+      return {
+        ...state,
+        isFair: !state.isFair
       };
     default:
       return state;

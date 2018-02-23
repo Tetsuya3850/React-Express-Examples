@@ -6,9 +6,10 @@ const initialState = {
   hasWon: false
 };
 
-const set_move_helper = (state, pos, player) => {
+const set_move_helper = (state, pos, turn) => {
   const newTicTacToe = state.slice();
-  newTicTacToe[pos] = player;
+  newTicTacToe[pos] = turn;
+  console.log(newTicTacToe);
   return newTicTacToe;
 };
 
@@ -17,7 +18,7 @@ const ticTacToeReducer = (state = initialState, action) => {
     case SET_MOVE:
       return {
         ...state,
-        ticTacToe: set_move_helper(state.ticTacToe, action.pos, action.player)
+        ticTacToe: set_move_helper(state.ticTacToe, action.pos, action.turn)
       };
     case CHANGE_TURN:
       return {

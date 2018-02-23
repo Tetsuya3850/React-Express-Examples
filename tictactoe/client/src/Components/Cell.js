@@ -8,7 +8,7 @@ const Cell = ({ state, hasWon, isFair, onMoveClick }) => {
     onMoveClick();
   };
 
-  let renderState = <span style={styles.mark} />;
+  let renderState = "";
   if (state === true) {
     renderState = <span style={styles.mark}>&#9675;</span>;
   } else if (state === false) {

@@ -2,6 +2,7 @@ import React from "react";
 
 const GameState = ({ turn, hasWon, isFair }) => {
   const renderTurn = turn ? <span>&#9675;</span> : <span>&#10799;</span>;
+
   let gameState = null;
   if (hasWon) {
     gameState = <p>{renderTurn} has Won!</p>;
@@ -11,23 +12,24 @@ const GameState = ({ turn, hasWon, isFair }) => {
     gameState = <p>{renderTurn} &#39;s Turn</p>;
   }
 
+  let playAgain = null;
+  if (hasWon || isFair) {
+    playAgain = (
+      <p
+        onClick={() => {
+          window.location.reload();
+        }}
+        sylte={styles.playAgain}
+      >
+        Play Again?
+      </p>
+    );
+  }
+
   return (
     <div style={styles.gameState}>
       <div>{gameState}</div>
-      <div>
-        {hasWon || isFair ? (
-          <p
-            onClick={() => {
-              window.location.reload();
-            }}
-            style={styles.playAgain}
-          >
-            Play Again?
-          </p>
-        ) : (
-          ""
-        )}
-      </div>
+      <div>{playAgain}</div>
     </div>
   );
 };

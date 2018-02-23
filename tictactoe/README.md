@@ -2,8 +2,9 @@ A Tic Tac Toe app.
 
 ## Requirements
 
-* Todos can be added to and deleted from Redux store & MongoDB.
-* The state of done or not is editable as well.
+* Circle and Cross take turns.
+* Game state such as which turn, game fair, or win is indicated.
+* When game ends, further interactions are disabled.
 
 ## Mock
 

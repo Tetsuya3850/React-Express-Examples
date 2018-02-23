@@ -2,7 +2,7 @@ import React from "react";
 
 const Cell = ({ state, hasWon, isFair, onMoveClick }) => {
   const handleMoveClick = () => {
-    if (hasWon || isFair || state === true || state === false) {
+    if (hasWon || isFair || state !== null) {
       return;
     }
     onMoveClick();

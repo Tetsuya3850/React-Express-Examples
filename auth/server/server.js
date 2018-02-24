@@ -1,16 +1,14 @@
 const express = require("express");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
-
 require("dotenv").config();
 const port = process.env.PORT;
-
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const passport = require("passport");
+
 require("./models/user");
 require("./config/passport");
-
 const routes = require("./routes/index");
 
 const app = express();
@@ -18,16 +16,9 @@ const app = express();
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(passport.initialize());
 
 app.use("/", routes);
-
-app.use(function(req, res, next) {
-  var err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-});
 
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {

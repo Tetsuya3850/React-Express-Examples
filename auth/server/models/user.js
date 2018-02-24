@@ -2,6 +2,19 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const mongoDB = process.env.MONGODB;
+
+mongoose.connect(mongoDB);
+mongoose.connection.on("connected", function() {
+  console.log("Mongoose connected to " + mongoDB);
+});
+mongoose.connection.on("error", err => {
+  console.error(err.message);
+});
+mongoose.connection.on("disconnected", function() {
+  console.log("Mongoose disconnected");
+});
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -43,5 +56,7 @@ userSchema.methods.generateJwt = function() {
       exp: parseInt(expiry.getTime() / 1000)
     },
     "MY_SECRET"
-  ); // DO NOT KEEP YOUR SECRET IN THE CODE!
+  );
 };
+
+mongoose.model("User", userSchema);

@@ -1,7 +1,20 @@
+const express = require("express");
+const router = express.Router();
 const jwt = require("express-jwt");
+require("dotenv").config();
+const secret = process.env.SECRET;
 const auth = jwt({
-  secret: "MY_SECRET",
+  secret: secret,
   userProperty: "payload"
 });
 
-router.get("/profile", auth, ctrlProfile.profileRead);
+var profileCtrl = require("../controllers/profile");
+var authCtrl = require("../controllers/authentication");
+
+router.get("/profile", auth, profileCtrl.profileRead);
+
+router.post("/register", authCtrl.register);
+router.post("/login", authCtrl.login);
+router.post("/logout", authCtrl.logout);
+
+module.exports = router;

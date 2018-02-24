@@ -1,17 +1,19 @@
 const express = require("express");
-const app = express();
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+
 require("dotenv").config();
 const port = process.env.PORT;
-const mongoDB = process.env.MONGODB;
-const secret = process.env.SECRET;
-const passport = require("passport");
 
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+const passport = require("passport");
 require("./models/user");
 require("./config/passport");
+
+const routes = require("./routes/index");
+
+const app = express();
 
 app.use(helmet());
 app.use(bodyParser.json());
@@ -19,20 +21,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 
-app.post("/register", async (req, res) => {
-  res.json("Resistered!");
-});
+app.use("/", routes);
 
-app.post("/login", async (req, res) => {
-  res.json("Logged In!");
-});
-
-app.get("/profile/:USERID", async (req, res) => {
-  res.json("Here's profile!");
-});
-
-app.post("/logout", async (req, res) => {
-  res.json("Logged Out!");
+app.use(function(req, res, next) {
+  var err = new Error("Not Found");
+  err.status = 404;
+  next(err);
 });
 
 app.use(function(err, req, res, next) {
@@ -44,7 +38,7 @@ app.use(function(err, req, res, next) {
 
 app.use((err, request, response, next) => {
   console.log(err);
-  response.send(err);
+  response.status(500).send("Something broke!");
 });
 
 app.listen(port, () => {

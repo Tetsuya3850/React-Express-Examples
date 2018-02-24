@@ -11,8 +11,7 @@ module.exports.register = function(req, res) {
   user.setPassword(req.body.password);
 
   user.save(function(err) {
-    var token;
-    token = user.generateJwt();
+    const token = user.generateJwt();
     res.status(200);
     res.json({
       token: token
@@ -22,15 +21,13 @@ module.exports.register = function(req, res) {
 
 module.exports.login = function(req, res) {
   passport.authenticate("local", function(err, user, info) {
-    var token;
-
     if (err) {
       res.status(404).json(err);
       return;
     }
 
     if (user) {
-      token = user.generateJwt();
+      const token = user.generateJwt();
       res.status(200);
       res.json({
         token: token

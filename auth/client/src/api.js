@@ -1,3 +1,5 @@
+import { getToken } from "./helper";
+
 async function register(userInfo) {
   const response = await fetch("/register", {
     method: "post",
@@ -23,12 +25,10 @@ async function login(userInfo) {
 }
 
 async function getProfile() {
-  const response = await fetch("/profile", { method: "get" });
-  return await response.json();
-}
-
-async function reAuthenticate(jwtToken) {
-  const response = await fetch("/reauth", { method: "post" });
+  const response = await fetch("/profile", {
+    method: "get",
+    Authorization: `Bearer ${this.getToken()}`
+  });
   return await response.json();
 }
 

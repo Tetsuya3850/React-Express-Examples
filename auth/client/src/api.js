@@ -27,6 +27,11 @@ async function getProfile() {
   return await response.json();
 }
 
+async function reAuthenticate(jwtToken) {
+  const response = await fetch("/reauth", { method: "post" });
+  return await response.json();
+}
+
 const api = {
   register,
   login,

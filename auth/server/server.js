@@ -3,6 +3,7 @@ const helmet = require("helmet");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const port = process.env.PORT;
+const jwt_secret = JWT_SECRET;
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const passport = require("passport");
@@ -17,6 +18,25 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
+
+app.use(function(req, res, next) {
+  let token = req.headers["authorization"];
+  if (!token) return next();
+
+  token = token.replace("Bearer ", "");
+
+  jwt.verify(token, jwt_secret, function(err, user) {
+    if (err) {
+      return res.status(401).json({
+        success: false,
+        message: "Please register Log in using a valid email to submit posts"
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  });
+});
 
 app.use("/", routes);
 

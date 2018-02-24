@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 
 module.exports.register = function(req, res) {
-  var user = new User();
+  const user = new User();
 
   user.name = req.body.name;
   user.email = req.body.email;
@@ -14,6 +14,7 @@ module.exports.register = function(req, res) {
     const token = user.generateJwt();
     res.status(200);
     res.json({
+      user: user,
       token: token
     });
   });

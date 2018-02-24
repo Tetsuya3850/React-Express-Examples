@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import api from "../api";
+import { connect } from "react-redux";
+import actions from "../actions";
+import v4 from "uuid";
 
 class Register extends Component {
   constructor(props) {
@@ -12,12 +14,13 @@ class Register extends Component {
   handleFormSubmit = async e => {
     e.preventDefault();
     const payLoad = {
+      _id: v4(),
       name: this.name.value,
       email: this.email.value,
       password: this.password.value
     };
-    const status = await api.register(payLoad);
-    this.handleStatus(status);
+    this.props.dispatch(actions.registerUser(payLoad));
+    //this.handleStatus(status);
   };
 
   handleStatus = status => {
@@ -125,5 +128,7 @@ class Register extends Component {
     );
   }
 }
+
+Register = connect()(Register);
 
 export default Register;

@@ -1,17 +1,14 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
-import Home from "./Home";
+import { Link } from "react-router-dom";
 import { getToken } from "../helper";
 
 class AppContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      logoutRedirect: false
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.reAuth();
   }
 
@@ -41,10 +38,6 @@ class AppContainer extends Component {
   };
 
   render() {
-    if (this.state.logoutRedirect) {
-      return <Redirect to={Home} />;
-    }
-
     const navBar = this.state.user ? (
       <div style={{ display: "flex" }}>
         <Link to="/" style={{ flexGrow: 10 }}>

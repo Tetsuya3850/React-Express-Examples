@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import api from "../api";
+import { connect } from "react-redux";
+import actions from "../actions";
 
 class Login extends Component {
   constructor(props) {
@@ -15,8 +16,8 @@ class Login extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    const status = await api.login(payLoad);
-    this.handleStatus(status);
+    this.props.dispatch(actions.loginUser(payLoad));
+    // this.handleStatus(status);
   };
 
   handleStatus = status => {
@@ -86,5 +87,7 @@ class Login extends Component {
     );
   }
 }
+
+Login = connect()(Login);
 
 export default Login;

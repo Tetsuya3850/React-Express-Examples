@@ -27,7 +27,7 @@ async function login(userInfo) {
 async function getProfile() {
   const response = await fetch("/profile", {
     method: "get",
-    Authorization: `Bearer ${this.getToken()}`
+    Authorization: `Bearer ${getToken()}`
   });
   return await response.json();
 }

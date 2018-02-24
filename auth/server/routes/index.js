@@ -15,6 +15,5 @@ router.get("/profile", auth, profileCtrl.profileRead);
 
 router.post("/register", authCtrl.register);
 router.post("/login", authCtrl.login);
-router.post("/logout", authCtrl.logout);
 
 module.exports = router;

@@ -13,13 +13,11 @@ const registerUser = userInfo => async dispatch => {
 const loginUser = userInfo => async dispatch => {
   const data = await api.login(userInfo);
   saveToken(data.token);
-  console.log(data.userInfo);
   dispatch(authUser(data.userInfo));
 };
 
 const reAuthUser = () => async dispatch => {
   const userInfo = getUserInfo();
-  console.log(userInfo);
   if (userInfo && userInfo.exp > Date.now() / 1000) {
     dispatch(authUser(userInfo));
   }

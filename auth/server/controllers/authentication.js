@@ -14,7 +14,7 @@ module.exports.register = function(req, res) {
     const token = user.generateJwt();
     res.status(200);
     res.json({
-      user: user,
+      userInfo: user,
       token: token
     });
   });
@@ -31,6 +31,7 @@ module.exports.login = function(req, res) {
       const token = user.generateJwt();
       res.status(200);
       res.json({
+        userInfo: user,
         token: token
       });
     } else {

@@ -1,5 +1,5 @@
 import api from "./api";
-import { saveToken } from "./helper";
+import { saveToken, removeToken, getUserInfo } from "./helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
@@ -13,7 +13,21 @@ const registerUser = userInfo => async dispatch => {
 const loginUser = userInfo => async dispatch => {
   const data = await api.login(userInfo);
   saveToken(data.token);
+  console.log(data.userInfo);
   dispatch(authUser(data.userInfo));
+};
+
+const reAuthUser = () => async dispatch => {
+  const userInfo = getUserInfo();
+  console.log(userInfo);
+  if (userInfo && userInfo.exp > Date.now() / 1000) {
+    dispatch(authUser(userInfo));
+  }
+};
+
+const logoutUser = () => async dispatch => {
+  removeToken();
+  dispatch(unAuthUser());
 };
 
 const authUser = userInfo => {
@@ -30,7 +44,7 @@ const unAuthUser = () => {
 const actions = {
   registerUser,
   loginUser,
-  authUser,
-  unAuthUser
+  reAuthUser,
+  logoutUser
 };
 export default actions;

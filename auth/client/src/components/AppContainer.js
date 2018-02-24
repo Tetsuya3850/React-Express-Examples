@@ -1,44 +1,23 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getToken } from "../helper";
+import actions from "../actions";
 
 class AppContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
   componentWillMount() {
     this.reAuth();
   }
 
   reAuth = () => {
-    const userInfo = this.getUserInfo();
-    if (userInfo && userInfo.exp > Date.now() / 1000) {
-      this.setState({ user: userInfo });
-    }
-  };
-
-  getUserInfo = () => {
-    const token = getToken();
-    let payload;
-    if (token) {
-      payload = token.split(".")[1];
-      payload = window.atob(payload);
-      return JSON.parse(payload);
-    } else {
-      return null;
-    }
+    this.props.dispatch(actions.reAuthUser());
   };
 
   handleLogout = () => {
-    this.token = "";
-    window.localStorage.removeItem("jwt-token");
-    this.setState({ logoutRedirect: true });
+    this.props.dispatch(actions.logoutUser());
   };
 
   render() {
-    const navBar = this.state.user ? (
+    const navBar = this.props.isAuthed ? (
       <div style={{ display: "flex" }}>
         <Link to="/" style={{ flexGrow: 10 }}>
           Home
@@ -72,5 +51,11 @@ class AppContainer extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return state;
+};
+
+AppContainer = connect(mapStateToProps, null)(AppContainer);
 
 export default AppContainer;

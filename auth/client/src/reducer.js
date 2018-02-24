@@ -3,9 +3,11 @@ import { AUTH_USER, UNAUTH_USER } from "./actions";
 const initialState = {
   isAuthed: false,
   userInfo: {
-    id: "",
+    _id: "",
     name: "",
-    email: ""
+    email: "",
+    exp: 0,
+    iat: 0
   }
 };
 
@@ -22,7 +24,9 @@ const authReducer = (state = initialState, action) => {
         userInfo: {
           id: "",
           name: "",
-          email: ""
+          email: "",
+          exp: 0,
+          iat: 0
         }
       };
     default:

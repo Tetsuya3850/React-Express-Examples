@@ -1,11 +1,27 @@
-function saveToken(token) {
-  localStorage.setItem("jwt-token", token);
-  this.token = token;
-}
+
 
 if (data.token) {
   this.saveToken(data.token);
 }
+
+app.use(function(req, res, next) {
+  let token = req.headers["authorization"];
+  if (!token) return next();
+
+  token = token.replace("Bearer ", "");
+
+  jwt.verify(token, jwt_secret, function(err, user) {
+    if (err) {
+      return res.status(401).json({
+        success: false,
+        message: "Please register Log in using a valid email to submit posts"
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  });
+});
 
 
 dispatch(signUpUser(values))

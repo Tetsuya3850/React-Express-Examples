@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 class Quiz extends Component {
   render() {
-    const { quiz, curr_q, onPrev, onNext, onAnswer, result } = this.props;
+    const { quiz, curr_q, onPrev, onNext, onAnswer, judge } = this.props;
 
     const allChoices = quiz[curr_q].choices.map(choice => (
       <label key={choice} style={styles.choice}>
@@ -44,7 +44,7 @@ class Quiz extends Component {
             Submit
           </button>
 
-          <div style={styles.result}>{result}</div>
+          <div style={styles.judge}>{judge}</div>
         </form>
       </div>
     );
@@ -87,7 +87,7 @@ let styles = {
     marginRight: "auto",
     marginBottom: 10
   },
-  result: {
+  judge: {
     textAlign: "center",
     marginBottom: 10
   }

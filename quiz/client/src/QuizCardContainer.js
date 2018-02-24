@@ -7,10 +7,10 @@ class QuizCardContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      curr_q: 0,
       quiz,
-      score: 0,
-      result: ""
+      curr_q: 0,
+      judge: "",
+      score: 0
     };
   }
 
@@ -25,7 +25,7 @@ class QuizCardContainer extends Component {
     if (this.state.curr_q < 10) {
       this.setState(prevState => ({
         curr_q: prevState.curr_q + 1,
-        result: ""
+        judge: ""
       }));
     }
     this.clearForm();
@@ -35,7 +35,7 @@ class QuizCardContainer extends Component {
     if (this.state.curr_q > 0) {
       this.setState(prevState => ({
         curr_q: prevState.curr_q - 1,
-        result: ""
+        judge: ""
       }));
     }
     this.clearForm();
@@ -48,11 +48,11 @@ class QuizCardContainer extends Component {
     if (quiz[curr_q].answer === parseInt(choice.value, 10)) {
       this.setState(prevState => ({
         score: prevState.score + 1,
-        result: "Correct!"
+        judge: "Correct!"
       }));
     } else {
       this.setState({
-        result: "Wrong!"
+        judge: "Wrong!"
       });
     }
     var ele = document.getElementsByName("choice");

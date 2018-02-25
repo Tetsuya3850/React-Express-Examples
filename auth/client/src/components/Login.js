@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import actions from "../actions";
+import { loginUser } from "../actions";
 
 class Login extends Component {
   constructor(props) {
@@ -18,9 +18,9 @@ class Login extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    this.props.dispatch(actions.loginUser(payLoad));
+    this.props.dispatch(loginUser(payLoad));
     this.setState(() => ({ toProfile: true }));
-    // this.handleStatus(status);
+    // TODO: this.handleStatus(status);
   };
 
   handleStatus = status => {
@@ -54,13 +54,13 @@ class Login extends Component {
           <label>Email Address</label>
           <input
             type="email"
-            style={{ margin: 10 }}
             ref={node => {
               this.email = node;
             }}
             required
             maxLength="50"
             autoFocus
+            style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
@@ -71,12 +71,12 @@ class Login extends Component {
           <label>Password</label>
           <input
             type="password"
-            style={{ margin: 10 }}
             ref={node => {
               this.password = node;
             }}
             required
             maxLength="50"
+            style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>

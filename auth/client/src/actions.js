@@ -15,34 +15,28 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
-const registerUser = userInfo => async dispatch => {
+export const registerUser = userInfo => async dispatch => {
   const data = await api.register(userInfo);
   saveToken(data.token);
   dispatch(authUser(data.userInfo));
 };
 
-const loginUser = userInfo => async dispatch => {
+export const loginUser = userInfo => async dispatch => {
   const data = await api.login(userInfo);
   saveToken(data.token);
   dispatch(authUser(data.userInfo));
 };
 
-const reAuthUser = () => async dispatch => {
+export const reAuthUser = () => async dispatch => {
   const userInfo = getUserInfo();
-  if (userInfo && userInfo.exp > Date.now() / 1000) {
+  if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
+  } else if (userInfo && userInfo.exp < Date.now() / 1000) {
+    // TODO: Redirect User to Login Page
   }
 };
 
-const logoutUser = () => async dispatch => {
+export const logoutUser = () => async dispatch => {
   removeToken();
   dispatch(unAuthUser());
 };
-
-const actions = {
-  registerUser,
-  loginUser,
-  reAuthUser,
-  logoutUser
-};
-export default actions;

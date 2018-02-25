@@ -1,9 +1,3 @@
-
-
-if (data.token) {
-  this.saveToken(data.token);
-}
-
 app.use(function(req, res, next) {
   let token = req.headers["authorization"];
   if (!token) return next();

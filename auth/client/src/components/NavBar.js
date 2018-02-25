@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import actions from "../actions";
+import { logoutUser } from "../actions";
 
 let NavBar = ({ isAuthed, dispatch }) => {
   if (isAuthed) {
@@ -13,10 +13,7 @@ let NavBar = ({ isAuthed, dispatch }) => {
         <NavLink to="/profile" style={{ flexGrow: 1 }}>
           Profile
         </NavLink>
-        <div
-          onClick={() => dispatch(actions.logoutUser())}
-          style={{ flexGrow: 1 }}
-        >
+        <div onClick={() => dispatch(logoutUser())} style={{ flexGrow: 1 }}>
           Logout
         </div>
       </div>

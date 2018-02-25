@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import actions from "../actions";
+import { registerUser } from "../actions";
 import v4 from "uuid";
 
 class Register extends Component {
@@ -15,15 +15,19 @@ class Register extends Component {
 
   handleFormSubmit = async e => {
     e.preventDefault();
+    if (this.password.value !== this.password2.value) {
+      this.setState((errors: { password2: "Doesn't match!" }));
+      return;
+    }
     const payLoad = {
       _id: v4(),
       name: this.name.value,
       email: this.email.value,
       password: this.password.value
     };
-    this.props.dispatch(actions.registerUser(payLoad));
+    this.props.dispatch(registerUser(payLoad));
     this.setState(() => ({ toProfile: true }));
-    //this.handleStatus(status);
+    // TODO: Error handling this.handleStatus(status);
   };
 
   handleStatus = status => {
@@ -63,13 +67,13 @@ class Register extends Component {
           <label>User Name</label>
           <input
             type="text"
-            style={{ margin: 10 }}
             ref={node => {
               this.name = node;
             }}
             required
             maxLength="50"
             autoFocus
+            style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
@@ -80,12 +84,12 @@ class Register extends Component {
           <label>Email Address</label>
           <input
             type="email"
-            style={{ margin: 10 }}
             ref={node => {
               this.email = node;
             }}
             required
             maxLength="50"
+            style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
@@ -96,11 +100,14 @@ class Register extends Component {
           <label>Password</label>
           <input
             type="password"
+            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+            title="Password must be at least 8 characters and include at least 1 uppercase character, 1 lowercase character, and 1 number."
             style={{ margin: 10 }}
             ref={node => {
               this.password = node;
             }}
             required
+            minLength="8"
             maxLength="50"
           />
           <span style={{ color: "red" }}>*</span>
@@ -112,12 +119,12 @@ class Register extends Component {
           <label>Confirm Password</label>
           <input
             type="password"
-            style={{ margin: 10 }}
             ref={node => {
               this.password2 = node;
             }}
             required
             maxLength="50"
+            style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>

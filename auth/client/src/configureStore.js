@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import ticTacToeReducer from "./reducer";
+import authReducer from "./reducer";
 
 export default function configureStore(preloadedState) {
   return createStore(
-    ticTacToeReducer,
+    authReducer,
     preloadedState,
     applyMiddleware(thunkMiddleware)
   );

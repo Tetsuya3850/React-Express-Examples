@@ -20,16 +20,9 @@ app.use(passport.initialize());
 
 app.use("/", routes);
 
-app.use(function(err, req, res, next) {
-  if (err.name === "UnauthorizedError") {
-    res.status(401);
-    res.json({ message: err.name + ": " + err.message });
-  }
-});
-
-app.use((err, request, response, next) => {
+app.use((err, req, res, next) => {
   console.log(err);
-  response.send(err);
+  res.send(err);
 });
 
 app.listen(port, () => {

@@ -1,14 +1,9 @@
-import { AUTH_USER, UNAUTH_USER } from "./actions";
+import { AUTH_USER, UNAUTH_USER, AUTH_FAIL } from "./actions";
 
 const initialState = {
   isAuthed: false,
-  userInfo: {
-    _id: "",
-    name: "",
-    email: "",
-    exp: 0,
-    iat: 0
-  }
+  errors: {},
+  userInfo: {}
 };
 
 const authReducer = (state = initialState, action) => {
@@ -16,18 +11,19 @@ const authReducer = (state = initialState, action) => {
     case AUTH_USER:
       return {
         isAuthed: true,
+        errors: {},
         userInfo: action.userInfo
       };
     case UNAUTH_USER:
       return {
         isAuthed: false,
-        userInfo: {
-          id: "",
-          name: "",
-          email: "",
-          exp: 0,
-          iat: 0
-        }
+        errors: {},
+        userInfo: {}
+      };
+    case AUTH_FAIL:
+      return {
+        ...state,
+        errors: action.errors
       };
     default:
       return state;

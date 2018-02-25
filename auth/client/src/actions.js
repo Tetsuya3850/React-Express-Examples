@@ -1,8 +1,9 @@
 import api from "./api";
-import { saveToken, removeToken, getUserInfo } from "./helper";
+import { saveToken, removeToken, getUserInfo, formatErrors } from "./helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
+export const AUTH_FAIL = "AUTH_FAIL";
 
 const authUser = userInfo => {
   return {
@@ -15,13 +16,22 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
+const authFail = errors => {
+  return {
+    type: AUTH_FAIL,
+    errors
+  };
+};
+
 export const registerUser = userInfo => async dispatch => {
-  const data = await api.register(userInfo);
-  if (!data.userInfo) {
-    return data;
+  const response = await api.register(userInfo);
+  if (response.userInfo) {
+    saveToken(response.token);
+    dispatch(authUser(response.userInfo));
+  } else {
+    const formattedErrors = formatErrors(response);
+    dispatch(authFail(formattedErrors));
   }
-  saveToken(data.token);
-  dispatch(authUser(data.userInfo));
 };
 
 export const loginUser = userInfo => async dispatch => {

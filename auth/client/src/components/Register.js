@@ -4,11 +4,13 @@ import { Redirect } from "react-router-dom";
 import { registerUser } from "../actions";
 import v4 from "uuid";
 
+// TODO: When you first fail register, then succeed to, users do not get directed.
+
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {},
+      unMatchPwd: "",
       toProfile: false
     };
   }
@@ -16,8 +18,10 @@ class Register extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     if (this.password.value !== this.password2.value) {
-      this.setState({ errors: { password2: "Doesn't match!" } });
+      this.setState({ unMatchPwd: "Doesn't match!" });
       return;
+    } else {
+      this.setState({ unMatchPwd: "" });
     }
     const payLoad = {
       _id: v4(),
@@ -25,26 +29,11 @@ class Register extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    const status = this.props.dispatch(registerUser(payLoad));
-    if (!status) {
-      console.log(status);
-      this.handleStatus(status);
-      return;
+    this.props.dispatch(registerUser(payLoad));
+    if (this.props.isAuthed) {
+      this.clearForm();
+      this.setState(() => ({ toProfile: true }));
     }
-    this.clearForm();
-    this.setState(() => ({ toProfile: true }));
-  };
-
-  handleStatus = status => {
-    let err = { errors: {} };
-    if (status.code === 11000) {
-      err.errors.email = "Duplicate email!";
-    } else {
-      Object.keys(status.errors).map(key => {
-        err.errors[key] = status.errors[key].message;
-      });
-    }
-    this.setState(err);
   };
 
   clearForm = () => {
@@ -59,6 +48,9 @@ class Register extends Component {
       return <Redirect to="/profile" />;
     }
 
+    const { errors } = this.props;
+    const { unMatchPwd } = this.state;
+
     return (
       <div style={{ margin: "auto", width: 400 }}>
         <form onSubmit={this.handleFormSubmit}>
@@ -71,14 +63,13 @@ class Register extends Component {
             ref={node => {
               this.name = node;
             }}
+            required
             maxLength="50"
             autoFocus
             style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.name}
-          </span>
+          <span style={{ color: "red", marginLeft: 8 }}>{errors.name}</span>
           <br />
 
           <label>Email Address</label>
@@ -92,9 +83,7 @@ class Register extends Component {
             style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.email}
-          </span>
+          <span style={{ color: "red", marginLeft: 8 }}>{errors.email}</span>
           <br />
 
           <label>Password</label>
@@ -111,9 +100,7 @@ class Register extends Component {
             maxLength="50"
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.password}
-          </span>
+          <span style={{ color: "red", marginLeft: 8 }}>{errors.password}</span>
           <br />
 
           <label>Confirm Password</label>
@@ -127,9 +114,7 @@ class Register extends Component {
             style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.password2}
-          </span>
+          <span style={{ color: "red", marginLeft: 8 }}>{unMatchPwd}</span>
           <br />
 
           <input
@@ -143,6 +128,10 @@ class Register extends Component {
   }
 }
 
-Register = connect()(Register);
+const mapStateToProps = state => {
+  return state;
+};
+
+Register = connect(mapStateToProps, null)(Register);
 
 export default Register;

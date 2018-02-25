@@ -21,3 +21,15 @@ export function getUserInfo() {
     return null;
   }
 }
+
+export function formatErrors(status) {
+  let err = {};
+  if (status.code === 11000) {
+    err.email = "Duplicate email!";
+  } else {
+    Object.keys(status.errors).map(key => {
+      err[key] = status.errors[key].message;
+    });
+  }
+  return err;
+}

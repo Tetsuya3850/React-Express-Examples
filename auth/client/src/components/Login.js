@@ -7,7 +7,7 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toProfile: false
+      toHome: false
     };
   }
 
@@ -20,7 +20,7 @@ class Login extends Component {
     this.props.dispatch(
       loginUser(payLoad, () => {
         this.clearForm();
-        this.setState(() => ({ toProfile: true }));
+        this.setState(() => ({ toHome: true }));
       })
     );
   };
@@ -31,8 +31,9 @@ class Login extends Component {
   };
 
   render() {
-    if (this.state.toProfile) {
-      return <Redirect to="/profile" />;
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    if (this.state.toHome) {
+      return <Redirect to={from} />;
     }
 
     const { loginErrors } = this.props;

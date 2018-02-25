@@ -1,20 +1,31 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { logoutUser } from "../actions";
 
-// TODO: Hightlight current link. Redirect to Home when logged out.
-let NavBar = ({ isAuthed, dispatch }) => {
+let NavBar = ({ isAuthed, dispatch, history }) => {
   if (isAuthed) {
     return (
       <div style={{ display: "flex" }}>
-        <NavLink to="/" style={{ flexGrow: 10 }}>
+        <NavLink
+          exact
+          to="/"
+          style={{ flexGrow: 10 }}
+          activeStyle={{ color: "red" }}
+        >
           Home
         </NavLink>
-        <NavLink to="/profile" style={{ flexGrow: 1 }}>
+        <NavLink
+          to="/profile"
+          style={{ flexGrow: 1 }}
+          activeStyle={{ color: "red" }}
+        >
           Profile
         </NavLink>
-        <div onClick={() => dispatch(logoutUser())} style={{ flexGrow: 1 }}>
+        <div
+          onClick={() => dispatch(logoutUser(() => history.push("/")))}
+          style={{ flexGrow: 1 }}
+        >
           Logout
         </div>
       </div>
@@ -22,13 +33,26 @@ let NavBar = ({ isAuthed, dispatch }) => {
   }
   return (
     <div style={{ display: "flex" }}>
-      <NavLink to="/" style={{ flexGrow: 10 }}>
+      <NavLink
+        exact
+        to="/"
+        style={{ flexGrow: 10 }}
+        activeStyle={{ color: "red" }}
+      >
         Home
       </NavLink>
-      <NavLink to="/register" style={{ flexGrow: 1 }}>
+      <NavLink
+        to="/register"
+        style={{ flexGrow: 1 }}
+        activeStyle={{ color: "red" }}
+      >
         Register
       </NavLink>
-      <NavLink to="/login" style={{ flexGrow: 1 }}>
+      <NavLink
+        to="/login"
+        style={{ flexGrow: 1 }}
+        activeStyle={{ color: "red" }}
+      >
         Login
       </NavLink>
     </div>
@@ -41,4 +65,4 @@ const mapStateToProps = state => {
 
 NavBar = connect(mapStateToProps, null)(NavBar);
 
-export default NavBar;
+export default withRouter(NavBar);

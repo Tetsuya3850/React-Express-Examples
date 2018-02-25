@@ -54,16 +54,17 @@ export const loginUser = (userInfo, cb) => async dispatch => {
   }
 };
 
-export const reAuthUser = () => async dispatch => {
+export const reAuthUser = cb => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
   } else if (userInfo && userInfo.exp < Date.now() / 1000) {
-    // TODO: Redirect User to Login Page
+    cb();
   }
 };
 
-export const logoutUser = () => async dispatch => {
+export const logoutUser = cb => async dispatch => {
   removeToken();
   dispatch(unAuthUser());
+  cb();
 };

@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import api from "../api";
 
-// TODO: Make the secret message work!
-
 class Profile extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +12,6 @@ class Profile extends Component {
 
   handleSecret = async () => {
     const secret = await api.getSecret();
-    console.log(secret);
     this.setState({ code: secret.code });
   };
 

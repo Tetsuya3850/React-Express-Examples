@@ -7,11 +7,11 @@ import Home from "./Home";
 import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
+import PrivateRoute from "./PrivateRoute";
 
-// TODO: Protect profile route
 class AppContainer extends Component {
   componentWillMount() {
-    this.props.dispatch(reAuthUser());
+    this.props.dispatch(reAuthUser(() => this.props.history.push("/login")));
   }
 
   render() {
@@ -22,7 +22,7 @@ class AppContainer extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
-          <Route path="/profile" component={Profile} />
+          <PrivateRoute path="/profile" component={Profile} />
         </div>
       </Router>
     );

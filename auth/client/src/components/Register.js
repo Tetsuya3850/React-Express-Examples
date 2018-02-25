@@ -4,8 +4,6 @@ import { Redirect } from "react-router-dom";
 import { registerUser } from "../actions";
 import v4 from "uuid";
 
-// TODO: When you first fail register, then succeed to, users do not get directed.
-
 class Register extends Component {
   constructor(props) {
     super(props);

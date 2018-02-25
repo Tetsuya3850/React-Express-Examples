@@ -17,12 +17,18 @@ const unAuthUser = () => {
 
 export const registerUser = userInfo => async dispatch => {
   const data = await api.register(userInfo);
+  if (!data.userInfo) {
+    return data;
+  }
   saveToken(data.token);
   dispatch(authUser(data.userInfo));
 };
 
 export const loginUser = userInfo => async dispatch => {
   const data = await api.login(userInfo);
+  if (!data.userInfo) {
+    return data;
+  }
   saveToken(data.token);
   dispatch(authUser(data.userInfo));
 };

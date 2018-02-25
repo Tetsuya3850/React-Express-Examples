@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const mongoDB = process.env.MONGODB;
+const jwt_secret = process.env.JWT_SECRET;
 
 mongoose.connect(mongoDB);
 mongoose.connection.on("connected", function() {
@@ -16,15 +17,23 @@ mongoose.connection.on("disconnected", function() {
   console.log("Mongoose disconnected");
 });
 
+const validateEmail = email => {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email);
+};
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    unique: true,
-    required: true
+    required: [true, "Required!"],
+    validate: [validateEmail, "Invalid address!"],
+    maxlength: [50, "Too Long!"],
+    unique: true
   },
   name: {
     type: String,
-    required: true
+    required: [true, "Required!"],
+    maxlength: [50, "Too Long!"]
   },
   hash: String,
   salt: String
@@ -55,7 +64,7 @@ userSchema.methods.generateJwt = function() {
       name: this.name,
       exp: parseInt(expiry.getTime() / 1000)
     },
-    "MY_SECRET"
+    jwt_secret
   );
 };
 

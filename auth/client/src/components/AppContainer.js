@@ -8,6 +8,7 @@ import Register from "./Register";
 import Login from "./Login";
 import Profile from "./Profile";
 
+// TODO: Protect profile route
 class AppContainer extends Component {
   componentWillMount() {
     this.props.dispatch(reAuthUser());

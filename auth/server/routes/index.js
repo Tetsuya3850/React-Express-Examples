@@ -8,10 +8,8 @@ const auth = jwt({
   userProperty: "payload"
 });
 
-var profileCtrl = require("../controllers/profile");
-var authCtrl = require("../controllers/authentication");
-
-router.get("/profile", auth, profileCtrl.profileRead);
+const authCtrl = require("../controllers/authentication");
+const profileCtrl = require("../controllers/profile");
 
 router.post("/register", authCtrl.register);
 router.post("/login", authCtrl.login);

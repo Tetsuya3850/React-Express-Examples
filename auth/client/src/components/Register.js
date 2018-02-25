@@ -13,10 +13,10 @@ class Register extends Component {
     };
   }
 
-  handleFormSubmit = async e => {
+  handleFormSubmit = e => {
     e.preventDefault();
     if (this.password.value !== this.password2.value) {
-      this.setState((errors: { password2: "Doesn't match!" }));
+      this.setState({ errors: { password2: "Doesn't match!" } });
       return;
     }
     const payLoad = {
@@ -25,25 +25,26 @@ class Register extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    this.props.dispatch(registerUser(payLoad));
+    const status = this.props.dispatch(registerUser(payLoad));
+    if (!status) {
+      console.log(status);
+      this.handleStatus(status);
+      return;
+    }
+    this.clearForm();
     this.setState(() => ({ toProfile: true }));
-    // TODO: Error handling this.handleStatus(status);
   };
 
   handleStatus = status => {
-    if (status !== "Response Added!") {
-      let err = { errors: {} };
-      if (status.code === 11000) {
-        err.errors.email = "Duplicate email!";
-      } else {
-        Object.keys(status.errors).map(key => {
-          err.errors[key] = status.errors[key].message;
-        });
-      }
-      this.setState(err);
+    let err = { errors: {} };
+    if (status.code === 11000) {
+      err.errors.email = "Duplicate email!";
     } else {
-      this.clearForm();
+      Object.keys(status.errors).map(key => {
+        err.errors[key] = status.errors[key].message;
+      });
     }
+    this.setState(err);
   };
 
   clearForm = () => {
@@ -70,7 +71,6 @@ class Register extends Component {
             ref={node => {
               this.name = node;
             }}
-            required
             maxLength="50"
             autoFocus
             style={{ margin: 10 }}

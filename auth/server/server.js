@@ -3,7 +3,6 @@ const helmet = require("helmet");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const port = process.env.PORT;
-const jwt_secret = process.env.JWT_SECRET;
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const passport = require("passport");
@@ -30,7 +29,7 @@ app.use(function(err, req, res, next) {
 
 app.use((err, request, response, next) => {
   console.log(err);
-  response.status(500).send("Something broke!");
+  response.send(err);
 });
 
 app.listen(port, () => {

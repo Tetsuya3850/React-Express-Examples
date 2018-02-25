@@ -24,17 +24,17 @@ async function login(userInfo) {
   return await response.json();
 }
 
-async function getProfile() {
-  const response = await fetch("/profile", {
+async function getSecret() {
+  const response = await fetch("/secret", {
     method: "get",
     Authorization: `Bearer ${getToken()}`
   });
-  return await response.json();
+  console.log(await response.json());
 }
 
 const api = {
   register,
   login,
-  getProfile
+  getSecret
 };
 export default api;

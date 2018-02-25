@@ -2,7 +2,7 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 
-module.exports.register = function(req, res) {
+module.exports.register = async (req, res, next) => {
   const user = new User();
 
   user.name = req.body.name;
@@ -10,14 +10,17 @@ module.exports.register = function(req, res) {
 
   user.setPassword(req.body.password);
 
-  user.save(function(err) {
+  try {
+    await user.save();
     const token = user.generateJwt();
-    res.status(200);
     res.json({
       userInfo: user,
       token: token
     });
-  });
+  } catch (err) {
+    console.log(err);
+    res.json(err);
+  }
 };
 
 module.exports.login = function(req, res) {

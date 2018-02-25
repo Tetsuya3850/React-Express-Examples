@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../actions";
 
+// TODO: Hightlight current link. Redirect to Home when logged out.
 let NavBar = ({ isAuthed, dispatch }) => {
   if (isAuthed) {
     return (

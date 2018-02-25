@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import actions from "../actions";
 import v4 from "uuid";
 
@@ -7,7 +8,8 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {}
+      errors: {},
+      toProfile: false
     };
   }
 
@@ -20,6 +22,7 @@ class Register extends Component {
       password: this.password.value
     };
     this.props.dispatch(actions.registerUser(payLoad));
+    this.setState(() => ({ toProfile: true }));
     //this.handleStatus(status);
   };
 
@@ -47,6 +50,10 @@ class Register extends Component {
   };
 
   render() {
+    if (this.state.toProfile) {
+      return <Redirect to="/profile" />;
+    }
+
     return (
       <div style={{ margin: "auto", width: 400 }}>
         <form onSubmit={this.handleFormSubmit}>

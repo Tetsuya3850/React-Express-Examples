@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import actions from "../actions";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {}
+      errors: {},
+      toProfile: false
     };
   }
 
@@ -17,6 +19,7 @@ class Login extends Component {
       password: this.password.value
     };
     this.props.dispatch(actions.loginUser(payLoad));
+    this.setState(() => ({ toProfile: true }));
     // this.handleStatus(status);
   };
 
@@ -38,6 +41,10 @@ class Login extends Component {
   };
 
   render() {
+    if (this.state.toProfile) {
+      return <Redirect to="/profile" />;
+    }
+
     return (
       <div style={{ margin: "auto", width: 400 }}>
         <form onSubmit={this.handleFormSubmit}>

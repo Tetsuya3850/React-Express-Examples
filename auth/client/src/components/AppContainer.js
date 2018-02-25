@@ -1,61 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import actions from "../actions";
+import NavBar from "./NavBar";
+import Home from "./Home";
+import Register from "./Register";
+import Login from "./Login";
+import Profile from "./Profile";
 
 class AppContainer extends Component {
   componentWillMount() {
-    this.reAuth();
+    this.props.dispatch(actions.reAuthUser());
   }
 
-  reAuth = () => {
-    this.props.dispatch(actions.reAuthUser());
-  };
-
-  handleLogout = () => {
-    this.props.dispatch(actions.logoutUser());
-  };
-
   render() {
-    const navBar = this.props.isAuthed ? (
-      <div style={{ display: "flex" }}>
-        <Link to="/" style={{ flexGrow: 10 }}>
-          Home
-        </Link>
-        <Link to="/profile" style={{ flexGrow: 1 }}>
-          Profile
-        </Link>
-        <div onClick={this.handleLogout} style={{ flexGrow: 1 }}>
-          Logout
-        </div>
-      </div>
-    ) : (
-      <div style={{ display: "flex" }}>
-        <Link to="/" style={{ flexGrow: 10 }}>
-          Home
-        </Link>
-        <Link to="/register" style={{ flexGrow: 1 }}>
-          Register
-        </Link>
-        <Link to="/login" style={{ flexGrow: 1 }}>
-          Login
-        </Link>
-      </div>
-    );
-
     return (
-      <div style={{ margin: "auto", width: 400 }}>
-        {navBar}
-        {this.props.children}
-      </div>
+      <Router>
+        <div style={{ margin: "auto", width: 400 }}>
+          <NavBar />
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/profile" component={Profile} />
+        </div>
+      </Router>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return state;
-};
-
-AppContainer = connect(mapStateToProps, null)(AppContainer);
+AppContainer = connect()(AppContainer);
 
 export default AppContainer;

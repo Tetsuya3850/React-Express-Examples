@@ -8,13 +8,14 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: ""
+      code: ""
     };
   }
 
   handleSecret = async () => {
     const secret = await api.getSecret();
-    this.setState({ message: secret.message });
+    console.log(secret);
+    this.setState({ code: secret.code });
   };
 
   render() {
@@ -26,9 +27,7 @@ class Profile extends Component {
         <div onClick={this.handleSecret}>
           Click here for a secret message for logged in users!
         </div>
-        <p style={{ textAlign: "center", color: "red" }}>
-          {this.state.message}
-        </p>
+        <p style={{ textAlign: "center", color: "red" }}>{this.state.code}</p>
       </div>
     );
   }

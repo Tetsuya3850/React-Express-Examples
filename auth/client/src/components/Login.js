@@ -17,11 +17,12 @@ class Login extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    this.props.dispatch(loginUser(payLoad));
-    if (this.props.isAuthed) {
-      this.clearForm();
-      this.setState(() => ({ toProfile: true }));
-    }
+    this.props.dispatch(
+      loginUser(payLoad, () => {
+        this.clearForm();
+        this.setState(() => ({ toProfile: true }));
+      })
+    );
   };
 
   clearForm = () => {

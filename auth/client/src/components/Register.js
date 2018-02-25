@@ -29,11 +29,12 @@ class Register extends Component {
       email: this.email.value,
       password: this.password.value
     };
-    this.props.dispatch(registerUser(payLoad));
-    if (this.props.isAuthed) {
-      this.clearForm();
-      this.setState(() => ({ toProfile: true }));
-    }
+    this.props.dispatch(
+      registerUser(payLoad, () => {
+        this.clearForm();
+        this.setState(() => ({ toProfile: true }));
+      })
+    );
   };
 
   clearForm = () => {

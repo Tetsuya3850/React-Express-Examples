@@ -21,7 +21,6 @@ app.use(passport.initialize());
 app.use("/", routes);
 
 app.use((err, req, res, next) => {
-  console.log(err);
   res.send(err);
 });
 

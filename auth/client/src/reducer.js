@@ -12,13 +12,15 @@ const authReducer = (state = initialState, action) => {
     case AUTH_USER:
       return {
         isAuthed: true,
-        errors: {},
+        registerErrors: {},
+        loginErrors: {},
         userInfo: action.userInfo
       };
     case UNAUTH_USER:
       return {
         isAuthed: false,
-        errors: {},
+        registerErrors: {},
+        loginErrors: {},
         userInfo: {}
       };
     case REGISTER_FAIL:

@@ -31,22 +31,24 @@ const loginFail = errors => {
   };
 };
 
-export const registerUser = userInfo => async dispatch => {
+export const registerUser = (userInfo, cb) => async dispatch => {
   const response = await api.register(userInfo);
   if (response.userInfo) {
     saveToken(response.token);
     dispatch(authUser(response.userInfo));
+    cb();
   } else {
     const formattedErrors = formatErrors(response);
     dispatch(registerFail(formattedErrors));
   }
 };
 
-export const loginUser = userInfo => async dispatch => {
+export const loginUser = (userInfo, cb) => async dispatch => {
   const response = await api.login(userInfo);
   if (response.userInfo) {
     saveToken(response.token);
     dispatch(authUser(response.userInfo));
+    cb();
   } else {
     dispatch(loginFail(response));
   }

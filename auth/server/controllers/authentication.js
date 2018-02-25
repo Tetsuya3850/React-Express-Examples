@@ -46,15 +46,15 @@ module.exports.login = function(req, res) {
 };
 
 module.exports.isLoggedIn = (req, res, next) => {
-  let token = req.headers["authorization"];
-  token = token.replace("Bearer ", "");
-  if (token === "null") {
+  const token = req.headers["authorization"];
+  const parse_token = token.replace("Bearer ", "");
+  if (!token || parse_token === "null") {
     return res.status(401).json({
       message: "This api endpoint is protected!"
     });
   }
 
-  jwt.verify(token, jwt_secret, function(err, user) {
+  jwt.verify(parse_token, jwt_secret, function(err, user) {
     if (err) {
       return res.status(401).json({
         message: "Please register or log in using, valid pass"

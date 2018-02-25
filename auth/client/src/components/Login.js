@@ -7,7 +7,6 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: {},
       toProfile: false
     };
   }
@@ -19,19 +18,9 @@ class Login extends Component {
       password: this.password.value
     };
     this.props.dispatch(loginUser(payLoad));
-    this.setState(() => ({ toProfile: true }));
-    // TODO: this.handleStatus(status);
-  };
-
-  handleStatus = status => {
-    if (status !== "Response Added!") {
-      let err = { errors: {} };
-      Object.keys(status.errors).map(key => {
-        err.errors[key] = status.errors[key].message;
-      });
-      this.setState(err);
-    } else {
+    if (this.props.isAuthed) {
       this.clearForm();
+      this.setState(() => ({ toProfile: true }));
     }
   };
 
@@ -44,6 +33,8 @@ class Login extends Component {
     if (this.state.toProfile) {
       return <Redirect to="/profile" />;
     }
+
+    const { loginErrors } = this.props;
 
     return (
       <div style={{ margin: "auto", width: 400 }}>
@@ -64,7 +55,7 @@ class Login extends Component {
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.email}
+            {loginErrors.email}
           </span>
           <br />
 
@@ -80,7 +71,7 @@ class Login extends Component {
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.password}
+            {loginErrors.password}
           </span>
           <br />
 
@@ -95,6 +86,10 @@ class Login extends Component {
   }
 }
 
-Login = connect()(Login);
+const mapStateToProps = state => {
+  return state;
+};
+
+Login = connect(mapStateToProps, null)(Login);
 
 export default Login;

@@ -3,7 +3,8 @@ import { saveToken, removeToken, getUserInfo, formatErrors } from "./helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
-export const AUTH_FAIL = "AUTH_FAIL";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const LOGIN_FAIL = "LOGIN_FAIL";
 
 const authUser = userInfo => {
   return {
@@ -16,10 +17,17 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
-const authFail = errors => {
+const registerFail = errors => {
   return {
-    type: AUTH_FAIL,
-    errors
+    type: REGISTER_FAIL,
+    registerErrors: errors
+  };
+};
+
+const loginFail = errors => {
+  return {
+    type: LOGIN_FAIL,
+    loginErrors: errors
   };
 };
 
@@ -30,17 +38,18 @@ export const registerUser = userInfo => async dispatch => {
     dispatch(authUser(response.userInfo));
   } else {
     const formattedErrors = formatErrors(response);
-    dispatch(authFail(formattedErrors));
+    dispatch(registerFail(formattedErrors));
   }
 };
 
 export const loginUser = userInfo => async dispatch => {
-  const data = await api.login(userInfo);
-  if (!data.userInfo) {
-    return data;
+  const response = await api.login(userInfo);
+  if (response.userInfo) {
+    saveToken(response.token);
+    dispatch(authUser(response.userInfo));
+  } else {
+    dispatch(loginFail(response));
   }
-  saveToken(data.token);
-  dispatch(authUser(data.userInfo));
 };
 
 export const reAuthUser = () => async dispatch => {

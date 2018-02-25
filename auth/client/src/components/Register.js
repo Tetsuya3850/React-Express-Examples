@@ -48,7 +48,7 @@ class Register extends Component {
       return <Redirect to="/profile" />;
     }
 
-    const { errors } = this.props;
+    const { registerErrors } = this.props;
     const { unMatchPwd } = this.state;
 
     return (
@@ -69,7 +69,9 @@ class Register extends Component {
             style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>{errors.name}</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {registerErrors.name}
+          </span>
           <br />
 
           <label>Email Address</label>
@@ -83,7 +85,9 @@ class Register extends Component {
             style={{ margin: 10 }}
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>{errors.email}</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {registerErrors.email}
+          </span>
           <br />
 
           <label>Password</label>
@@ -100,7 +104,9 @@ class Register extends Component {
             maxLength="50"
           />
           <span style={{ color: "red" }}>*</span>
-          <span style={{ color: "red", marginLeft: 8 }}>{errors.password}</span>
+          <span style={{ color: "red", marginLeft: 8 }}>
+            {registerErrors.password}
+          </span>
           <br />
 
           <label>Confirm Password</label>

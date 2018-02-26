@@ -24,8 +24,8 @@ async function login(userInfo) {
   return await response.json();
 }
 
-async function getSecret() {
-  const response = await fetch("/secret", {
+async function getSecret(uid) {
+  const response = await fetch(`/secret/${uid}`, {
     method: "get",
     headers: {
       authorization: `Bearer ${getToken()}`

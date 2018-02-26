@@ -14,6 +14,6 @@ const profileCtrl = require("../controllers/profile");
 router.post("/register", authCtrl.register);
 router.post("/login", authCtrl.login);
 
-router.get("/secret", auth, profileCtrl.secret);
+router.get("/secret/:uid", auth, profileCtrl.secret);
 
 module.exports = router;

@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
-import { parseColonUrl } from "../helper";
 
 let PrivateRoute = ({ component: Component, isAuthed, userInfo, ...rest }) => (
   <Route

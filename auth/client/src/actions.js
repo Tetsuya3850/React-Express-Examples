@@ -1,5 +1,11 @@
 import api from "./api";
-import { saveToken, removeToken, getUserInfo, formatErrors } from "./helper";
+import {
+  saveToken,
+  removeToken,
+  getUserInfo,
+  parseToken,
+  formatErrors
+} from "./helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
@@ -52,6 +58,12 @@ export const loginUser = (userInfo, cb) => async dispatch => {
   } else {
     dispatch(loginFail(response));
   }
+};
+
+export const fbAuthUser = (token, cb) => async dispatch => {
+  saveToken(token);
+  dispatch(authUser(parseToken(token)));
+  cb();
 };
 
 export const reAuthUser = cb => async dispatch => {

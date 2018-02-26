@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { registerUser } from "../actions";
-import v4 from "uuid";
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      unMatchPwd: "",
-      toHome: false
+      unMatchPwd: ""
     };
   }
 
@@ -22,7 +19,6 @@ class Register extends Component {
       this.setState({ unMatchPwd: "" });
     }
     const payLoad = {
-      _id: v4(),
       name: this.name.value,
       email: this.email.value,
       password: this.password.value
@@ -30,7 +26,7 @@ class Register extends Component {
     this.props.dispatch(
       registerUser(payLoad, () => {
         this.clearForm();
-        this.setState(() => ({ toHome: true }));
+        this.props.history.push("/profile");
       })
     );
   };
@@ -43,10 +39,6 @@ class Register extends Component {
   };
 
   render() {
-    if (this.state.toHome) {
-      return <Redirect to="/" />;
-    }
-
     const { registerErrors } = this.props;
     const { unMatchPwd } = this.state;
 

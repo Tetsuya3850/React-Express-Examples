@@ -1,16 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import { loginUser } from "../actions";
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      toHome: false
-    };
-  }
-
   handleFormSubmit = async e => {
     e.preventDefault();
     const payLoad = {
@@ -20,7 +12,10 @@ class Login extends Component {
     this.props.dispatch(
       loginUser(payLoad, () => {
         this.clearForm();
-        this.setState(() => ({ toHome: true }));
+        const { from } = this.props.location.state || {
+          from: { pathname: "/" }
+        };
+        this.props.history.push(from.pathname);
       })
     );
   };
@@ -31,11 +26,6 @@ class Login extends Component {
   };
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
-    if (this.state.toHome) {
-      return <Redirect to={from} />;
-    }
-
     const { loginErrors } = this.props;
 
     return (

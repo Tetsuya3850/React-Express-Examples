@@ -22,6 +22,13 @@ export function getUserInfo() {
   }
 }
 
+export function parseToken(token) {
+  let payload;
+  payload = token.split(".")[1];
+  payload = window.atob(payload);
+  return JSON.parse(payload);
+}
+
 export function formatErrors(status) {
   let err = {};
   if (status.code === 11000) {

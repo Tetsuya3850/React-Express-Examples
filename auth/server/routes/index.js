@@ -13,6 +13,8 @@ const profileCtrl = require("../controllers/profile");
 
 router.post("/register", authCtrl.register);
 router.post("/login", authCtrl.login);
+router.get("/auth/facebook", authCtrl.fbAuth);
+router.get("/auth/facebook/callback", authCtrl.fbAuthCB);
 
 router.get("/secret/:uid", auth, profileCtrl.secret);
 

@@ -1,7 +1,9 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
+const configAuth = require("./auth");
 
 passport.use(
   new LocalStrategy(
@@ -24,6 +26,41 @@ passport.use(
           });
         }
         return done(null, user);
+      });
+    }
+  )
+);
+
+passport.use(
+  new FacebookStrategy(
+    {
+      clientID: configAuth.facebookAuth.appID,
+      clientSecret: configAuth.facebookAuth.appSecret,
+      callbackURL: configAuth.facebookAuth.callbackURL,
+      profileFields: ["id", "emails", "name"]
+    },
+    function(accessToken, refreshToken, profile, done) {
+      process.nextTick(function() {
+        User.findOne({ email: profile.emails[0].value }, function(err, user) {
+          if (err) {
+            return done(err);
+          }
+          if (!user) {
+            const new_user = new User();
+
+            new_user.name = `${profile.name.givenName} ${
+              profile.name.familyName
+            }`;
+            new_user.email = profile.emails[0].value;
+
+            new_user.save(function(err, new_user) {
+              if (err) return done(err);
+              return done(null, new_user);
+            });
+          } else {
+            return done(null, user);
+          }
+        });
       });
     }
   )

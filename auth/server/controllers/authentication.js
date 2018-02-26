@@ -44,3 +44,21 @@ module.exports.login = function(req, res) {
     }
   })(req, res);
 };
+
+module.exports.fbAuth = passport.authenticate("facebook");
+
+module.exports.fbAuthCB = function(req, res) {
+  passport.authenticate("facebook", function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (user) {
+      const token = user.generateJwt();
+      return res.redirect(`http://localhost:3000/fb/${token}`);
+    } else {
+      return res.redirect("http://localhost:3000");
+    }
+  })(req, res);
+};
+
+module.exports.fbAuthSuccess;

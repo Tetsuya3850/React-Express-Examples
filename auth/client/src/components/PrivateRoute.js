@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
+import { parseColonUrl } from "../helper";
 
-let PrivateRoute = ({ component: Component, isAuthed, ...rest }) => (
+let PrivateRoute = ({ component: Component, isAuthed, userInfo, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      isAuthed ? (
+      isAuthed && userInfo._id === props.match.params.uid ? (
         <Component {...props} />
       ) : (
         <Redirect

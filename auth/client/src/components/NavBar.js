@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
 import { logoutUser } from "../actions";
 
-let NavBar = ({ isAuthed, dispatch, history }) => {
+let NavBar = ({ isAuthed, dispatch, history, userInfo }) => {
   if (isAuthed) {
     return (
       <div style={{ display: "flex" }}>
@@ -16,7 +16,7 @@ let NavBar = ({ isAuthed, dispatch, history }) => {
           Home
         </NavLink>
         <NavLink
-          to="/profile"
+          to={`/profile/${userInfo._id}`}
           style={{ flexGrow: 1 }}
           activeStyle={{ color: "red" }}
         >

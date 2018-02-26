@@ -9,7 +9,7 @@ class Register extends Component {
     super(props);
     this.state = {
       unMatchPwd: "",
-      toProfile: false
+      toHome: false
     };
   }
 
@@ -30,7 +30,7 @@ class Register extends Component {
     this.props.dispatch(
       registerUser(payLoad, () => {
         this.clearForm();
-        this.setState(() => ({ toProfile: true }));
+        this.setState(() => ({ toHome: true }));
       })
     );
   };
@@ -43,8 +43,8 @@ class Register extends Component {
   };
 
   render() {
-    if (this.state.toProfile) {
-      return <Redirect to="/profile" />;
+    if (this.state.toHome) {
+      return <Redirect to="/" />;
     }
 
     const { registerErrors } = this.props;

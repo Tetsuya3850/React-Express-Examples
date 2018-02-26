@@ -22,7 +22,7 @@ class AppContainer extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
-          <PrivateRoute path="/profile/:uid" component={Profile} />
+          <PrivateRoute path="/profile/:uid?" component={Profile} />
         </div>
       </Router>
     );

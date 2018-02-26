@@ -5,18 +5,22 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 let PrivateRoute = ({ component: Component, isAuthed, userInfo, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      isAuthed && userInfo._id === props.match.params.uid ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
+    render={props => {
+      if (isAuthed && userInfo._id === props.match.params.uid) {
+        return <Component {...props} />;
+      } else if (isAuthed && props.match.params.uid === undefined) {
+        return <Redirect to={`${props.location.pathname}/${userInfo._id}`} />;
+      } else {
+        return (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        );
+      }
+    }}
   />
 );
 

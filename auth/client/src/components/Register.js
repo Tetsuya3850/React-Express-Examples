@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { registerUser } from "../actions";
+import SocialLoginLinks from "./SocialLoginLinks";
 
 class Register extends Component {
   constructor(props) {
@@ -120,6 +121,7 @@ class Register extends Component {
             style={{ display: "block", margin: "auto" }}
           />
         </form>
+        <SocialLoginLinks />
       </div>
     );
   }

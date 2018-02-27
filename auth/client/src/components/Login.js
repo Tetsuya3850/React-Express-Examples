@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginUser } from "../actions";
+import SocialLoginLinks from "./SocialLoginLinks";
 
 class Login extends Component {
   handleFormSubmit = async e => {
@@ -13,7 +14,7 @@ class Login extends Component {
       loginUser(payLoad, () => {
         this.clearForm();
         const { from } = this.props.location.state || {
-          from: { pathname: "/" }
+          from: { pathname: "/profile" }
         };
         this.props.history.push(from.pathname);
       })
@@ -73,6 +74,7 @@ class Login extends Component {
             style={{ display: "block", margin: "auto" }}
           />
         </form>
+        <SocialLoginLinks />
       </div>
     );
   }

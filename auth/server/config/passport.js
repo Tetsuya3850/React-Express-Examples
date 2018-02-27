@@ -56,9 +56,7 @@ passport.use(
       callbackURL: configAuth.googleAuth.callbackURL
     },
     function(accessToken, refreshToken, profile, done) {
-      process.nextTick(function() {
-        findUserOrCreate(profile, done);
-      });
+      process.nextTick(() => findUserOrCreate(profile, done));
     }
   )
 );

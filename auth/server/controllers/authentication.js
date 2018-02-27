@@ -47,18 +47,31 @@ module.exports.login = function(req, res) {
 
 module.exports.fbAuth = passport.authenticate("facebook");
 
-module.exports.fbAuthCB = function(req, res) {
-  passport.authenticate("facebook", function(err, user, info) {
-    if (err) {
-      return next(err);
-    }
-    if (user) {
-      const token = user.generateJwt();
-      return res.redirect(`http://localhost:3000/fb/${token}`);
-    } else {
-      return res.redirect("http://localhost:3000");
-    }
-  })(req, res);
+module.exports.fbAuthCB = function(req, res, next) {
+  passport.authenticate("facebook", (err, user, info) =>
+    generateTokenAndRedirect(err, user, info, req, res, next)
+  )(req, res);
 };
 
-module.exports.fbAuthSuccess;
+module.exports.goAuth = passport.authenticate("google", {
+  scope: ["openid", "profile", "email"]
+});
+
+module.exports.goAuthCB = function(req, res, next) {
+  passport.authenticate("google", (err, user, info) =>
+    generateTokenAndRedirect(err, user, info, req, res, next)
+  )(req, res);
+};
+
+function generateTokenAndRedirect(err, user, info, req, res, next) {
+  if (err) {
+    return next(err);
+  }
+  if (user) {
+    const token = user.generateJwt();
+    res.cookie("auth", token);
+    return res.redirect(`http://localhost:3000/socialauthredirect`);
+  } else {
+    return res.redirect("http://localhost:3000");
+  }
+}

@@ -40,11 +40,8 @@ passport.use(
       callbackURL: configAuth.facebookAuth.callbackURL,
       profileFields: ["id", "emails", "name"]
     },
-    function(accessToken, refreshToken, profile, done) {
-      process.nextTick(function() {
-        findUserOrCreate(profile, done);
-      });
-    }
+    (accessToken, refreshToken, profile, done) =>
+      findUserOrCreate(profile, done)
   )
 );
 
@@ -55,9 +52,8 @@ passport.use(
       clientSecret: configAuth.googleAuth.appSecret,
       callbackURL: configAuth.googleAuth.callbackURL
     },
-    function(accessToken, refreshToken, profile, done) {
-      process.nextTick(() => findUserOrCreate(profile, done));
-    }
+    (accessToken, refreshToken, profile, done) =>
+      findUserOrCreate(profile, done)
   )
 );
 

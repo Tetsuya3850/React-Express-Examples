@@ -28,12 +28,14 @@ const userSchema = new mongoose.Schema({
     required: [true, "Required!"],
     validate: [validateEmail, "Invalid address!"],
     maxlength: [50, "Too Long!"],
-    unique: true
+    unique: true,
+    trim: true
   },
   name: {
     type: String,
     required: [true, "Required!"],
-    maxlength: [50, "Too Long!"]
+    maxlength: [50, "Too Long!"],
+    trim: true
   },
   hash: String,
   salt: String

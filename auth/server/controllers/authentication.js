@@ -54,7 +54,7 @@ module.exports.fbAuthCB = function(req, res, next) {
 };
 
 module.exports.goAuth = passport.authenticate("google", {
-  scope: ["openid", "profile", "email"]
+  scope: ["profile", "email"]
 });
 
 module.exports.goAuthCB = function(req, res, next) {

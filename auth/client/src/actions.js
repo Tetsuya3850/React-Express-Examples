@@ -37,46 +37,46 @@ const loginFail = errors => {
   };
 };
 
-export const registerUser = (userInfo, cb) => async dispatch => {
+export const registerUser = (userInfo, redirect) => async dispatch => {
   const response = await api.register(userInfo);
   if (response.userInfo) {
     saveToken(response.token);
     dispatch(authUser(response.userInfo));
-    cb();
+    redirect();
   } else {
     const formattedErrors = formatErrors(response);
     dispatch(registerFail(formattedErrors));
   }
 };
 
-export const loginUser = (userInfo, cb) => async dispatch => {
+export const loginUser = (userInfo, redirect) => async dispatch => {
   const response = await api.login(userInfo);
   if (response.userInfo) {
     saveToken(response.token);
     dispatch(authUser(response.userInfo));
-    cb();
+    redirect();
   } else {
     dispatch(loginFail(response));
   }
 };
 
-export const fbAuthUser = (token, cb) => async dispatch => {
+export const fbAuthUser = (token, redirect) => async dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
-  cb();
+  redirect();
 };
 
-export const reAuthUser = cb => async dispatch => {
+export const reAuthUser = redirect => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
   } else if (userInfo && userInfo.exp < Date.now() / 1000) {
-    cb();
+    redirect();
   }
 };
 
-export const logoutUser = cb => async dispatch => {
+export const logoutUser = redirect => async dispatch => {
   removeToken();
   dispatch(unAuthUser());
-  cb();
+  redirect();
 };

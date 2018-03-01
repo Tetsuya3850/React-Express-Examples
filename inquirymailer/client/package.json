@@ -1,6 +1,7 @@
 {
   "name": "inquirymailer",
   "version": "0.1.0",
+  "proxy": "http://localhost:5150/",
   "private": true,
   "dependencies": {
     "react": "^16.2.0",

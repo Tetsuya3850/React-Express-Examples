@@ -13,11 +13,11 @@ class InquiryForm extends Component {
     e.preventDefault();
     const payLoad = {
       email: this.email.value,
-      title: this.title.value,
-      inquiry: this.inquiry.value
+      subject: this.subject.value,
+      text: this.text.value
     };
     const status = await sendInquiry(payLoad);
-    this.handleStatus(status);
+    // this.handleStatus(status);
   };
 
   handleStatus = status => {
@@ -38,7 +38,7 @@ class InquiryForm extends Component {
 
   clearForm = () => {
     this.email.value = "";
-    this.title.value = "";
+    this.subject.value = "";
     this.inquiry.value = "";
   };
 
@@ -66,11 +66,11 @@ class InquiryForm extends Component {
           </span>
           <br />
 
-          <label>Title</label>
+          <label>Subject</label>
           <input
             type="text"
             ref={node => {
-              this.title = node;
+              this.subject = node;
             }}
             required
             maxLength="100"
@@ -78,7 +78,7 @@ class InquiryForm extends Component {
           />
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.title}
+            {this.state.errors.subject}
           </span>
           <br />
 
@@ -92,12 +92,12 @@ class InquiryForm extends Component {
           </label>
           <span style={{ color: "red" }}>*</span>
           <span style={{ color: "red", marginLeft: 8 }}>
-            {this.state.errors.inquiry}
+            {this.state.errors.text}
           </span>
           <textarea
             rows="8"
             ref={node => {
-              this.inquiry = node;
+              this.text = node;
             }}
             required
             maxLength="1000"

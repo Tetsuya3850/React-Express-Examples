@@ -2,15 +2,33 @@ import React, { Component } from "react";
 import Gmap from "./Gmap";
 
 class App extends Component {
+  state = {
+    isMarkerShown: false
+  };
+
+  componentDidMount() {
+    this.delayedShowMarker();
+  }
+
+  delayedShowMarker = () => {
+    setTimeout(() => {
+      this.setState({ isMarkerShown: true });
+    }, 3000);
+  };
+
+  handleMarkerClick = () => {
+    this.setState({ isMarkerShown: false });
+    this.delayedShowMarker();
+  };
+
   render() {
     return (
       <div>
         <Gmap
-          isMarkerShown
-          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyB-nYtMpDDba9t4lp32MihmrqowsHg00WA"
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `800px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
+          isMarkerShown={this.state.isMarkerShown}
+          onMarkerClick={this.handleMarkerClick}
+          zoom={16}
+          center={[35.578203, 139.585194]}
         />
       </div>
     );

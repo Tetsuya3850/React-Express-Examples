@@ -1,4 +1,4 @@
-export const locations = [
+export const initial_locations = [
   {
     id: 0,
     title: "Arima Hospital",

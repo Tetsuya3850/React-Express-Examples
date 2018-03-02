@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Gmap from "./Gmap";
-import { locations } from "./locations";
+import { initial_locations } from "./locations";
 import { Marker, InfoWindow } from "react-google-maps";
 
 class App extends Component {
@@ -10,7 +10,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    this.setState({ locations });
+    this.setState({ locations: initial_locations });
   }
 
   onToggleInfo = id => {
@@ -30,8 +30,10 @@ class App extends Component {
           ? { ...location, animation: window.google.maps.Animation.BOUNCE }
           : location
     );
-    console.log(bounce_location);
-    this.setState({ locations: bounce_location, center: locations[id].pos });
+    this.setState({
+      locations: bounce_location,
+      center: initial_locations[id].pos
+    });
 
     setTimeout(() => {
       const stop_bounce = this.state.locations.map(
@@ -45,7 +47,7 @@ class App extends Component {
   handleSearch = e => {
     e.preventDefault();
     const query_value = this.search.value.toLowerCase();
-    const matched_locations = locations.filter(location =>
+    const matched_locations = initial_locations.filter(location =>
       location.title.toLowerCase().includes(query_value)
     );
     this.setState({ locations: matched_locations });

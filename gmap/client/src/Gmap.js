@@ -4,9 +4,9 @@ import { withGoogleMap, GoogleMap } from "react-google-maps";
 
 const Gmap = compose(
   withProps({
-    loadingElement: <div style={{ height: `100%`, backgroundColor: "grey" }} />,
-    containerElement: <div style={{ height: `700px` }} />,
-    mapElement: <div style={{ height: `100%` }} />
+    loadingElement: <div style={{ height: "100%", backgroundColor: "grey" }} />,
+    containerElement: <div style={{ height: "700px" }} />,
+    mapElement: <div style={{ height: "100%" }} />
   }),
   withGoogleMap
 )(props => (

@@ -28,7 +28,7 @@ class InquiryForm extends Component {
           err.errors[express_err.param] = express_err.msg;
         });
       } else {
-        err.errors.mailer = "Something went wrong with the mailer system.";
+        err.errors.mailer = "Something went wrong with the mailer system!";
       }
       this.setState(err);
     } else {

@@ -5,7 +5,8 @@ import { Marker, InfoWindow } from "react-google-maps";
 
 class App extends Component {
   state = {
-    locations: []
+    locations: [],
+    center: [35.578203, 139.585194]
   };
 
   componentDidMount() {
@@ -22,15 +23,38 @@ class App extends Component {
     this.setState({ locations: new_locations });
   };
 
+  onToggleBounce = id => {
+    const bounce_location = this.state.locations.map(
+      location =>
+        id === location.id
+          ? { ...location, animation: window.google.maps.Animation.BOUNCE }
+          : location
+    );
+    this.setState({ locations: bounce_location, center: locations[id].pos });
+
+    setTimeout(() => {
+      const stop_bounce = this.state.locations.map(
+        location =>
+          id === location.id ? { ...location, animation: undefined } : location
+      );
+      this.setState({ locations: stop_bounce });
+    }, 700);
+  };
+
   render() {
     return (
       <div>
-        <Gmap zoom={16} center={[35.578203, 139.585194]}>
+        <Gmap zoom={16} center={this.state.center}>
           {this.state.locations.map(location => (
             <Marker
               key={location.id}
-              position={{ lat: location.latLng.lat, lng: location.latLng.lng }}
-              onClick={() => this.onToggleInfo(location.id)}
+              position={{ lat: location.pos[0], lng: location.pos[1] }}
+              onClick={() => {
+                this.onToggleBounce(location.id);
+                this.onToggleInfo(location.id);
+              }}
+              defaultAnimation={window.google.maps.Animation.BOUNCE}
+              animation={location.animation}
             >
               {location.info_open && (
                 <InfoWindow

@@ -17,18 +17,18 @@ class InquiryForm extends Component {
       text: this.text.value
     };
     const status = await sendInquiry(payLoad);
-    // this.handleStatus(status);
+    this.handleStatus(status);
   };
 
   handleStatus = status => {
-    if (status !== "Response Added!") {
+    if (status !== "success") {
       let err = { errors: {} };
-      if (status.code === 11000) {
-        err.errors.email = "Duplicate email!";
-      } else {
-        Object.keys(status.errors).map(key => {
-          err.errors[key] = status.errors[key].message;
+      if (status.expressValidator !== undefined) {
+        status.expressValidator.forEach(express_err => {
+          err.errors[express_err.param] = express_err.msg;
         });
+      } else {
+        err.errors.mailer = "Something went wrong with the mailer system.";
       }
       this.setState(err);
     } else {
@@ -39,14 +39,14 @@ class InquiryForm extends Component {
   clearForm = () => {
     this.email.value = "";
     this.subject.value = "";
-    this.inquiry.value = "";
+    this.text.value = "";
   };
 
   render() {
     return (
       <div style={{ margin: "auto", width: 400 }}>
-        <form onSubmit={this.handleFormSubmit} ref={form => (this.form = form)}>
-          <h2 style={{ textAlign: "center" }}>Questionnaire</h2>
+        <form onSubmit={this.handleFormSubmit}>
+          <h2 style={{ textAlign: "center" }}>Inquiry Form</h2>
           <hr />
 
           <label>Your Email</label>
@@ -109,6 +109,17 @@ class InquiryForm extends Component {
             value="Submit!"
             style={{ display: "block", margin: "auto" }}
           />
+
+          <span
+            style={{
+              display: "block",
+              textAlign: "center",
+              color: "red",
+              marginTop: 10
+            }}
+          >
+            {this.state.errors.mailer}
+          </span>
         </form>
       </div>
     );

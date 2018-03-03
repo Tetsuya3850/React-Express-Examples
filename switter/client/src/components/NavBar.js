@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { logoutUser } from "../actions";
+import { logoutUser } from "../redux/user";
 import AuthNavBar from "./AuthNavBar";
 import UnAuthNavBar from "./UnAuthNavBar";
 
@@ -23,8 +23,8 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
+const mapStateToProps = ({ user }) => {
+  return user;
 };
 
 NavBar = connect(mapStateToProps, null)(NavBar);

@@ -4,7 +4,7 @@ import {
   getUserInfo,
   parseToken,
   formatErrors
-} from "./helper";
+} from "../helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
@@ -40,3 +40,27 @@ export const logoutUser = redirect => async dispatch => {
   dispatch(unAuthUser());
   redirect();
 };
+
+const initialState = {
+  isAuthed: false,
+  userInfo: {}
+};
+
+const user = (state = initialState, action) => {
+  switch (action.type) {
+    case AUTH_USER:
+      return {
+        isAuthed: true,
+        userInfo: action.userInfo
+      };
+    case UNAUTH_USER:
+      return {
+        isAuthed: false,
+        userInfo: {}
+      };
+    default:
+      return state;
+  }
+};
+
+export default user;

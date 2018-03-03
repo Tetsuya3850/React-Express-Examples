@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import SweetModal from "./SweetModal";
 
 const AuthNavBar = ({ uid, onLogout }) => (
   <div style={{ display: "flex" }}>
@@ -21,6 +22,7 @@ const AuthNavBar = ({ uid, onLogout }) => (
     <div onClick={onLogout} style={{ flexGrow: 1 }}>
       Logout
     </div>
+    <SweetModal />
   </div>
 );
 

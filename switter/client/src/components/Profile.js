@@ -14,8 +14,8 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return state;
+const mapStateToProps = ({ user }) => {
+  return user;
 };
 
 Profile = connect(mapStateToProps, null)(Profile);

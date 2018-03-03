@@ -25,7 +25,7 @@ let PrivateRoute = ({ component: Component, isAuthed, userInfo, ...rest }) => (
 );
 
 const mapStateToProps = state => {
-  return state;
+  return state.user;
 };
 
 PrivateRoute = connect(mapStateToProps, null)(PrivateRoute);

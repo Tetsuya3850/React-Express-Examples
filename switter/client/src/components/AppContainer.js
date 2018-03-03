@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { reAuthUser } from "../redux/user";
-import { receiveFeedThunk } from "../redux/sweet";
 import NavBar from "./NavBar";
 import Home from "./Home";
 import Auth from "./Auth";
@@ -13,7 +12,6 @@ import PrivateRoute from "./PrivateRoute";
 class AppContainer extends Component {
   componentWillMount() {
     this.props.dispatch(reAuthUser(() => this.props.history.push("/auth")));
-    this.props.dispatch(receiveFeedThunk());
   }
 
   render() {

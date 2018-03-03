@@ -12,6 +12,6 @@ module.exports.add = async (req, res, next) => {
 };
 
 module.exports.getFeed = async (req, res, next) => {
-  const sweets = await Sweet.find();
+  const sweets = await Sweet.find().populate("author");
   res.json(sweets);
 };

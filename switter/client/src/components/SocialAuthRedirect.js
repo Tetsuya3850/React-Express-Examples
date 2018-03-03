@@ -9,7 +9,7 @@ class SocialAuthRedirect extends Component {
       socialAuthUser(getCookie("auth"), () => {
         document.cookie =
           "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        this.props.history.push("/profile");
+        this.props.history.push("/");
       })
     );
   }

@@ -1,9 +1,11 @@
 import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
+import { getUser } from "../api";
 
-export const AUTH_USER = "AUTH_USER";
-export const UNAUTH_USER = "UNAUTH_USER";
-export const LIKE_SWEET = "LIKE_SWEET";
-export const UNLIKE_SWEET = "UNLIKE_SWEET";
+const AUTH_USER = "AUTH_USER";
+const UNAUTH_USER = "UNAUTH_USER";
+const RECEIVE_USER = "RECEIVE_USER";
+const LIKE_SWEET = "LIKE_SWEET";
+const UNLIKE_SWEET = "UNLIKE_SWEET";
 
 const authUser = userInfo => {
   return { type: AUTH_USER, userInfo };
@@ -11,6 +13,10 @@ const authUser = userInfo => {
 
 const unAuthUser = () => {
   return { type: UNAUTH_USER };
+};
+
+const receiveUser = userInfo => {
+  return { type: RECEIVE_USER, userInfo };
 };
 
 const likeSweet = sweetId => {
@@ -42,13 +48,18 @@ export const logoutUser = redirect => async dispatch => {
   redirect();
 };
 
+export const receiveUserInfo = uid => async dispatch => {
+  const userInfo = await getUser(uid);
+  dispatch(receiveUser(userInfo));
+};
+
 const initialState = {
   isAuthed: false,
   userInfo: {},
   likedSweetIds: []
 };
 
-const user = (state = initialState, action) => {
+const users = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_USER:
       return {
@@ -61,6 +72,11 @@ const user = (state = initialState, action) => {
         ...state,
         isAuthed: false,
         userInfo: {}
+      };
+    case RECEIVE_USER:
+      return {
+        ...state,
+        [action.userInfo._id]: action.userInfo
       };
     case LIKE_SWEET:
       return {
@@ -77,4 +93,4 @@ const user = (state = initialState, action) => {
   }
 };
 
-export default user;
+export default users;

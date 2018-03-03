@@ -22,7 +22,7 @@ class SweetModal extends Component {
       text: this.text.value,
       created: Date.now(),
       like: 0,
-      author: this.props.userInfo._id,
+      author: this.props.users.userInfo._id,
       replies: []
     };
     postNewSweet(sweet);
@@ -100,8 +100,8 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ user }) => {
-  return user;
+const mapStateToProps = ({ users }) => {
+  return { users };
 };
 
 SweetModal = connect(mapStateToProps, null)(SweetModal);

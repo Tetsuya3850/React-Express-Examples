@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { logoutUser } from "../redux/user";
+import { logoutUser } from "../redux/users";
 import AuthNavBar from "./AuthNavBar";
 import UnAuthNavBar from "./UnAuthNavBar";
 
 class NavBar extends Component {
   render() {
-    const { isAuthed, dispatch, history, userInfo } = this.props;
+    const { users, dispatch, history } = this.props;
     return (
       <div>
-        {isAuthed ? (
+        {users.isAuthed ? (
           <AuthNavBar
-            uid={userInfo._id}
+            uid={users.userInfo._id}
             onLogout={() => dispatch(logoutUser(() => history.push("/")))}
           />
         ) : (
@@ -23,8 +23,8 @@ class NavBar extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => {
-  return user;
+const mapStateToProps = ({ users }) => {
+  return { users };
 };
 
 NavBar = connect(mapStateToProps, null)(NavBar);

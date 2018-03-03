@@ -1,7 +1,6 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
-const Sweet = mongoose.model("Sweet");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const jwt_secret = process.env.JWT_SECRET;
@@ -28,3 +27,8 @@ function generateTokenAndRedirect(err, user, info, req, res, next) {
     return res.redirect("http://localhost:3000");
   }
 }
+
+module.exports.getUser = async (req, res, next) => {
+  const user = await User.findOne({ _id: req.params.uid });
+  res.json(user);
+};

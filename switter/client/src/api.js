@@ -10,6 +10,16 @@ export async function getFeed() {
   return await response.json();
 }
 
+export async function getUser(uid) {
+  const response = await fetch(`/users/${uid}`, {
+    method: "get",
+    headers: {
+      authorization: `Bearer ${getToken()}`
+    }
+  });
+  return await response.json();
+}
+
 export async function getUserSweets(uid) {
   const response = await fetch(`/sweets/${uid}`, {
     method: "get",

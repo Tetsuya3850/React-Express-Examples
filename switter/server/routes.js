@@ -13,6 +13,7 @@ const sweetsCtrl = require("./sweetsController");
 
 router.get("/auth/google", userCtrl.goAuth);
 router.get("/auth/google/callback", userCtrl.goAuthCB);
+router.get("/users/:uid", userCtrl.getUser);
 
 router.get("/sweets/feed", auth, sweetsCtrl.getFeed);
 router.get("/sweets/:uid", auth, sweetsCtrl.getUserSweets);

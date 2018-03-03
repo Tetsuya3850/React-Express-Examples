@@ -25,14 +25,12 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   pic: String,
-  sweets: {
-    type: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "Sweet"
-      }
-    ]
-  }
+  likedSweets: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Sweet"
+    }
+  ]
 });
 
 userSchema.methods.generateJwt = function() {

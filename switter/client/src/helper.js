@@ -54,3 +54,15 @@ export function latencyConverter(timestamp) {
     return ` ${Math.ceil(timestamp / 60000)} min`;
   }
 }
+
+export function normalizeSweets(sweets) {
+  const normalizedSweets = {};
+  sweets.forEach(sweet => {
+    normalizedSweets[sweet._id] = sweet;
+  });
+  return normalizedSweets;
+}
+
+export function getSweetIds(sweets) {
+  return sweets.map(sweet => sweet._id);
+}

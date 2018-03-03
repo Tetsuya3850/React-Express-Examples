@@ -28,25 +28,3 @@ function generateTokenAndRedirect(err, user, info, req, res, next) {
     return res.redirect("http://localhost:3000");
   }
 }
-
-module.exports.ownSweets = async (req, res, next) => {
-  const own = await User.find({ _id: req.params.uid }).populate({
-    path: "sweets",
-    populate: { path: "author" }
-  });
-  res.json(own[0].sweets);
-};
-
-module.exports.add = async (req, res, next) => {
-  const newSweet = new Sweet(req.body);
-  try {
-    const addedSweet = await newSweet.save();
-    await User.findOneAndUpdate(
-      { _id: req.params.uid },
-      { $push: { sweets: addedSweet._id } }
-    );
-    res.json(addedSweet.populate("author"));
-  } catch (err) {
-    return next(err);
-  }
-};

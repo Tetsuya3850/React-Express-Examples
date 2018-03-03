@@ -1,10 +1,9 @@
 import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
-import { getOwnSweets } from "../api";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
-export const RECEIVE_OWN_SWEETS = "ADD_OWN_SWEETS";
-export const ADD_OWN_SWEET = "ADD_OWN_SWEET";
+export const LIKE_SWEET = "LIKE_SWEET";
+export const UNLIKE_SWEET = "UNLIKE_SWEET";
 
 const authUser = userInfo => {
   return { type: AUTH_USER, userInfo };
@@ -14,12 +13,12 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
-const receiveOwnSweets = sweets => {
-  return { type: RECEIVE_OWN_SWEETS, sweets };
+const likeSweet = sweetId => {
+  return { type: LIKE_SWEET, sweetId };
 };
 
-export const addOwnSweet = sweet => {
-  return { type: ADD_OWN_SWEET, sweet };
+const unLikeSweet = sweetId => {
+  return { type: UNLIKE_SWEET, sweetId };
 };
 
 export const socialAuthUser = (token, redirect) => async dispatch => {
@@ -43,16 +42,10 @@ export const logoutUser = redirect => async dispatch => {
   redirect();
 };
 
-export const receiveOwnSweetsThunk = uid => async dispatch => {
-  const sweets = await getOwnSweets(uid);
-  console.log(sweets);
-  dispatch(receiveOwnSweets(sweets));
-};
-
 const initialState = {
   isAuthed: false,
   userInfo: {},
-  sweets: []
+  likedSweetIds: []
 };
 
 const user = (state = initialState, action) => {
@@ -69,15 +62,15 @@ const user = (state = initialState, action) => {
         isAuthed: false,
         userInfo: {}
       };
-    case RECEIVE_OWN_SWEETS:
+    case LIKE_SWEET:
       return {
         ...state,
-        sweets: action.sweets
+        likedSweetIds: [...state.likedSweetIds, action.sweetId]
       };
-    case ADD_OWN_SWEET:
+    case UNLIKE_SWEET:
       return {
         ...state,
-        sweets: [...state.sweets, action.sweet]
+        likedSweetIds: state.likedSweetIds.filter(s => s !== action.sweetId)
       };
     default:
       return state;

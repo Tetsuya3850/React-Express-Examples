@@ -1,7 +1,9 @@
-import React from "react";
+import { connect } from "react-redux";
 import Sweet from "./Sweet";
 
-const SweetContainer = ({ sweets }) =>
-  sweets.map(sweet => <Sweet key={sweet._id} {...sweet} />);
+const mapStateToProps = ({ sweets }, ownProps) => {
+  const sweet = sweets[ownProps.sweetId];
+  return { sweet };
+};
 
-export default SweetContainer;
+export default connect(mapStateToProps, null)(Sweet);

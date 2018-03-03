@@ -1,7 +1,7 @@
 import { getToken } from "./helper";
 
 export async function getFeed() {
-  const response = await fetch("/sweet/feed", {
+  const response = await fetch("/sweets/feed", {
     method: "get",
     headers: {
       authorization: `Bearer ${getToken()}`
@@ -10,8 +10,8 @@ export async function getFeed() {
   return await response.json();
 }
 
-export async function getOwnSweets(uid) {
-  const response = await fetch(`/users/${uid}`, {
+export async function getUserSweets(uid) {
+  const response = await fetch(`/sweets/${uid}`, {
     method: "get",
     headers: {
       authorization: `Bearer ${getToken()}`
@@ -20,9 +20,8 @@ export async function getOwnSweets(uid) {
   return await response.json();
 }
 
-export async function postNewSweet(new_sweet, uid) {
-  console.log(uid);
-  const response = await fetch(`/users/add/${uid}`, {
+export async function postNewSweet(new_sweet) {
+  const response = await fetch(`/sweets/add/`, {
     method: "post",
     body: JSON.stringify(new_sweet),
     headers: {

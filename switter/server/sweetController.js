@@ -10,3 +10,8 @@ module.exports.add = async (req, res, next) => {
     return next(err);
   }
 };
+
+module.exports.getFeed = async (req, res, next) => {
+  const sweets = await Sweet.find();
+  res.json(sweets);
+};

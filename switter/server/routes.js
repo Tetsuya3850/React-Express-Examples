@@ -14,6 +14,7 @@ const sweetCtrl = require("./sweetController");
 router.get("/auth/google", authCtrl.goAuth);
 router.get("/auth/google/callback", authCtrl.goAuthCB);
 
+router.get("/sweet/feed", auth, sweetCtrl.getFeed);
 router.post("/sweet/add", auth, sweetCtrl.add);
 
 module.exports = router;

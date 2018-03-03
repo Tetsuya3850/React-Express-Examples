@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
+import { addSweetThunk } from "../redux/sweet";
 
 class SweetModal extends Component {
   state = {
@@ -13,6 +15,18 @@ class SweetModal extends Component {
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
+  };
+
+  handleFormSubmit = e => {
+    e.preventDefault();
+    const sweet = {
+      text: this.text.value,
+      created: Date.now(),
+      like: 0,
+      author: this.props.userInfo._id,
+      replies: []
+    };
+    this.props.dispatch(addSweetThunk(sweet));
   };
 
   render() {
@@ -84,5 +98,11 @@ const styles = {
     transform: "translate(-50%)"
   }
 };
+
+const mapStateToProps = ({ user }) => {
+  return user;
+};
+
+SweetModal = connect(mapStateToProps, null)(SweetModal);
 
 export default SweetModal;

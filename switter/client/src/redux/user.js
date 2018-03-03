@@ -8,16 +8,18 @@ import {
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";
+export const ADD_OWN_SWEET = "ADD_OWN_SWEET";
 
 const authUser = userInfo => {
-  return {
-    type: AUTH_USER,
-    userInfo
-  };
+  return { type: AUTH_USER, userInfo };
 };
 
 const unAuthUser = () => {
   return { type: UNAUTH_USER };
+};
+
+export const addOwnSweet = sweet => {
+  return { type: ADD_OWN_SWEET, sweet };
 };
 
 export const socialAuthUser = (token, redirect) => async dispatch => {
@@ -43,20 +45,28 @@ export const logoutUser = redirect => async dispatch => {
 
 const initialState = {
   isAuthed: false,
-  userInfo: {}
+  userInfo: {},
+  sweets: []
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_USER:
       return {
+        ...state,
         isAuthed: true,
         userInfo: action.userInfo
       };
     case UNAUTH_USER:
       return {
+        ...state,
         isAuthed: false,
         userInfo: {}
+      };
+    case ADD_OWN_SWEET:
+      return {
+        ...state,
+        sweets: [...state.sweets, action.sweet]
       };
     default:
       return state;

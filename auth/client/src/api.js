@@ -24,13 +24,6 @@ async function login(userInfo) {
   return await response.json();
 }
 
-async function fbAuth() {
-  const response = await fetch("/auth/facebook", {
-    method: "get"
-  });
-  return await response.json();
-}
-
 async function getSecret(uid) {
   const response = await fetch(`/secret/${uid}`, {
     method: "get",

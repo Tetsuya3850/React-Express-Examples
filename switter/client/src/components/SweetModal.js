@@ -25,7 +25,7 @@ class SweetModal extends Component {
       author: this.props.userInfo._id,
       replies: []
     };
-    this.props.dispatch(addSweetThunk(sweet));
+    this.props.dispatch(addSweetThunk(sweet, this.props.userInfo._id));
   };
 
   render() {

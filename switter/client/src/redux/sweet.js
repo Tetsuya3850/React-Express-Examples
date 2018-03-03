@@ -23,8 +23,8 @@ export const receiveFeedThunk = () => async dispatch => {
   dispatch(receiveFeed(sweets));
 };
 
-export const addSweetThunk = sweet => async dispatch => {
-  const new_sweet = await postNewSweet(sweet);
+export const addSweetThunk = (sweet, uid) => async dispatch => {
+  const new_sweet = await postNewSweet(sweet, uid);
   dispatch(addSweet(new_sweet));
   dispatch(addOwnSweet(new_sweet));
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-const UnAuthNavBar = ({}) => (
+const UnAuthNavBar = () => (
   <div style={{ display: "flex" }}>
     <NavLink
       exact

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import google from "../assets/google_signin.png";
 
 class Auth extends Component {

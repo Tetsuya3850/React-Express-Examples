@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { addSweetThunk } from "../redux/sweet";
 

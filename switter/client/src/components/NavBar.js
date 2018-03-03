@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavLink, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { logoutUser } from "../redux/user";
 import AuthNavBar from "./AuthNavBar";
 import UnAuthNavBar from "./UnAuthNavBar";

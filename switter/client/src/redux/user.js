@@ -1,10 +1,4 @@
-import {
-  saveToken,
-  removeToken,
-  getUserInfo,
-  parseToken,
-  formatErrors
-} from "../helper";
+import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
 
 export const AUTH_USER = "AUTH_USER";
 export const UNAUTH_USER = "UNAUTH_USER";

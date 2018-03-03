@@ -19,7 +19,8 @@ mongoose.connection.on("disconnected", function() {
   console.log("Mongoose disconnected");
 });
 
-require("./models/user");
+require("./userModel");
+require("./sweetModel");
 require("./config/passport");
 const routes = require("./routes");
 

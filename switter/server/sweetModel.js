@@ -16,7 +16,12 @@ const sweetSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User"
   },
-  replies: [sweetSchema]
+  replies: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Sweet"
+    }
+  ]
 });
 
 mongoose.model("Sweet", sweetSchema);

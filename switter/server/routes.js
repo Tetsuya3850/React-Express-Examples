@@ -9,8 +9,11 @@ const auth = jwt({
 });
 
 const authCtrl = require("./authController");
+const sweetCtrl = require("./sweetController");
 
 router.get("/auth/google", authCtrl.goAuth);
 router.get("/auth/google/callback", authCtrl.goAuthCB);
+
+router.post("/sweet/add", auth, sweetCtrl.add);
 
 module.exports = router;

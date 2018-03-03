@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
-const sweetSchema = new mongoose.Schema({
+const replySchema = new mongoose.Schema({
   text: {
     type: String,
     maxlength: [140, "Too Long!"],
@@ -11,17 +11,10 @@ const sweetSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  like: Number,
   author: {
     type: mongoose.Schema.ObjectId,
     ref: "User"
-  },
-  replies: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Reply"
-    }
-  ]
+  }
 });
 
-mongoose.model("Sweet", sweetSchema);
+mongoose.model("Reply", replySchema);

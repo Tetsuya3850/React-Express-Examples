@@ -1,4 +1,5 @@
 import { addOwnSweet } from "./user";
+import { postNewSweet } from "../api";
 
 export const ADD_SWEET = "ADD_SWEET";
 
@@ -10,8 +11,9 @@ const addSweet = sweet => {
 };
 
 export const addSweetThunk = sweet => async dispatch => {
-  dispatch(addSweet(sweet));
-  dispatch(addOwnSweet(sweet));
+  const new_sweet = await postNewSweet(sweet);
+  dispatch(addSweet(new_sweet));
+  dispatch(addOwnSweet(new_sweet));
 };
 
 const initialState = {

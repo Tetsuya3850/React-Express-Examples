@@ -1,56 +1,27 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
 import { logoutUser } from "../actions";
+import AuthNavBar from "./AuthNavBar";
+import UnAuthNavBar from "./UnAuthNavBar";
 
-let NavBar = ({ isAuthed, dispatch, history, userInfo }) => {
-  if (isAuthed) {
+class NavBar extends Component {
+  render() {
+    const { isAuthed, dispatch, history, userInfo } = this.props;
     return (
-      <div style={{ display: "flex" }}>
-        <NavLink
-          exact
-          to="/"
-          style={{ flexGrow: 10 }}
-          activeStyle={{ color: "red" }}
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to={`/profile/${userInfo._id}`}
-          style={{ flexGrow: 1 }}
-          activeStyle={{ color: "red" }}
-        >
-          Profile
-        </NavLink>
-        <div
-          onClick={() => dispatch(logoutUser(() => history.push("/")))}
-          style={{ flexGrow: 1 }}
-        >
-          Logout
-        </div>
+      <div>
+        {isAuthed ? (
+          <AuthNavBar
+            uid={userInfo._id}
+            onLogout={() => dispatch(logoutUser(() => history.push("/")))}
+          />
+        ) : (
+          <UnAuthNavBar />
+        )}
       </div>
     );
   }
-  return (
-    <div style={{ display: "flex" }}>
-      <NavLink
-        exact
-        to="/"
-        style={{ flexGrow: 10 }}
-        activeStyle={{ color: "red" }}
-      >
-        Home
-      </NavLink>
-      <NavLink
-        to="/auth"
-        style={{ flexGrow: 1 }}
-        activeStyle={{ color: "red" }}
-      >
-        Sign In
-      </NavLink>
-    </div>
-  );
-};
+}
 
 const mapStateToProps = state => {
   return state;

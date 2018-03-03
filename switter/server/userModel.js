@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     maxlength: [50, "Too Long!"],
     trim: true
   },
-  photo: String,
+  pic: String,
   sweets: {
     type: [
       {
@@ -44,6 +44,7 @@ userSchema.methods.generateJwt = function() {
       _id: this._id,
       email: this.email,
       name: this.name,
+      pic: this.pic,
       exp: parseInt(expiry.getTime() / 1000)
     },
     jwt_secret

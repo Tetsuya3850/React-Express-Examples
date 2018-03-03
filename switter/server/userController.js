@@ -32,3 +32,8 @@ module.exports.getUser = async (req, res, next) => {
   const user = await User.findOne({ _id: req.params.uid });
   res.json(user);
 };
+
+module.exports.getlikeIds = async (req, res, next) => {
+  const user = await User.findOne({ _id: req.me._id });
+  res.json(user.likedSweetIds);
+};

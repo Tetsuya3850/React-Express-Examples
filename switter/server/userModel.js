@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   pic: String,
-  likedSweets: [
+  likedSweetIds: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "Sweet"
@@ -43,6 +43,7 @@ userSchema.methods.generateJwt = function() {
       email: this.email,
       name: this.name,
       pic: this.pic,
+      likedSweetIds: this.likedSweetIds,
       exp: parseInt(expiry.getTime() / 1000)
     },
     jwt_secret

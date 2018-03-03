@@ -24,8 +24,6 @@ function findUserOrCreate(profile, done) {
     if (!user) {
       const new_user = new User();
 
-      console.log(profile);
-
       new_user.name = `${profile.name.givenName} ${profile.name.familyName}`;
       new_user.email = profile.emails[0].value;
       new_user.pic = profile.photos[0].value;

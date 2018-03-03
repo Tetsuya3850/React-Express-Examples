@@ -1,9 +1,22 @@
 import { connect } from "react-redux";
 import Sweet from "./Sweet";
+import { handleLikeSweet, handleUnlikeSweet } from "../redux/sweets";
 
-const mapStateToProps = ({ sweets }, ownProps) => {
+const mapStateToProps = ({ sweets, users }, ownProps) => {
   const sweet = sweets[ownProps.sweetId];
-  return { sweet };
+  const hasLiked = users.likedSweetIds.indexOf(ownProps.sweetId) > -1;
+  return { sweet, hasLiked };
 };
 
-export default connect(mapStateToProps, null)(Sweet);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleLikeSweet: sweetId => {
+      dispatch(handleLikeSweet(sweetId));
+    },
+    handleUnlikeSweet: sweetId => {
+      dispatch(handleUnlikeSweet(sweetId));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sweet);

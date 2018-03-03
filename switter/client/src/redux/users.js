@@ -1,11 +1,11 @@
 import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
-import { getUser } from "../api";
+import { getUser, getLikedSweetIds } from "../api";
+import { LIKE_SWEET, UNLIKE_SWEET } from "./sweets";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
+const RECEIVE_LIKEDSWEETIDS = "RECEIVE_LIKEDSWEETIDS";
 const RECEIVE_USER = "RECEIVE_USER";
-const LIKE_SWEET = "LIKE_SWEET";
-const UNLIKE_SWEET = "UNLIKE_SWEET";
 
 const authUser = userInfo => {
   return { type: AUTH_USER, userInfo };
@@ -15,16 +15,12 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
+const receiveLikedSweetIds = sweetIds => {
+  return { type: RECEIVE_LIKEDSWEETIDS, sweetIds };
+};
+
 const receiveUser = userInfo => {
   return { type: RECEIVE_USER, userInfo };
-};
-
-const likeSweet = sweetId => {
-  return { type: LIKE_SWEET, sweetId };
-};
-
-const unLikeSweet = sweetId => {
-  return { type: UNLIKE_SWEET, sweetId };
 };
 
 export const socialAuthUser = (token, redirect) => async dispatch => {
@@ -46,6 +42,11 @@ export const logoutUser = redirect => async dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();
+};
+
+export const handleLikedSweetIds = () => async dispatch => {
+  const likedSweetIds = await getLikedSweetIds();
+  dispatch(receiveLikedSweetIds(likedSweetIds));
 };
 
 export const receiveUserInfo = uid => async dispatch => {
@@ -73,6 +74,11 @@ const users = (state = initialState, action) => {
         isAuthed: false,
         userInfo: {}
       };
+    case RECEIVE_LIKEDSWEETIDS:
+      return {
+        ...state,
+        likedSweetIds: action.sweetIds
+      };
     case RECEIVE_USER:
       return {
         ...state,
@@ -86,7 +92,7 @@ const users = (state = initialState, action) => {
     case UNLIKE_SWEET:
       return {
         ...state,
-        likedSweetIds: state.likedSweetIds.filter(s => s !== action.sweetId)
+        likedSweetIds: state.likedSweetIds.filter(sId => sId !== action.sweetId)
       };
     default:
       return state;

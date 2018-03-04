@@ -3,7 +3,10 @@ const Sweet = mongoose.model("Sweet");
 const User = mongoose.model("User");
 
 module.exports.getFeed = async (req, res, next) => {
-  const sweets = await Sweet.find().populate("author");
+  const sweets = await Sweet.find()
+    .limit(30)
+    .sort({ created: -1 })
+    .populate("author");
   res.json(sweets);
 };
 
@@ -27,11 +30,11 @@ module.exports.add = async (req, res, next) => {
 module.exports.like = async (req, res, next) => {
   const uid = req.me._id;
   const sweetId = req.body.sweetId;
-  const user = await User.find({
+  const user = await User.findOne({
     _id: uid,
-    likedSweets: sweetId
+    likedSweetIds: sweetId
   });
-  if (user.length === 0) {
+  if (!user) {
     await User.findByIdAndUpdate(uid, { $push: { likedSweetIds: sweetId } });
     await Sweet.findByIdAndUpdate(sweetId, { $inc: { likes: 1 } });
     res.json("Liked!");
@@ -43,9 +46,9 @@ module.exports.like = async (req, res, next) => {
 module.exports.unlike = async (req, res, next) => {
   const uid = req.me._id;
   const sweetId = req.body.sweetId;
-  const user = await User.find({
+  const user = await User.findOne({
     _id: uid,
-    likedSweets: sweetId
+    likedSweetIds: sweetId
   });
   if (user) {
     await User.findByIdAndUpdate(uid, {

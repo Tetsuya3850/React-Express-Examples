@@ -9,14 +9,8 @@ mongoose.Promise = global.Promise;
 const passport = require("passport");
 
 mongoose.connect(mongoDB);
-mongoose.connection.on("connected", function() {
-  console.log("Mongoose connected to " + mongoDB);
-});
 mongoose.connection.on("error", err => {
   console.error(err.message);
-});
-mongoose.connection.on("disconnected", function() {
-  console.log("Mongoose disconnected");
 });
 
 require("./userModel");

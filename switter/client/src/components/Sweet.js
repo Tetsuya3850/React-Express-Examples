@@ -5,14 +5,18 @@ import { Link } from "react-router-dom";
 const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
   <div style={{ borderStyle: "solid", borderWidth: "0.5px" }}>
     <div style={{ display: "flex", margin: "15px", width: "100%" }}>
-      <img
-        src={sweet.author.pic}
-        style={{ height: "70px", borderRadius: "50%" }}
-        alt="profile"
-      />
+      <Link to={`/profile/${sweet.author._id}`}>
+        <img
+          src={sweet.author.pic}
+          style={{ height: "70px", borderRadius: "50%" }}
+          alt="profile"
+        />
+      </Link>
       <div style={{ width: "80%" }}>
         <p>
-          <span style={{ cursor: "pointer" }}>{sweet.author.name}</span>
+          <Link to={`/profile/${sweet.author._id}`}>
+            <span>{sweet.author.name}</span>
+          </Link>
           <span style={{ color: "grey" }}>
             {latencyConverter(Date.now() - Date.parse(sweet.created))}
           </span>
@@ -36,10 +40,7 @@ const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
           </i>
         )}
         <Link to={`/comments/${sweet._id}`} style={{ color: "black" }}>
-          <i
-            style={{ cursor: "pointer", marginLeft: "10px" }}
-            className="fa  fa-reply"
-          >
+          <i style={{ marginLeft: "10px" }} className="fa  fa-reply">
             <span style={{ marginLeft: "4px" }}>{sweet.comments.length}</span>
           </i>
         </Link>

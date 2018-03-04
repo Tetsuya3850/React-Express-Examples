@@ -7,8 +7,8 @@ const UNAUTH_USER = "UNAUTH_USER";
 const RECEIVE_LIKEDSWEETIDS = "RECEIVE_LIKEDSWEETIDS";
 const RECEIVE_USER = "RECEIVE_USER";
 
-const authUser = userInfo => {
-  return { type: AUTH_USER, userInfo };
+const authUser = ownInfo => {
+  return { type: AUTH_USER, ownInfo };
 };
 
 const unAuthUser = () => {
@@ -58,7 +58,7 @@ export const receiveUserInfo = uid => async dispatch => {
 
 const initialState = {
   isAuthed: false,
-  userInfo: {},
+  ownInfo: {},
   likedSweetIds: []
 };
 
@@ -68,13 +68,13 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         isAuthed: true,
-        userInfo: action.userInfo
+        ownInfo: action.ownInfo
       };
     case UNAUTH_USER:
       return {
         ...state,
         isAuthed: false,
-        userInfo: {}
+        ownInfo: {}
       };
     case RECEIVE_LIKEDSWEETIDS:
       return {

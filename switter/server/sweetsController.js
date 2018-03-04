@@ -11,9 +11,10 @@ module.exports.getFeed = async (req, res, next) => {
 };
 
 module.exports.getUserSweets = async (req, res, next) => {
-  const userSweets = await Sweet.find({ author: req.params.uid }).populate(
-    "author"
-  );
+  const userSweets = await Sweet.find({ author: req.params.uid })
+    .sort({ created: -1 })
+    .limit(20)
+    .populate("author");
   res.json(userSweets);
 };
 
@@ -27,8 +28,9 @@ module.exports.getSweet = async (req, res, next) => {
 module.exports.add = async (req, res, next) => {
   const newSweet = new Sweet(req.body);
   try {
-    const addedSweet = await newSweet.save();
-    res.json("Sweet Added");
+    await newSweet.save();
+    await newSweet.populate("author").execPopulate();
+    res.json(newSweet);
   } catch (err) {
     return next(err);
   }
@@ -73,8 +75,7 @@ module.exports.comment = async (req, res, next) => {
   const sweet = await Sweet.findOne({ _id: sweetId });
   sweet.comments.push(comment);
   await sweet.save();
-  const updatedSweet = await sweet.populate("comments.author").execPopulate();
-  const commentWithIdAndAuthor =
-    updatedSweet.comments[updatedSweet.comments.length - 1];
+  await sweet.populate("comments.author").execPopulate();
+  const commentWithIdAndAuthor = sweet.comments[sweet.comments.length - 1];
   res.json(commentWithIdAndAuthor);
 };

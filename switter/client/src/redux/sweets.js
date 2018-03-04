@@ -1,4 +1,12 @@
-import { postLikeSweet, postUnlikeSweet, postComment, getSweet } from "../api";
+import {
+  postNewSweet,
+  postLikeSweet,
+  postUnlikeSweet,
+  postComment,
+  getSweet
+} from "../api";
+
+import { addFeedIds } from "./feed";
 
 const FETCHING_SWEET = "FETCHING_SWEET";
 const RECEIVE_SWEETS = "RECEIVE_SWEETS";
@@ -73,6 +81,13 @@ export const handleReceiveSweet = sweetId => async dispatch => {
   const sweet = await getSweet(sweetId);
   const normalizedSweet = { [sweetId]: sweet };
   dispatch(receiveSweets(normalizedSweet));
+};
+
+export const handleAddSweet = payload => async dispatch => {
+  const addedSweet = await postNewSweet(payload);
+  const normalizedAddedSweet = { [addedSweet._id]: addedSweet };
+  dispatch(receiveSweets(normalizedAddedSweet));
+  dispatch(addFeedIds([addedSweet._id]));
 };
 
 export const handleAddComment = (sweetId, comment) => async dispatch => {

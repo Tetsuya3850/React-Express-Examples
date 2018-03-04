@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import { postNewSweet } from "../api";
+import { handleAddSweet } from "../redux/sweets";
 
 class SweetModal extends Component {
   state = {
@@ -22,10 +22,10 @@ class SweetModal extends Component {
       text: this.text.value,
       created: Date.now(),
       like: 0,
-      author: this.props.users.userInfo._id,
+      author: this.props.users.ownInfo._id,
       replies: []
     };
-    postNewSweet(sweet);
+    this.props.dispatch(handleAddSweet(sweet));
     this.text.value = "";
     this.closeModal();
   };

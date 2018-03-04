@@ -73,7 +73,7 @@ class SweetComments extends Component {
 
 const mapStateToProps = ({ users, sweets }, ownProps) => {
   return {
-    uid: users.userInfo._id,
+    uid: users.ownInfo._id,
     isFetching: sweets.isFetching,
     sweet: sweets[ownProps.match.params.sweetId]
       ? [sweets[ownProps.match.params.sweetId]]

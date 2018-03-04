@@ -4,6 +4,7 @@ import { normalizeSweets, getSweetIds } from "../helper";
 
 const FETCHING_FEEDIDS = "FETCHING_FEEDIDS";
 const RECEIVE_FEEDIDS = "RECEIVE_FEEDIDS";
+const ADD_FEEDIDS = "ADD_FEEDIDS";
 
 const fetchingFeedIds = () => {
   return {
@@ -14,6 +15,13 @@ const fetchingFeedIds = () => {
 const receiveFeedIds = sweetIds => {
   return {
     type: RECEIVE_FEEDIDS,
+    sweetIds
+  };
+};
+
+export const addFeedIds = sweetIds => {
+  return {
+    type: ADD_FEEDIDS,
     sweetIds
   };
 };
@@ -43,6 +51,11 @@ const feed = (state = initialState, action) => {
       return {
         isFetching: false,
         sweetIds: action.sweetIds
+      };
+    case ADD_FEEDIDS:
+      return {
+        isFetching: false,
+        sweetIds: [...action.sweetIds, ...state.sweetIds]
       };
     default:
       return state;

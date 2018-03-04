@@ -12,7 +12,7 @@ class NavBar extends Component {
       <div>
         {users.isAuthed ? (
           <AuthNavBar
-            uid={users.userInfo._id}
+            uid={users.ownInfo._id}
             onLogout={() => dispatch(logoutUser(() => history.push("/")))}
           />
         ) : (

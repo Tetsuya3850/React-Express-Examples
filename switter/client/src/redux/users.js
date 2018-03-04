@@ -1,10 +1,8 @@
 import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
-import { getUser, getLikedSweetIds } from "../api";
-import { LIKE_SWEET, UNLIKE_SWEET } from "./sweets";
+import { getUser } from "../api";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
-const RECEIVE_LIKEDSWEETIDS = "RECEIVE_LIKEDSWEETIDS";
 const RECEIVE_USER = "RECEIVE_USER";
 
 const authUser = ownInfo => {
@@ -15,10 +13,6 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
-const receiveLikedSweetIds = sweetIds => {
-  return { type: RECEIVE_LIKEDSWEETIDS, sweetIds };
-};
-
 const receiveUser = userInfo => {
   return { type: RECEIVE_USER, userInfo };
 };
@@ -26,7 +20,6 @@ const receiveUser = userInfo => {
 export const socialAuthUser = (token, redirect) => async dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
-  dispatch(handleLikedSweetIds());
   redirect();
 };
 
@@ -34,7 +27,6 @@ export const reAuthUser = redirect => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
-    dispatch(handleLikedSweetIds());
   } else if (userInfo && userInfo.exp < Date.now() / 1000) {
     redirect();
   }
@@ -46,11 +38,6 @@ export const logoutUser = redirect => async dispatch => {
   redirect();
 };
 
-export const handleLikedSweetIds = () => async dispatch => {
-  const likedSweetIds = await getLikedSweetIds();
-  dispatch(receiveLikedSweetIds(likedSweetIds));
-};
-
 export const receiveUserInfo = uid => async dispatch => {
   const userInfo = await getUser(uid);
   dispatch(receiveUser(userInfo));
@@ -58,8 +45,7 @@ export const receiveUserInfo = uid => async dispatch => {
 
 const initialState = {
   isAuthed: false,
-  ownInfo: {},
-  likedSweetIds: []
+  ownInfo: {}
 };
 
 const users = (state = initialState, action) => {
@@ -76,25 +62,10 @@ const users = (state = initialState, action) => {
         isAuthed: false,
         ownInfo: {}
       };
-    case RECEIVE_LIKEDSWEETIDS:
-      return {
-        ...state,
-        likedSweetIds: action.sweetIds
-      };
     case RECEIVE_USER:
       return {
         ...state,
         [action.userInfo._id]: action.userInfo
-      };
-    case LIKE_SWEET:
-      return {
-        ...state,
-        likedSweetIds: [...state.likedSweetIds, action.sweetId]
-      };
-    case UNLIKE_SWEET:
-      return {
-        ...state,
-        likedSweetIds: state.likedSweetIds.filter(sId => sId !== action.sweetId)
       };
     default:
       return state;

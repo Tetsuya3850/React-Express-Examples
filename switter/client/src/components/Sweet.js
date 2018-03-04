@@ -2,7 +2,13 @@ import React from "react";
 import { latencyConverter } from "../helper";
 import { Link } from "react-router-dom";
 
-const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
+const Sweet = ({
+  sweet,
+  hasLiked,
+  uid,
+  handleLikeSweet,
+  handleUnlikeSweet
+}) => (
   <div style={{ borderStyle: "solid", borderWidth: "0.5px" }}>
     <div style={{ display: "flex", margin: "15px", width: "100%" }}>
       <Link to={`/profile/${sweet.author._id}`}>
@@ -26,17 +32,17 @@ const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
           <i
             style={{ cursor: "pointer", marginLeft: "5px" }}
             className="fa fa-thumbs-up"
-            onClick={() => handleUnlikeSweet(sweet._id)}
+            onClick={() => handleUnlikeSweet(sweet._id, uid)}
           >
-            <span style={{ marginLeft: "3px" }}>{sweet.likes}</span>
+            <span style={{ marginLeft: "3px" }}>{sweet.likedByIds.length}</span>
           </i>
         ) : (
           <i
             style={{ cursor: "pointer", marginLeft: "5px" }}
             className="fa fa-thumbs-o-up"
-            onClick={() => handleLikeSweet(sweet._id)}
+            onClick={() => handleLikeSweet(sweet._id, uid)}
           >
-            <span style={{ marginLeft: "3px" }}>{sweet.likes}</span>
+            <span style={{ marginLeft: "3px" }}>{sweet.likedByIds.length}</span>
           </i>
         )}
         <Link to={`/comments/${sweet._id}`} style={{ color: "black" }}>

@@ -35,7 +35,7 @@ module.exports.add = async (req, res, next) => {
   }
 };
 
-module.exports.like = async (req, res, next) => {
+module.exports.toggleLike = async (req, res, next) => {
   const uid = req.me._id;
   const sweetId = req.body.sweetId;
   const user = await User.findOne({
@@ -44,28 +44,16 @@ module.exports.like = async (req, res, next) => {
   });
   if (!user) {
     await User.findByIdAndUpdate(uid, { $push: { likedSweetIds: sweetId } });
-    await Sweet.findByIdAndUpdate(sweetId, { $inc: { likes: 1 } });
+    await Sweet.findByIdAndUpdate(sweetId, { $push: { likedByIds: uid } });
     res.json("Liked!");
   } else {
-    next("You have already liked that sweet!");
-  }
-};
-
-module.exports.unlike = async (req, res, next) => {
-  const uid = req.me._id;
-  const sweetId = req.body.sweetId;
-  const user = await User.findOne({
-    _id: uid,
-    likedSweetIds: sweetId
-  });
-  if (user) {
     await User.findByIdAndUpdate(uid, {
       $pull: { likedSweetIds: sweetId }
     });
-    await Sweet.findByIdAndUpdate(sweetId, { $inc: { likes: -1 } });
+    await Sweet.findByIdAndUpdate(sweetId, {
+      $pull: { likedByIds: uid }
+    });
     res.json("Unliked!");
-  } else {
-    next("You haven't liked that sweet yet!");
   }
 };
 

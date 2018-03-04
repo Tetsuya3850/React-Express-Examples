@@ -13,15 +13,13 @@ const sweetsCtrl = require("./sweetsController");
 
 router.get("/auth/google", usersCtrl.goAuth);
 router.get("/auth/google/callback", usersCtrl.goAuthCB);
-router.get("/users/liked", auth, usersCtrl.getlikeIds);
 router.get("/users/:uid", auth, usersCtrl.getUser);
 
 router.get("/sweets/feed", auth, sweetsCtrl.getFeed);
 router.get("/sweets/users/:uid", auth, sweetsCtrl.getUserSweets);
 router.get("/sweets/comments/:sweetId", auth, sweetsCtrl.getSweet);
 router.post("/sweets/add", auth, sweetsCtrl.add);
-router.post("/sweets/like", auth, sweetsCtrl.like);
-router.post("/sweets/unlike", auth, sweetsCtrl.unlike);
+router.post("/sweets/togglelike", auth, sweetsCtrl.toggleLike);
 router.post("/sweets/comment", auth, sweetsCtrl.comment);
 
 module.exports = router;

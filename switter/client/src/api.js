@@ -20,16 +20,6 @@ export async function getUser(uid) {
   return await response.json();
 }
 
-export async function getLikedSweetIds() {
-  const response = await fetch(`/users/liked`, {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
 export async function getUserSweets(uid) {
   const response = await fetch(`/sweets/users/${uid}`, {
     method: "get",
@@ -63,21 +53,8 @@ export async function postNewSweet(new_sweet) {
   return await response.json();
 }
 
-export async function postLikeSweet(sweetId) {
-  const response = await fetch(`/sweets/like/`, {
-    method: "post",
-    body: JSON.stringify({ sweetId }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function postUnlikeSweet(sweetId) {
-  const response = await fetch(`/sweets/unlike/`, {
+export async function postToggleSweet(sweetId) {
+  const response = await fetch(`/sweets/togglelike/`, {
     method: "post",
     body: JSON.stringify({ sweetId }),
     headers: {

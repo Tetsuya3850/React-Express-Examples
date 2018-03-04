@@ -1,10 +1,4 @@
-import {
-  postNewSweet,
-  postLikeSweet,
-  postUnlikeSweet,
-  postComment,
-  getSweet
-} from "../api";
+import { postToggleSweet, postComment, getSweet } from "../api";
 
 const FETCHING_SWEET = "FETCHING_SWEET";
 const RECEIVE_SWEETS = "RECEIVE_SWEETS";
@@ -25,17 +19,19 @@ export const receiveSweets = sweets => {
   };
 };
 
-const likeSweet = sweetId => {
+const likeSweet = (sweetId, uid) => {
   return {
     type: LIKE_SWEET,
-    sweetId
+    sweetId,
+    uid
   };
 };
 
-const unlikeSweet = sweetId => {
+const unlikeSweet = (sweetId, uid) => {
   return {
     type: UNLIKE_SWEET,
-    sweetId
+    sweetId,
+    uid
   };
 };
 
@@ -47,27 +43,29 @@ const addComment = (sweetId, comment) => {
   };
 };
 
-export const handleLikeSweet = sweetId => async dispatch => {
-  const reponse = await postLikeSweet(sweetId);
-  dispatch(likeSweet(sweetId));
+export const handleLikeSweet = (sweetId, uid) => async dispatch => {
+  const reponse = await postToggleSweet(sweetId);
+  console.log(uid);
+  dispatch(likeSweet(sweetId, uid));
 };
 
-export const handleUnlikeSweet = sweetId => async dispatch => {
-  const reponse = await postUnlikeSweet(sweetId);
-  dispatch(unlikeSweet(sweetId));
+export const handleUnlikeSweet = (sweetId, uid) => async dispatch => {
+  const reponse = await postToggleSweet(sweetId);
+  dispatch(unlikeSweet(sweetId, uid));
 };
 
 const likeReducer = (state, action) => {
+  console.log(action.uid);
   switch (action.type) {
     case LIKE_SWEET:
       return {
         ...state,
-        likes: state.likes + 1
+        likedByIds: [...state.likedByIds, ...[action.uid]]
       };
     case UNLIKE_SWEET:
       return {
         ...state,
-        likes: state.likes - 1
+        likedByIds: state.likedByIds.filter(uid => uid !== action.uid)
       };
     default:
       return state;

@@ -1,8 +1,8 @@
 import React from "react";
 import { latencyConverter } from "../helper";
 
-const Comments = props => {
-  return props.comments.map(comment => (
+const Comments = props =>
+  props.comments.map(comment => (
     <div
       key={comment._id}
       style={{
@@ -31,6 +31,5 @@ const Comments = props => {
       </div>
     </div>
   ));
-};
 
 export default Comments;

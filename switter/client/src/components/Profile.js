@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { receiveUserInfo } from "../redux/users";
 import { receiveUserSweets } from "../redux/userSweets";
@@ -6,17 +7,19 @@ import SweetContainer from "./SweetContainer";
 
 class Profile extends Component {
   componentDidMount() {
-    const { match, dispatch } = this.props;
-    dispatch(receiveUserInfo(match.params.uid));
-    dispatch(receiveUserSweets(match.params.uid));
+    const { match, receiveUserInfo, receiveUserSweets } = this.props;
+    const { uid } = match.params;
+    receiveUserInfo(uid);
+    receiveUserSweets(uid);
   }
   render() {
     const { match, userSweets, users } = this.props;
-    if (users[match.params.uid] === undefined) {
-      users[match.params.uid] = {};
+    const { uid } = match.params;
+    if (users[uid] === undefined) {
+      users[uid] = {};
     }
-    if (userSweets[match.params.uid] === undefined) {
-      userSweets[match.params.uid] = [];
+    if (userSweets[uid] === undefined) {
+      userSweets[uid] = [];
     }
     return (
       <div>
@@ -41,6 +44,16 @@ const mapStateToProps = ({ userSweets, users }) => {
   return { userSweets, users };
 };
 
-Profile = connect(mapStateToProps, null)(Profile);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      receiveUserInfo,
+      receiveUserSweets
+    },
+    dispatch
+  );
+};
+
+Profile = connect(mapStateToProps, mapDispatchToProps)(Profile);
 
 export default Profile;

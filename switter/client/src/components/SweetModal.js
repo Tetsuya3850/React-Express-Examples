@@ -21,9 +21,9 @@ class SweetModal extends Component {
     const sweet = {
       text: this.text.value,
       created: Date.now(),
-      like: 0,
+      likedByIds: [],
       author: this.props.users.ownInfo._id,
-      replies: []
+      comments: []
     };
     postNewSweet(sweet);
     this.text.value = "";
@@ -45,36 +45,23 @@ class SweetModal extends Component {
               justifyContent: "space-between"
             }}
           >
-            <h4
-              style={{
-                marginTop: "5px"
-              }}
-            >
-              New Sweet
-            </h4>
-            <h4
-              onClick={this.closeModal}
-              style={{
-                marginTop: "5px",
-                cursor: "pointer"
-              }}
-            >
+            <p>New Sweet</p>
+            <p onClick={this.closeModal} style={{ cursor: "pointer" }}>
               X
-            </h4>
+            </p>
           </div>
-
           <form onSubmit={this.handleFormSubmit}>
             <textarea
-              rows="8"
+              rows="6"
               ref={node => {
                 this.text = node;
               }}
+              autoFocus
               required
               placeholder="What's Up Dood?"
-              maxLength="1000"
-              style={{ width: "100%", marginBottom: "10px" }}
+              maxLength="140"
+              style={{ width: "100%", margin: "10px 0px", fontSize: "14px" }}
             />
-
             <input
               type="submit"
               value="Sweet!"

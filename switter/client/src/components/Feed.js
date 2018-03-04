@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFeedSweets } from "../redux/feed";
 import SweetContainer from "./SweetContainer";
 
 class Feed extends Component {
   componentDidMount() {
-    this.props.dispatch(handleFeedSweets());
+    const { handleFeedSweets } = this.props;
+    handleFeedSweets();
   }
   render() {
     const { feed } = this.props;
@@ -29,6 +31,15 @@ const mapStateToProps = ({ feed }) => {
   return { feed };
 };
 
-Feed = connect(mapStateToProps, null)(Feed);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleFeedSweets
+    },
+    dispatch
+  );
+};
+
+Feed = connect(mapStateToProps, mapDispatchToProps)(Feed);
 
 export default Feed;

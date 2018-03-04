@@ -27,7 +27,7 @@ export const reAuthUser = redirect => async dispatch => {
   const ownInfo = getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
-  } else {
+  } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {
     redirect();
   }
 };

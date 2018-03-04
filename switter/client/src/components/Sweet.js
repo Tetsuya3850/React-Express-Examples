@@ -46,7 +46,7 @@ const Sweet = ({
           </i>
         )}
         <Link to={`/comments/${sweet._id}`} style={{ color: "black" }}>
-          <i style={{ marginLeft: "10px" }} className="fa  fa-reply">
+          <i style={{ marginLeft: "10px" }} className="fa fa-reply">
             <span style={{ marginLeft: "4px" }}>{sweet.comments.length}</span>
           </i>
         </Link>

@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Sweet from "./Sweet";
 import { handleLikeSweet, handleUnlikeSweet } from "../redux/sweets";
 
@@ -9,14 +10,13 @@ const mapStateToProps = ({ sweets, users }, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    handleLikeSweet: (sweetId, uid) => {
-      dispatch(handleLikeSweet(sweetId, uid));
+  return bindActionCreators(
+    {
+      handleLikeSweet,
+      handleUnlikeSweet
     },
-    handleUnlikeSweet: (sweetId, uid) => {
-      dispatch(handleUnlikeSweet(sweetId, uid));
-    }
-  };
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sweet);

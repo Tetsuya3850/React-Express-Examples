@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "./SweetContainer";
 import Comments from "./Comments";
@@ -6,55 +7,54 @@ import { handleReceiveSweet, handleAddComment } from "../redux/sweets";
 
 class SweetComments extends Component {
   componentDidMount() {
-    this.props.dispatch(handleReceiveSweet(this.props.match.params.sweetId));
+    const { match, handleReceiveSweet } = this.props;
+    const { sweetId } = match.params;
+    handleReceiveSweet(sweetId);
   }
 
   handleFormSubmit = e => {
+    const { match, handleAddComment, uid } = this.props;
+    const { sweetId } = match.params;
     e.preventDefault();
     const comment = {
       text: this.text.value,
       created: Date.now(),
-      author: this.props.uid
+      author: uid
     };
-    this.props.dispatch(
-      handleAddComment(this.props.match.params.sweetId, comment)
-    );
+    handleAddComment(sweetId, comment);
     this.text.value = "";
   };
 
   render() {
+    const { isFetching, sweet } = this.props;
     return (
       <div>
-        {this.props.isFetching ? (
+        {isFetching ? (
           <p style={{ textAlign: "center" }}>LOADING</p>
         ) : (
           <div>
-            {this.props.sweet.map(sweet => (
+            {sweet.map(sweet => (
               <div key={`div${sweet._id}`}>
                 <SweetContainer sweetId={sweet._id} />
                 <hr />
                 <Comments comments={sweet.comments} />
               </div>
             ))}
-            <form
-              onSubmit={this.handleFormSubmit}
-              style={{
-                marginTop: "10px"
-              }}
-            >
+            <form onSubmit={this.handleFormSubmit}>
               <textarea
                 rows="4"
                 ref={node => {
                   this.text = node;
                 }}
                 required
+                autoFocus
                 placeholder="Leave a Comment!"
-                maxLength="1000"
+                maxLength="140"
                 style={{
                   width: "80%",
                   display: "block",
-                  margin: "auto",
-                  marginBottom: "10px"
+                  margin: "10px auto",
+                  fontSize: "14px"
                 }}
               />
 
@@ -81,6 +81,16 @@ const mapStateToProps = ({ users, sweets }, ownProps) => {
   };
 };
 
-SweetComments = connect(mapStateToProps, null)(SweetComments);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleReceiveSweet,
+      handleAddComment
+    },
+    dispatch
+  );
+};
+
+SweetComments = connect(mapStateToProps, mapDispatchToProps)(SweetComments);
 
 export default SweetComments;

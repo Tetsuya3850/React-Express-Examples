@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import NavBar from "./NavBar";
@@ -25,7 +24,5 @@ class AppContainer extends Component {
     );
   }
 }
-
-AppContainer = connect()(AppContainer);
 
 export default AppContainer;

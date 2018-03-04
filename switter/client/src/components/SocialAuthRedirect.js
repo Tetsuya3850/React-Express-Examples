@@ -5,11 +5,12 @@ import { getCookie } from "../helper";
 
 class SocialAuthRedirect extends Component {
   componentWillMount() {
-    this.props.dispatch(
+    const { dispatch, history } = this.props;
+    dispatch(
       socialAuthUser(getCookie("auth"), () => {
         document.cookie =
           "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        this.props.history.push("/");
+        history.push("/");
       })
     );
   }

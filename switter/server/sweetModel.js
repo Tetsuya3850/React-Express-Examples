@@ -26,7 +26,10 @@ const sweetSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  likes: Number,
+  likes: {
+    type: Number,
+    default: 0
+  },
   author: {
     type: mongoose.Schema.ObjectId,
     ref: "User"

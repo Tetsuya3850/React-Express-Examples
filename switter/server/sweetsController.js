@@ -4,8 +4,8 @@ const User = mongoose.model("User");
 
 module.exports.getFeed = async (req, res, next) => {
   const sweets = await Sweet.find()
-    .limit(30)
     .sort({ created: -1 })
+    .limit(30)
     .populate("author");
   res.json(sweets);
 };
@@ -15,6 +15,13 @@ module.exports.getUserSweets = async (req, res, next) => {
     "author"
   );
   res.json(userSweets);
+};
+
+module.exports.getSweet = async (req, res, next) => {
+  const sweet = await Sweet.findOne({ _id: req.params.sweetId }).populate(
+    "author"
+  );
+  res.json(sweet);
 };
 
 module.exports.add = async (req, res, next) => {
@@ -59,4 +66,12 @@ module.exports.unlike = async (req, res, next) => {
   } else {
     next("You haven't liked that sweet yet!");
   }
+};
+
+module.exports.comment = async (req, res, next) => {
+  const { sweetId, comment } = req.body;
+  const sweet = await Sweet.findOne({ _id: sweetId });
+  sweet.comments.push(comment);
+  await sweet.save();
+  res.json("Comment Added!");
 };

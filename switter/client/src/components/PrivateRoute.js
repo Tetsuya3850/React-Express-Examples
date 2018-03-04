@@ -6,12 +6,8 @@ let PrivateRoute = ({ component: Component, users, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      if (users.isAuthed && users.userInfo._id === props.match.params.uid) {
+      if (users.isAuthed) {
         return <Component {...props} />;
-      } else if (users.isAuthed && props.match.params.uid === undefined) {
-        return (
-          <Redirect to={`${props.location.pathname}/${users.userInfo._id}`} />
-        );
       } else {
         return (
           <Redirect

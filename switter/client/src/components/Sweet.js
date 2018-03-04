@@ -1,5 +1,6 @@
 import React from "react";
 import { latencyConverter } from "../helper";
+import { Link } from "react-router-dom";
 
 const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
   <div style={{ borderStyle: "solid", borderWidth: "0.5px" }}>
@@ -22,18 +23,26 @@ const Sweet = ({ sweet, hasLiked, handleLikeSweet, handleUnlikeSweet }) => (
             style={{ cursor: "pointer", marginLeft: "5px" }}
             className="fa fa-thumbs-up"
             onClick={() => handleUnlikeSweet(sweet._id)}
-          />
+          >
+            <span style={{ marginLeft: "3px" }}>{sweet.likes}</span>
+          </i>
         ) : (
           <i
             style={{ cursor: "pointer", marginLeft: "5px" }}
             className="fa fa-thumbs-o-up"
             onClick={() => handleLikeSweet(sweet._id)}
-          />
+          >
+            <span style={{ marginLeft: "3px" }}>{sweet.likes}</span>
+          </i>
         )}
-        <i
-          style={{ cursor: "pointer", marginLeft: "10px" }}
-          className="fa  fa-reply"
-        />
+        <Link to={`/comments/${sweet._id}`} style={{ color: "black" }}>
+          <i
+            style={{ cursor: "pointer", marginLeft: "10px" }}
+            className="fa  fa-reply"
+          >
+            <span style={{ marginLeft: "4px" }}>{sweet.comments.length}</span>
+          </i>
+        </Link>
       </div>
     </div>
   </div>

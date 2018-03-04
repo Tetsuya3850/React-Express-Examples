@@ -1,8 +1,16 @@
-import { postLikeSweet, postUnlikeSweet } from "../api";
+import { postLikeSweet, postUnlikeSweet, postComment, getSweet } from "../api";
 
+const FETCHING_SWEET = "FETCHING_SWEET";
 const RECEIVE_SWEETS = "RECEIVE_SWEETS";
 export const LIKE_SWEET = "LIKE_SWEET";
 export const UNLIKE_SWEET = "UNLIKE_SWEET";
+const ADD_COMMENT = "ADD_COMMENT";
+
+const fetchingSweet = () => {
+  return {
+    type: FETCHING_SWEET
+  };
+};
 
 export const receiveSweets = sweets => {
   return {
@@ -11,17 +19,25 @@ export const receiveSweets = sweets => {
   };
 };
 
-export const likeSweet = sweetId => {
+const likeSweet = sweetId => {
   return {
     type: LIKE_SWEET,
     sweetId
   };
 };
 
-export const unlikeSweet = sweetId => {
+const unlikeSweet = sweetId => {
   return {
     type: UNLIKE_SWEET,
     sweetId
+  };
+};
+
+const addComment = (sweetId, comment) => {
+  return {
+    type: ADD_COMMENT,
+    sweetId,
+    comment
   };
 };
 
@@ -40,29 +56,62 @@ const likeReducer = (state, action) => {
     case LIKE_SWEET:
       return {
         ...state,
-        like: state.like + 1
+        likes: state.likes + 1
       };
     case UNLIKE_SWEET:
       return {
         ...state,
-        like: state.like - 1
+        likes: state.likes - 1
       };
     default:
       return state;
   }
 };
 
-const initialState = {};
+export const handleReceiveSweet = sweetId => async dispatch => {
+  dispatch(fetchingSweet());
+  const sweet = await getSweet(sweetId);
+  const normalizedSweet = { [sweetId]: sweet };
+  dispatch(receiveSweets(normalizedSweet));
+};
+
+export const handleAddComment = (sweetId, comment) => async dispatch => {
+  const response = await postComment({ sweetId, comment });
+  dispatch(addComment(sweetId, comment));
+};
+
+const commentReducer = (state, action) => {
+  switch (action.type) {
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.comment]
+      };
+    default:
+      return state;
+  }
+};
+
+const initialState = {
+  isFetching: false
+};
 
 const sweets = (state = initialState, action) => {
   switch (action.type) {
+    case FETCHING_SWEET:
+      return { ...state, isFetching: true };
     case RECEIVE_SWEETS:
-      return { ...state, ...action.sweets };
+      return { ...state, ...action.sweets, isFetching: false };
     case LIKE_SWEET:
     case UNLIKE_SWEET:
       return {
         ...state,
         [action.sweetId]: likeReducer(state[action.sweetId], action)
+      };
+    case ADD_COMMENT:
+      return {
+        ...state,
+        [action.sweetId]: commentReducer(state[action.sweetId], action)
       };
     default:
       return state;

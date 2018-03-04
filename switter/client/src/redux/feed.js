@@ -19,7 +19,7 @@ const receiveFeedIds = sweetIds => {
   };
 };
 
-export const addFeedIds = sweetIds => {
+const addFeedIds = sweetIds => {
   return {
     type: ADD_FEEDIDS,
     sweetIds

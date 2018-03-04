@@ -29,8 +29,7 @@ module.exports.add = async (req, res, next) => {
   const newSweet = new Sweet(req.body);
   try {
     await newSweet.save();
-    await newSweet.populate("author").execPopulate();
-    res.json(newSweet);
+    res.json("Sweet Added!");
   } catch (err) {
     return next(err);
   }

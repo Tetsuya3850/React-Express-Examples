@@ -43,9 +43,15 @@ const addComment = (sweetId, comment) => {
   };
 };
 
+export const handleReceiveSweet = sweetId => async dispatch => {
+  dispatch(fetchingSweet());
+  const sweet = await getSweet(sweetId);
+  const normalizedSweet = { [sweetId]: sweet };
+  dispatch(receiveSweets(normalizedSweet));
+};
+
 export const handleLikeSweet = (sweetId, uid) => async dispatch => {
   const reponse = await postToggleSweet(sweetId);
-  console.log(uid);
   dispatch(likeSweet(sweetId, uid));
 };
 
@@ -54,8 +60,12 @@ export const handleUnlikeSweet = (sweetId, uid) => async dispatch => {
   dispatch(unlikeSweet(sweetId, uid));
 };
 
-const likeReducer = (state, action) => {
-  console.log(action.uid);
+export const handleAddComment = (sweetId, comment) => async dispatch => {
+  const commentWithId = await postComment({ sweetId, comment });
+  dispatch(addComment(sweetId, commentWithId));
+};
+
+const likeCommentReducer = (state, action) => {
   switch (action.type) {
     case LIKE_SWEET:
       return {
@@ -67,25 +77,6 @@ const likeReducer = (state, action) => {
         ...state,
         likedByIds: state.likedByIds.filter(uid => uid !== action.uid)
       };
-    default:
-      return state;
-  }
-};
-
-export const handleReceiveSweet = sweetId => async dispatch => {
-  dispatch(fetchingSweet());
-  const sweet = await getSweet(sweetId);
-  const normalizedSweet = { [sweetId]: sweet };
-  dispatch(receiveSweets(normalizedSweet));
-};
-
-export const handleAddComment = (sweetId, comment) => async dispatch => {
-  const commentWithId = await postComment({ sweetId, comment });
-  dispatch(addComment(sweetId, commentWithId));
-};
-
-const commentReducer = (state, action) => {
-  switch (action.type) {
     case ADD_COMMENT:
       return {
         ...state,
@@ -108,14 +99,10 @@ const sweets = (state = initialState, action) => {
       return { ...state, ...action.sweets, isFetching: false };
     case LIKE_SWEET:
     case UNLIKE_SWEET:
-      return {
-        ...state,
-        [action.sweetId]: likeReducer(state[action.sweetId], action)
-      };
     case ADD_COMMENT:
       return {
         ...state,
-        [action.sweetId]: commentReducer(state[action.sweetId], action)
+        [action.sweetId]: likeCommentReducer(state[action.sweetId], action)
       };
     default:
       return state;

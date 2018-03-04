@@ -10,7 +10,7 @@ export function removeToken() {
   localStorage.removeItem("jwt-token");
 }
 
-export function getUserInfo() {
+export function getOwnInfo() {
   const token = getToken();
   let payload;
   if (token) {

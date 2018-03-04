@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getFeedSweets } from "../redux/feed";
+import { handleFeedSweets } from "../redux/feed";
 import SweetContainer from "./SweetContainer";
 
 class Feed extends Component {
   componentDidMount() {
-    this.props.dispatch(getFeedSweets());
+    this.props.dispatch(handleFeedSweets());
   }
   render() {
     const { feed } = this.props;

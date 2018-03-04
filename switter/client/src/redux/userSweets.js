@@ -2,12 +2,12 @@ import { getUserSweets } from "../api";
 import { receiveSweets } from "./sweets";
 import { normalizeSweets, getSweetIds } from "../helper";
 
-export const FETCHING_USER_SWEETIDS = "FETCHING_USER_SWEETIDS";
-export const RECEIVE_USER_SWEETIDS = "RECEIVE_USER_SWEETIDS";
+const FETCHING_USER_SWEETS = "FETCHING_USER_SWEETS";
+const RECEIVE_USER_SWEETIDS = "RECEIVE_USER_SWEETIDS";
 
-const fetchingUserSweetIds = () => {
+const fetchingUserSweets = () => {
   return {
-    type: FETCHING_USER_SWEETIDS
+    type: FETCHING_USER_SWEETS
   };
 };
 
@@ -20,7 +20,7 @@ const receiveUserSweetIds = (uid, sweetIds) => {
 };
 
 export const receiveUserSweets = uid => async dispatch => {
-  dispatch(fetchingUserSweetIds());
+  dispatch(fetchingUserSweets());
   const userSweets = await getUserSweets(uid);
   const normalizedUserSweets = normalizeSweets(userSweets);
   const userSweetIds = getSweetIds(userSweets);
@@ -34,7 +34,7 @@ const initialState = {
 
 const userSweets = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_USER_SWEETIDS:
+    case FETCHING_USER_SWEETS:
       return {
         ...state,
         isFetching: true

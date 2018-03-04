@@ -1,4 +1,4 @@
-import { saveToken, removeToken, getUserInfo, parseToken } from "../helper";
+import { saveToken, removeToken, getOwnInfo, parseToken } from "../helper";
 import { getUser } from "../api";
 
 const AUTH_USER = "AUTH_USER";
@@ -24,10 +24,10 @@ export const socialAuthUser = (token, redirect) => async dispatch => {
 };
 
 export const reAuthUser = redirect => async dispatch => {
-  const userInfo = getUserInfo();
-  if (userInfo && userInfo.exp >= Date.now() / 1000) {
-    dispatch(authUser(userInfo));
-  } else if (userInfo && userInfo.exp < Date.now() / 1000) {
+  const ownInfo = getOwnInfo();
+  if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
+    dispatch(authUser(ownInfo));
+  } else {
     redirect();
   }
 };

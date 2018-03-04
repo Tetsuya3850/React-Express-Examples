@@ -1,4 +1,4 @@
-import { getFeed } from "../api";
+import { getFeedSweets } from "../api";
 import { receiveSweets } from "./sweets";
 import { normalizeSweets, getSweetIds } from "../helper";
 
@@ -26,9 +26,9 @@ const addFeedIds = sweetIds => {
   };
 };
 
-export const getFeedSweets = () => async dispatch => {
+export const handleFeedSweets = () => async dispatch => {
   dispatch(fetchingFeedIds());
-  const feedSweets = await getFeed();
+  const feedSweets = await getFeedSweets();
   const normalizedFeedSweets = normalizeSweets(feedSweets);
   const feedSweetIds = getSweetIds(feedSweets);
   dispatch(receiveSweets(normalizedFeedSweets));

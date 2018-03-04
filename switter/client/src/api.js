@@ -1,6 +1,6 @@
 import { getToken } from "./helper";
 
-export async function getFeed() {
+export async function getFeedSweets() {
   const response = await fetch("/sweets/feed", {
     method: "get",
     headers: {

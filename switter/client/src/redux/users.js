@@ -26,6 +26,7 @@ const receiveUser = userInfo => {
 export const socialAuthUser = (token, redirect) => async dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
+  dispatch(handleLikedSweetIds());
   redirect();
 };
 
@@ -33,6 +34,7 @@ export const reAuthUser = redirect => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
+    dispatch(handleLikedSweetIds());
   } else if (userInfo && userInfo.exp < Date.now() / 1000) {
     redirect();
   }

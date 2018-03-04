@@ -4,24 +4,34 @@ mongoose.Promise = global.Promise;
 const sweetSchema = new mongoose.Schema({
   text: {
     type: String,
-    maxlength: [140, "Too Long!"],
-    trim: true
+    required: [true, "Empty Sweet!"],
+    maxlength: [140, "Too Long!"]
   },
   created: {
     type: Date,
     default: Date.now
   },
-  like: Number,
+  likes: Number,
   author: {
     type: mongoose.Schema.ObjectId,
     ref: "User"
   },
-  replies: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Reply"
-    }
-  ]
+  comments: [commentSchema]
+});
+
+const commentSchema = new mongoose.Schema({
+  text: {
+    type: String,
+    maxlength: [140, "Too Long!"]
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
+  author: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
+  }
 });
 
 mongoose.model("Sweet", sweetSchema);

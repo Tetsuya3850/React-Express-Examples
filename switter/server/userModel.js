@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     validate: [validateEmail, "Invalid address!"],
     maxlength: [50, "Too Long!"],
     unique: true,
+    index: true,
     trim: true
   },
   name: {
@@ -43,7 +44,6 @@ userSchema.methods.generateJwt = function() {
       email: this.email,
       name: this.name,
       pic: this.pic,
-      likedSweetIds: this.likedSweetIds,
       exp: parseInt(expiry.getTime() / 1000)
     },
     jwt_secret

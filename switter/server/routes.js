@@ -8,13 +8,13 @@ const auth = jwt({
   requestProperty: "me"
 });
 
-const userCtrl = require("./userController");
+const usersCtrl = require("./usersController");
 const sweetsCtrl = require("./sweetsController");
 
-router.get("/auth/google", userCtrl.goAuth);
-router.get("/auth/google/callback", userCtrl.goAuthCB);
-router.get("/users/liked", auth, userCtrl.getlikeIds);
-router.get("/users/:uid", auth, userCtrl.getUser);
+router.get("/auth/google", usersCtrl.goAuth);
+router.get("/auth/google/callback", usersCtrl.goAuthCB);
+router.get("/users/liked", auth, usersCtrl.getlikeIds);
+router.get("/users/:uid", auth, usersCtrl.getUser);
 
 router.get("/sweets/feed", auth, sweetsCtrl.getFeed);
 router.get("/sweets/:uid", auth, sweetsCtrl.getUserSweets);

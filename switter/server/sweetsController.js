@@ -33,7 +33,7 @@ module.exports.like = async (req, res, next) => {
   });
   if (user.length === 0) {
     await User.findByIdAndUpdate(uid, { $push: { likedSweetIds: sweetId } });
-    await Sweet.findByIdAndUpdate(sweetId, { $inc: { like: 1 } });
+    await Sweet.findByIdAndUpdate(sweetId, { $inc: { likes: 1 } });
     res.json("Liked!");
   } else {
     next("You have already liked that sweet!");
@@ -51,7 +51,7 @@ module.exports.unlike = async (req, res, next) => {
     await User.findByIdAndUpdate(uid, {
       $pull: { likedSweetIds: sweetId }
     });
-    await Sweet.findByIdAndUpdate(sweetId, { $inc: { like: -1 } });
+    await Sweet.findByIdAndUpdate(sweetId, { $inc: { likes: -1 } });
     res.json("Unliked!");
   } else {
     next("You haven't liked that sweet yet!");

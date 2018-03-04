@@ -1,6 +1,5 @@
 const express = require("express");
 const helmet = require("helmet");
-var morgan = require("morgan");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const port = process.env.PORT;
@@ -22,7 +21,6 @@ const routes = require("./routes");
 const app = express();
 
 app.use(helmet());
-app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());

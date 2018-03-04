@@ -76,8 +76,8 @@ export const handleReceiveSweet = sweetId => async dispatch => {
 };
 
 export const handleAddComment = (sweetId, comment) => async dispatch => {
-  const response = await postComment({ sweetId, comment });
-  dispatch(addComment(sweetId, comment));
+  const commentWithId = await postComment({ sweetId, comment });
+  dispatch(addComment(sweetId, commentWithId));
 };
 
 const commentReducer = (state, action) => {

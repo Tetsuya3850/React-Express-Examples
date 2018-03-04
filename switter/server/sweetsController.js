@@ -18,9 +18,9 @@ module.exports.getUserSweets = async (req, res, next) => {
 };
 
 module.exports.getSweet = async (req, res, next) => {
-  const sweet = await Sweet.findOne({ _id: req.params.sweetId }).populate(
-    "author"
-  );
+  const sweet = await Sweet.findOne({ _id: req.params.sweetId })
+    .populate("author")
+    .populate("comments.author");
   res.json(sweet);
 };
 
@@ -73,5 +73,8 @@ module.exports.comment = async (req, res, next) => {
   const sweet = await Sweet.findOne({ _id: sweetId });
   sweet.comments.push(comment);
   await sweet.save();
-  res.json("Comment Added!");
+  const updatedSweet = await sweet.populate("comments.author").execPopulate();
+  const commentWithIdAndAuthor =
+    updatedSweet.comments[updatedSweet.comments.length - 1];
+  res.json(commentWithIdAndAuthor);
 };

@@ -2,18 +2,18 @@ import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { toggleTodo, deleteTodo } from "./redux";
+import { toggleTodo, deleteTodo } from "../redux";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ todos, onToggleTodo, onDeleteTodo }) => {
+let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => {
   return (
     <View>
       {todos.map(todo => (
         <Todo
           key={todo._id}
           {...todo}
-          onTogglePress={() => onToggleTodo(todo._id)}
-          onDeletePress={() => onDeleteTodo(todo._id)}
+          onTogglePress={() => toggleTodo(todo._id)}
+          onDeletePress={() => deleteTodo(todo._id)}
         />
       ))}
     </View>
@@ -29,8 +29,8 @@ const mapStateToProps = ({ todos }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onToggleTodo: toggleTodo,
-      onDeleteTodo: deleteTodo
+      toggleTodo,
+      deleteTodo
     },
     dispatch
   );

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { TextInput, StyleSheet } from "react-native";
+import { connect } from "react-redux";
+import { addNewTodo } from "./redux";
 
-class Input extends Component {
+class AddTodo extends Component {
   state = {
     text: ""
   };
@@ -9,24 +11,20 @@ class Input extends Component {
   onChangeText = text => this.setState({ text });
 
   onSubmitEditing = () => {
-    const { onSubmitEditing } = this.props;
     const { text } = this.state;
-
     if (!text) return;
-
-    onSubmitEditing(text);
+    dispatch(addNewTodo(text));
     this.setState({ text: "" });
   };
 
   render() {
-    const { placeholder } = this.props;
     const { text } = this.state;
 
     return (
       <TextInput
-        style={styles.input}
+        style={styles.add}
         value={text}
-        placeholder={placeholder}
+        placeholder={"What to get done?"}
         onChangeText={this.onChangeText}
         onSubmitEditing={this.onSubmitEditing}
       />
@@ -35,10 +33,12 @@ class Input extends Component {
 }
 
 const styles = StyleSheet.create({
-  input: {
+  add: {
     padding: 15,
     height: 50
   }
 });
 
-export default Input;
+AddTodo = connect()(AddTodo);
+
+export default AddTodo;

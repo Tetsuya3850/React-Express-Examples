@@ -8,8 +8,11 @@ const Task = ({ onTogglePress, onDeletePress, task, done }) => (
         {task}
       </Text>
     </TouchableOpacity>
-    <TouchableOpacity onPress={onDeletePress}>
-      <Text>&#10799;</Text>
+    <TouchableOpacity
+      onPress={onDeletePress}
+      hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+    >
+      <Text>X</Text>
     </TouchableOpacity>
   </View>
 );

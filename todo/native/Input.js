@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextInput, StyleSheet } from "react-native";
 
-export default class Input extends Component {
+class Input extends Component {
   state = {
     text: ""
   };
@@ -12,7 +12,7 @@ export default class Input extends Component {
     const { onSubmitEditing } = this.props;
     const { text } = this.state;
 
-    if (!text) return; // Don't submit if empty
+    if (!text) return;
 
     onSubmitEditing(text);
     this.setState({ text: "" });
@@ -40,3 +40,5 @@ const styles = StyleSheet.create({
     height: 50
   }
 });
+
+export default Input;

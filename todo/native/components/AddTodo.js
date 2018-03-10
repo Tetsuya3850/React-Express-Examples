@@ -21,8 +21,6 @@ class AddTodo extends Component {
 
   render() {
     const { text } = this.state;
-    const platformConfigs =
-      Platform.OS === "ios" ? { clearButtonMode: "while-editing" } : {};
 
     return (
       <TextInput
@@ -33,7 +31,7 @@ class AddTodo extends Component {
         maxLength={30}
         returnKeyType="go"
         onSubmitEditing={this.onSubmitEditing}
-        {...platformConfigs}
+        {...(Platform.OS === "ios" ? { clearButtonMode: "while-editing" } : {})}
       />
     );
   }

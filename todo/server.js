@@ -20,31 +20,47 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get("/todo", async (req, res) => {
-  const todos = await Todo.find();
-  res.json(todos);
+  try {
+    const todos = await Todo.find();
+    res.json(todos);
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.post("/add", async (req, res) => {
-  const newTodo = new Todo(req.body);
-  await newTodo.save();
-  res.json("Todo Saved!");
+  try {
+    const newTodo = new Todo(req.body);
+    await newTodo.save();
+    res.json("saved!");
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.post("/toggle", async (req, res) => {
-  const todo = await Todo.findOne({ _id: req.body._id });
-  todo.done = !todo.done;
-  await todo.save();
-  res.json("toggled!");
+  try {
+    const todo = await Todo.findOne({ _id: req.body._id });
+    todo.done = !todo.done;
+    await todo.save();
+    res.json("toggled!");
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.post("/delete", async (req, res) => {
-  await Todo.findByIdAndRemove(req.body._id);
-  res.json("Todo Deleted");
+  try {
+    await Todo.findByIdAndRemove(req.body._id);
+    res.json("deleted!");
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.use((err, request, response, next) => {
   console.log(err);
-  response.status(500).send("Something broke!");
+  response.status(500).send(err);
 });
 
 app.listen(port, () => {

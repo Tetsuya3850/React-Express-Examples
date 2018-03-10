@@ -10,45 +10,60 @@ const REFRESHING_TODOS_SUCCESS = "REFRESHING_TODOS_SUCCESS";
 const ADD_NEW_TODO = "ADD_NEW_TODO";
 const TOGGLE_TODO = "TOGGLE_TODO";
 const DELETE_TODO = "DELETE_TODO";
+const TODO_ACTION_FAILURE = "TODO_ACTION_FAILURE";
 
 export const handleFetchTodos = () => async dispatch => {
   dispatch({ type: FETCHING_TODOS });
-  const response = await api.fetchTodos();
-  if (response.error === undefined) {
+  try {
+    const response = await api.fetchTodos();
     dispatch({ type: FETCHING_TODOS_SUCCESS, todos: response });
-  } else {
-    dispatch({ type: FETCHING_TODOS_ERROR, error: response.error });
+  } catch (e) {
+    dispatch({ type: FETCHING_TODOS_ERROR, error: e.message });
   }
 };
 
 export const refreshTodos = () => async dispatch => {
   dispatch({ type: REFRESHING_TODOS });
-  const response = await api.fetchTodos();
-  if (response.error === undefined) {
+  try {
+    const response = await api.fetchTodos();
     dispatch({ type: REFRESHING_TODOS_SUCCESS, todos: response });
-  } else {
-    dispatch({ type: REFRESHING_TODOS_ERROR, error: response.error });
+  } catch (e) {
+    dispatch({ type: REFRESHING_TODOS_ERROR, error: e.message });
   }
 };
 
-export const addNewTodo = task => async dispatch => {
+export const addNewTodo = (task, clearInputCB) => async dispatch => {
   const newTodo = {
     task,
     _id: v4(),
-    done: false
+    done: false,
+    created: Date.now()
   };
-  await api.addNewTodo(newTodo);
-  dispatch({ type: ADD_NEW_TODO, todos: newTodo });
+  try {
+    await api.addNewTodo(newTodo);
+    dispatch({ type: ADD_NEW_TODO, todos: newTodo });
+    clearInputCB();
+  } catch (e) {
+    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+  }
 };
 
 export const toggleTodo = _id => async dispatch => {
-  await api.toggleTodo(_id);
-  dispatch({ type: TOGGLE_TODO, _id });
+  try {
+    await api.toggleTodo(_id);
+    dispatch({ type: TOGGLE_TODO, _id });
+  } catch (e) {
+    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+  }
 };
 
 export const deleteTodo = _id => async dispatch => {
-  await api.deleteTodo(_id);
-  dispatch({ type: DELETE_TODO, _id });
+  try {
+    await api.deleteTodo(_id);
+    dispatch({ type: DELETE_TODO, _id });
+  } catch (e) {
+    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+  }
 };
 
 const initialState = {
@@ -115,6 +130,11 @@ const todoAppReducer = (state = initialState, action) => {
       return {
         ...state,
         todos: state.todos.filter(t => t._id !== action._id)
+      };
+    case TODO_ACTION_FAILURE:
+      return {
+        ...state,
+        error: action.error
       };
     default:
       return state;

@@ -10,7 +10,7 @@ class TodoApp extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>To Do</Text>
+          <Text style={styles.title}>To Do List</Text>
         </View>
         <AddTodo />
         <TodoListContainer />
@@ -21,18 +21,18 @@ class TodoApp extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
     flex: 1
   },
   header: {
     backgroundColor: "#4169E1",
     padding: Constants.statusBarHeight,
+    paddingBottom: 10,
     display: "flex",
     alignItems: "center"
   },
   title: {
     paddingTop: 10,
-    fontSize: 16,
+    fontSize: 18,
     color: "white"
   }
 });

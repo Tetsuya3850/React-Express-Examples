@@ -64,6 +64,7 @@ class TodoListContainer extends Component {
 
 const styles = StyleSheet.create({
   error: {
+    paddingTop: 15,
     textAlign: "center",
     color: "red"
   }

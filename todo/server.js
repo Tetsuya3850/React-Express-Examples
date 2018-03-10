@@ -11,7 +11,8 @@ const mongoDB = process.env.MONGODB;
 const todoSchema = mongoose.Schema({
   _id: String,
   task: String,
-  done: Boolean
+  done: { type: Boolean, required: true },
+  created: Date
 });
 const Todo = mongoose.model("Todo", todoSchema);
 
@@ -19,16 +20,16 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get("/todo", async (req, res) => {
+app.get("/todo", async (req, res, next) => {
   try {
-    const todos = await Todo.find();
+    const todos = await Todo.find().sort({ created: -1 });
     res.json(todos);
   } catch (e) {
     next(e);
   }
 });
 
-app.post("/add", async (req, res) => {
+app.post("/add", async (req, res, next) => {
   try {
     const newTodo = new Todo(req.body);
     await newTodo.save();
@@ -38,7 +39,7 @@ app.post("/add", async (req, res) => {
   }
 });
 
-app.post("/toggle", async (req, res) => {
+app.post("/toggle", async (req, res, next) => {
   try {
     const todo = await Todo.findOne({ _id: req.body._id });
     todo.done = !todo.done;
@@ -49,7 +50,7 @@ app.post("/toggle", async (req, res) => {
   }
 });
 
-app.post("/delete", async (req, res) => {
+app.post("/delete", async (req, res, next) => {
   try {
     await Todo.findByIdAndRemove(req.body._id);
     res.json("deleted!");

@@ -1,16 +1,15 @@
 async function fetchTodos() {
-  try {
-    const response = await fetch("http://10.0.1.6:5150/todo", {
-      method: "get"
-    });
+  const response = await fetch("http://10.0.1.6:5150/todo", {
+    method: "get"
+  });
+  if (response.ok) {
     return await response.json();
-  } catch (e) {
-    return { error: "Something went Wrong! Please refresh." };
   }
+  throw new Error("Something went wrong! Please Refresh!");
 }
 
 async function addNewTodo(new_todo) {
-  await fetch("http://10.0.1.6:5150/add", {
+  const response = await fetch("http://10.0.1.6:5150/add", {
     method: "post",
     body: JSON.stringify(new_todo),
     headers: {
@@ -18,10 +17,13 @@ async function addNewTodo(new_todo) {
       "Content-Type": "application/json"
     }
   });
+  if (!response.ok) {
+    throw new Error("Saving failed! Please try again!");
+  }
 }
 
 async function toggleTodo(_id) {
-  await fetch("http://10.0.1.6:5150/toggle", {
+  const response = await fetch("http://10.0.1.6:5150/toggle", {
     method: "post",
     body: JSON.stringify({ _id }),
     headers: {
@@ -29,10 +31,13 @@ async function toggleTodo(_id) {
       "Content-Type": "application/json"
     }
   });
+  if (!response.ok) {
+    throw new Error("Toggling failed! Please try again!");
+  }
 }
 
 async function deleteTodo(_id) {
-  await fetch("http://10.0.1.6:5150/delete", {
+  const response = await fetch("http://10.0.1.6:5150/delete", {
     method: "post",
     body: JSON.stringify({ _id }),
     headers: {
@@ -40,6 +45,9 @@ async function deleteTodo(_id) {
       "Content-Type": "application/json"
     }
   });
+  if (!response.ok) {
+    throw new Error("Delete failed! Please try again!");
+  }
 }
 
 const api = {

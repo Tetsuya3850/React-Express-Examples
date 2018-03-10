@@ -14,8 +14,11 @@ class AddTodo extends Component {
     const { text } = this.state;
     const { dispatch } = this.props;
     if (!text) return;
-    dispatch(addNewTodo(text));
-    this.setState({ text: "" });
+    dispatch(
+      addNewTodo(text, () => {
+        this.setState({ text: "" });
+      })
+    );
   };
 
   render() {

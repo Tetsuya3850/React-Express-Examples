@@ -17,26 +17,22 @@ export const addNewTodo = task => async dispatch => {
     _id: v4(),
     done: false
   };
-  // await api.addNewTodo(newTodo);
+  await api.addNewTodo(newTodo);
   dispatch({ type: ADD_NEW_TODO, todos: newTodo });
 };
 
 export const toggleTodo = _id => async dispatch => {
-  // await api.toggleTodo(_id);
+  await api.toggleTodo(_id);
   dispatch({ type: TOGGLE_TODO, _id });
 };
 
 export const deleteTodo = _id => async dispatch => {
-  //await api.deleteTodo(_id);
+  await api.deleteTodo(_id);
   dispatch({ type: DELETE_TODO, _id });
 };
 
 const initialState = {
-  todos: [
-    { _id: 1, task: "Learn React Native", done: false },
-    { _id: 2, task: "Write Code", done: false },
-    { _id: 3, task: "Ship App", done: false }
-  ]
+  todos: []
 };
 
 const todoAppReducer = (state = initialState, action) => {

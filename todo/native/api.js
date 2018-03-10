@@ -1,10 +1,10 @@
 async function receiveTodos() {
-  const response = await fetch("/todo", { method: "get" });
+  const response = await fetch("http://10.0.1.6:5150/todo", { method: "get" });
   return await response.json();
 }
 
 async function addNewTodo(new_todo) {
-  await fetch("/add", {
+  await fetch("http://10.0.1.6:5150/add", {
     method: "post",
     body: JSON.stringify(new_todo),
     headers: {
@@ -15,7 +15,7 @@ async function addNewTodo(new_todo) {
 }
 
 async function toggleTodo(_id) {
-  await fetch("/toggle", {
+  await fetch("http://10.0.1.6:5150/toggle", {
     method: "post",
     body: JSON.stringify({ _id }),
     headers: {
@@ -26,7 +26,7 @@ async function toggleTodo(_id) {
 }
 
 async function deleteTodo(_id) {
-  await fetch("/delete", {
+  await fetch("http://10.0.1.6:5150/delete", {
     method: "post",
     body: JSON.stringify({ _id }),
     headers: {

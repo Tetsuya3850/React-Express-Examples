@@ -9,7 +9,7 @@ import { Constants } from "expo";
 class TodoApp extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    //dispatch(receiveTodos());
+    dispatch(receiveTodos());
   }
 
   render() {

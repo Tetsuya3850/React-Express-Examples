@@ -1,6 +1,12 @@
-async function receiveTodos() {
-  const response = await fetch("http://10.0.1.6:5150/todo", { method: "get" });
-  return await response.json();
+async function fetchTodos() {
+  try {
+    const response = await fetch("http://10.0.1.6:5150/todo", {
+      method: "get"
+    });
+    return await response.json();
+  } catch (e) {
+    return { error: "Something went Wrong! Please refresh." };
+  }
 }
 
 async function addNewTodo(new_todo) {
@@ -37,7 +43,7 @@ async function deleteTodo(_id) {
 }
 
 const api = {
-  receiveTodos,
+  fetchTodos,
   addNewTodo,
   toggleTodo,
   deleteTodo

@@ -1,27 +1,73 @@
-import React from "react";
-import { Text, ScrollView } from "react-native";
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  RefreshControl,
+  StyleSheet
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { toggleTodo, deleteTodo } from "../redux";
+import {
+  handleFetchTodos,
+  refreshTodos,
+  toggleTodo,
+  deleteTodo
+} from "../redux";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ isFetching, todos, toggleTodo, deleteTodo }) => {
-  if (isFetching) {
-    return <Text>LOADING</Text>;
+class TodoListContainer extends Component {
+  componentDidMount() {
+    this.props.handleFetchTodos();
   }
-  return (
-    <ScrollView>
-      {todos.map(todo => (
-        <Todo
-          key={todo._id}
-          {...todo}
-          onTogglePress={() => toggleTodo(todo._id)}
-          onDeletePress={() => deleteTodo(todo._id)}
-        />
-      ))}
-    </ScrollView>
-  );
-};
+
+  _onRefresh = () => {
+    this.props.refreshTodos();
+  };
+
+  render() {
+    const {
+      isFetching,
+      refreshing,
+      error,
+      todos,
+      toggleTodo,
+      deleteTodo
+    } = this.props;
+
+    if (isFetching) {
+      return <ActivityIndicator size="large" />;
+    }
+
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+        }
+      >
+        <View>
+          {todos.map(todo => (
+            <Todo
+              key={todo._id}
+              {...todo}
+              onTogglePress={() => toggleTodo(todo._id)}
+              onDeletePress={() => deleteTodo(todo._id)}
+            />
+          ))}
+          <Text style={styles.error}>{error}</Text>
+        </View>
+      </ScrollView>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  error: {
+    textAlign: "center",
+    color: "red"
+  }
+});
 
 const mapStateToProps = state => {
   return state;
@@ -30,6 +76,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
+      handleFetchTodos,
+      refreshTodos,
       toggleTodo,
       deleteTodo
     },

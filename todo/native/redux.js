@@ -2,15 +2,33 @@ import v4 from "uuid";
 import api from "./api";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
-const RECEIVE_TODOS = "RECEIVE_TODOS";
+const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
+const FETCHING_TODOS_SUCCESS = "FETCHING_TODOS_SUCCESS";
+const REFRESHING_TODOS = "REFRESHING_TODOS";
+const REFRESHING_TODOS_ERROR = "REFRESHING_TODOS_ERROR";
+const REFRESHING_TODOS_SUCCESS = "REFRESHING_TODOS_SUCCESS";
 const ADD_NEW_TODO = "ADD_NEW_TODO";
 const TOGGLE_TODO = "TOGGLE_TODO";
 const DELETE_TODO = "DELETE_TODO";
 
-export const receiveTodos = () => async dispatch => {
+export const handleFetchTodos = () => async dispatch => {
   dispatch({ type: FETCHING_TODOS });
-  const todos = await api.receiveTodos();
-  dispatch({ type: RECEIVE_TODOS, todos });
+  const response = await api.fetchTodos();
+  if (response.error === undefined) {
+    dispatch({ type: FETCHING_TODOS_SUCCESS, todos: response });
+  } else {
+    dispatch({ type: FETCHING_TODOS_ERROR, error: response.error });
+  }
+};
+
+export const refreshTodos = () => async dispatch => {
+  dispatch({ type: REFRESHING_TODOS });
+  const response = await api.fetchTodos();
+  if (response.error === undefined) {
+    dispatch({ type: REFRESHING_TODOS_SUCCESS, todos: response });
+  } else {
+    dispatch({ type: REFRESHING_TODOS_ERROR, error: response.error });
+  }
 };
 
 export const addNewTodo = task => async dispatch => {
@@ -35,6 +53,8 @@ export const deleteTodo = _id => async dispatch => {
 
 const initialState = {
   isFetching: false,
+  refreshing: false,
+  error: "",
   todos: []
 };
 
@@ -45,9 +65,35 @@ const todoAppReducer = (state = initialState, action) => {
         ...state,
         isFetching: true
       };
-    case RECEIVE_TODOS:
+    case FETCHING_TODOS_ERROR:
       return {
+        ...state,
         isFetching: false,
+        error: action.error
+      };
+    case FETCHING_TODOS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
+        todos: action.todos
+      };
+    case REFRESHING_TODOS:
+      return {
+        ...state,
+        refreshing: true
+      };
+    case REFRESHING_TODOS_ERROR:
+      return {
+        ...state,
+        refreshing: false,
+        error: action.error
+      };
+    case REFRESHING_TODOS_SUCCESS:
+      return {
+        ...state,
+        refreshing: false,
+        error: "",
         todos: action.todos
       };
     case ADD_NEW_TODO:

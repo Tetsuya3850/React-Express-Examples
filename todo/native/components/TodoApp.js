@@ -1,17 +1,11 @@
 import React, { Component } from "react";
 import { View, ScrollView, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { receiveTodos } from "../redux";
 import TodoListContainer from "./TodoListContainer";
 import AddTodo from "./AddTodo";
 import { Constants } from "expo";
 
 class TodoApp extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(receiveTodos());
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -38,6 +32,7 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingTop: 10,
+    fontSize: 16,
     color: "white"
   }
 });

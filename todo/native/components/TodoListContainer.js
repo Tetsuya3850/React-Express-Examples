@@ -1,11 +1,14 @@
 import React from "react";
-import { ScrollView } from "react-native";
+import { Text, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { toggleTodo, deleteTodo } from "../redux";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => {
+let TodoListContainer = ({ isFetching, todos, toggleTodo, deleteTodo }) => {
+  if (isFetching) {
+    return <Text>LOADING</Text>;
+  }
   return (
     <ScrollView>
       {todos.map(todo => (
@@ -20,10 +23,8 @@ let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => {
   );
 };
 
-const mapStateToProps = ({ todos }) => {
-  return {
-    todos
-  };
+const mapStateToProps = state => {
+  return state;
 };
 
 const mapDispatchToProps = dispatch => {

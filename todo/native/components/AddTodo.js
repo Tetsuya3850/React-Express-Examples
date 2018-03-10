@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextInput, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { addNewTodo } from "./redux";
+import { addNewTodo } from "../redux";
 
 class AddTodo extends Component {
   state = {
@@ -12,6 +12,7 @@ class AddTodo extends Component {
 
   onSubmitEditing = () => {
     const { text } = this.state;
+    const { dispatch } = this.props;
     if (!text) return;
     dispatch(addNewTodo(text));
     this.setState({ text: "" });

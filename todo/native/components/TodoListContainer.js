@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { toggleTodo, deleteTodo } from "../redux";
@@ -7,7 +7,7 @@ import Todo from "./Todo";
 
 let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => {
   return (
-    <View>
+    <ScrollView>
       {todos.map(todo => (
         <Todo
           key={todo._id}
@@ -16,7 +16,7 @@ let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => {
           onDeletePress={() => deleteTodo(todo._id)}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

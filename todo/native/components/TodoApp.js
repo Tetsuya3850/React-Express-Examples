@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, ScrollView, Text, StyleSheet } from "react-native";
 import { connect } from "react-redux";
-import { receiveTodos } from "../actions";
+import { receiveTodos } from "../redux";
 import TodoListContainer from "./TodoListContainer";
 import AddTodo from "./AddTodo";
 import { Constants } from "expo";
@@ -14,9 +14,9 @@ class TodoApp extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>To Do List</Text>
+          <Text style={styles.title}>To Do</Text>
         </View>
         <AddTodo />
         <TodoListContainer />
@@ -26,12 +26,18 @@ class TodoApp extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flex: 1
+  },
   header: {
     backgroundColor: "#4169E1",
-    padding: Constants.statusBarHeight
+    padding: Constants.statusBarHeight,
+    display: "flex",
+    alignItems: "center"
   },
   title: {
-    textAlign: "center",
+    paddingTop: 10,
     color: "white"
   }
 });

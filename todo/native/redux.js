@@ -42,9 +42,12 @@ const initialState = {
 const todoAppReducer = (state = initialState, action) => {
   switch (action.type) {
     case RECEIVE_TODOS:
+      return {
+        todos: action.todos
+      };
     case ADD_NEW_TODO:
       return {
-        todos: state.todos.concat(action.todos)
+        todos: [...[action.todos], ...state.todos]
       };
     case TOGGLE_TODO:
       return {

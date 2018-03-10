@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, Platform } from "react-native";
 import { connect } from "react-redux";
 import { addNewTodo } from "../redux";
 
@@ -7,8 +7,6 @@ class AddTodo extends Component {
   state = {
     text: ""
   };
-
-  onChangeText = text => this.setState({ text });
 
   onSubmitEditing = () => {
     const { text } = this.state;
@@ -23,14 +21,19 @@ class AddTodo extends Component {
 
   render() {
     const { text } = this.state;
+    const platformConfigs =
+      Platform.OS === "ios" ? { clearButtonMode: "while-editing" } : {};
 
     return (
       <TextInput
         style={styles.add}
         value={text}
         placeholder={"What to get done?"}
-        onChangeText={this.onChangeText}
+        onChangeText={text => this.setState({ text })}
+        maxLength={30}
+        returnKeyType="go"
         onSubmitEditing={this.onSubmitEditing}
+        {...platformConfigs}
       />
     );
   }

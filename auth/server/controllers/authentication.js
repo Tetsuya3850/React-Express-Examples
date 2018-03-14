@@ -57,9 +57,12 @@ module.exports.fbAuthCB = function(req, res, next) {
   )(req, res);
 };
 
-module.exports.goAuth = passport.authenticate("google", {
-  scope: ["profile", "email"]
-});
+module.exports.goAuth = function(req, res, next) {
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    state: req.query.linkinguri
+  })(req, res, next);
+};
 
 module.exports.goAuthCB = function(req, res, next) {
   passport.authenticate("google", (err, user, info) =>

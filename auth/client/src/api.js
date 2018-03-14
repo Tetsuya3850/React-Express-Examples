@@ -1,38 +1,18 @@
+import axios from "axios";
 import { getToken } from "./helper";
 
-async function register(userInfo) {
-  const response = await fetch("/register", {
-    method: "post",
-    body: JSON.stringify(userInfo),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  return await response.json();
-}
+const SERVER_URL = "https://logsignserver.herokuapp.com";
 
-async function login(userInfo) {
-  const response = await fetch("/login", {
-    method: "post",
-    body: JSON.stringify(userInfo),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  return await response.json();
-}
-
-async function getSecret(uid) {
-  const response = await fetch(`/secret/${uid}`, {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
+const register = userInfo => axios.post(`${SERVER_URL}/register`, userInfo);
+const login = userInfo => axios.post(`${SERVER_URL}/login`, userInfo);
+const getSecret = uid =>
+  axios.get(
+    `${SERVER_URL}/secret/${uid}`,
+    {
+      headers: { authorization: `Bearer ${getToken()}` }
+    },
+    uid
+  );
 
 const api = {
   register,

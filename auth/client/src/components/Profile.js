@@ -11,8 +11,13 @@ class Profile extends Component {
   }
 
   handleSecret = async () => {
-    const secret = await api.getSecret(this.props.match.params.uid);
-    this.setState({ code: secret.code });
+    try {
+      let { data } = await api.getSecret(this.props.match.params.uid);
+      this.setState({ code: data.code });
+    } catch (e) {
+      let { data } = e.response;
+      this.setState({ code: data.code });
+    }
   };
 
   render() {

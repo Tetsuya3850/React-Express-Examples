@@ -38,25 +38,27 @@ const loginFail = errors => {
 };
 
 export const registerUser = (userInfo, redirect) => async dispatch => {
-  const response = await api.register(userInfo);
-  if (response.userInfo) {
-    saveToken(response.token);
-    dispatch(authUser(response.userInfo));
+  try {
+    let { data } = await api.register(userInfo);
+    saveToken(data.token);
+    dispatch(authUser(data.userInfo));
     redirect();
-  } else {
-    const formattedErrors = formatErrors(response);
+  } catch (e) {
+    let { data } = e.response;
+    const formattedErrors = formatErrors(data);
     dispatch(registerFail(formattedErrors));
   }
 };
 
 export const loginUser = (userInfo, redirect) => async dispatch => {
-  const response = await api.login(userInfo);
-  if (response.userInfo) {
-    saveToken(response.token);
-    dispatch(authUser(response.userInfo));
+  try {
+    let { data } = await api.login(userInfo);
+    saveToken(data.token);
+    dispatch(authUser(data.userInfo));
     redirect();
-  } else {
-    dispatch(loginFail(response));
+  } catch (e) {
+    let { data } = e.response;
+    dispatch(loginFail(data));
   }
 };
 

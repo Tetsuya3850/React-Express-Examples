@@ -45,7 +45,11 @@ module.exports.login = function(req, res) {
   })(req, res);
 };
 
-module.exports.fbAuth = passport.authenticate("facebook");
+module.exports.fbAuth = function(req, res, next) {
+  passport.authenticate("facebook", {
+    state: req.query.linkinguri
+  })(req, res, next);
+};
 
 module.exports.fbAuthCB = function(req, res, next) {
   passport.authenticate("facebook", (err, user, info) =>
@@ -69,9 +73,8 @@ function generateTokenAndRedirect(err, user, info, req, res, next) {
   }
   if (user) {
     const token = user.generateJwt();
-    res.cookie("auth", token);
-    return res.redirect(`http://localhost:3000/socialauthredirect`);
+    return res.redirect(`${req.query.state}?token=${token}`);
   } else {
-    return res.redirect("http://localhost:3000");
+    return res.redirect("${req.query.state}");
   }
 }

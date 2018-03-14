@@ -21,7 +21,7 @@ export default class App extends React.Component {
 
     return (
       <View style={styles.container}>
-        <MainNavigator />
+        <AuthScreen />
       </View>
     );
   }

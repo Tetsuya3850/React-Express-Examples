@@ -1,16 +1,10 @@
-export function getToken() {
-  return localStorage.getItem("jwt-token");
-}
+export const getToken = () => localStorage.getItem("jwt-token");
 
-export function saveToken(token) {
-  localStorage.setItem("jwt-token", token);
-}
+export const saveToken = token => localStorage.setItem("jwt-token", token);
 
-export function removeToken() {
-  localStorage.removeItem("jwt-token");
-}
+export const removeToken = () => localStorage.removeItem("jwt-token");
 
-export function getUserInfo() {
+export const getUserInfo = () => {
   const token = getToken();
   let payload;
   if (token) {
@@ -20,16 +14,16 @@ export function getUserInfo() {
   } else {
     return null;
   }
-}
+};
 
-export function parseToken(token) {
+export const parseToken = token => {
   let payload;
   payload = token.split(".")[1];
   payload = window.atob(payload);
   return JSON.parse(payload);
-}
+};
 
-export function formatErrors(status) {
+export const formatErrors = status => {
   let err = {};
   if (status.code === 11000) {
     err.email = "Duplicate email!";
@@ -39,4 +33,4 @@ export function formatErrors(status) {
     });
   }
   return err;
-}
+};

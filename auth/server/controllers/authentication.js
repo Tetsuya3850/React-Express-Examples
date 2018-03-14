@@ -21,7 +21,7 @@ module.exports.register = async (req, res, next) => {
       token: token
     });
   } catch (err) {
-    return next(err);
+    res.status(401).json(err);
   }
 };
 

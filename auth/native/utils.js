@@ -1,9 +1,39 @@
-export function parseToken(token) {
+import { AsyncStorage } from "react-native";
+
+export const getToken = () => AsyncStorage.getItem("jwt-token");
+export const saveToken = token => AsyncStorage.setItem("jwt-token", token);
+export const removeToken = () => AsyncStorage.removeItem("jwt-token");
+
+export const getUserInfo = async () => {
+  const token = await getToken();
+  let payload;
+  if (token) {
+    payload = token.split(".")[1];
+    payload = Base64.atob(payload);
+    return JSON.parse(payload);
+  } else {
+    return null;
+  }
+};
+
+export const parseToken = token => {
   let payload;
   payload = token.split(".")[1];
   payload = Base64.atob(payload);
   return JSON.parse(payload);
-}
+};
+
+export const formatErrors = status => {
+  let err = {};
+  if (status.code === 11000) {
+    err.email = "Duplicate email!";
+  } else {
+    Object.keys(status.errors).map(key => {
+      err[key] = status.errors[key].message;
+    });
+  }
+  return err;
+};
 
 const chars =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";

@@ -60,7 +60,7 @@ export const loginUser = (userInfo, redirect) => async dispatch => {
   }
 };
 
-export const fbAuthUser = (token, redirect) => async dispatch => {
+export const socialAuthUser = (token, redirect) => async dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
   redirect();

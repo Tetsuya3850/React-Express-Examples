@@ -7,10 +7,18 @@ const SocialLoginLinks = () => (
     <p style={{ textAlign: "center" }}>- OR -</p>
 
     <div style={{ display: "flex" }}>
-      <a href="http://localhost:5150/auth/facebook">
+      <a
+        href={`https://logsignserver.herokuapp.com/auth/facebook?linkinguri=${
+          window.location.origin
+        }/socialauthredirect`}
+      >
         <img src={fb} alt={"fblogo"} style={{ flexGrow: 1, width: "95%" }} />
       </a>
-      <a href="http://localhost:5150/auth/google">
+      <a
+        href={`https://logsignserver.herokuapp.com/auth/google?linkinguri=${
+          window.location.origin
+        }/socialauthredirect`}
+      >
         <img
           src={google}
           alt={"googlelogo"}

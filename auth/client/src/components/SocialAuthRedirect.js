@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fbAuthUser } from "../actions";
-import { getCookie } from "../helper";
+import { socialAuthUser } from "../actions";
 
 class SocialAuthRedirect extends Component {
   componentWillMount() {
+    const searchParams = new URLSearchParams(window.location.search);
     this.props.dispatch(
-      fbAuthUser(getCookie("auth"), () => {
-        document.cookie =
-          "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      socialAuthUser(searchParams.get("token"), () => {
         this.props.history.push("/profile");
       })
     );

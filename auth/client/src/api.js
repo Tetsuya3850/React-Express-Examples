@@ -37,7 +37,6 @@ async function getSecret(uid) {
 const api = {
   register,
   login,
-  fbAuth,
   getSecret
 };
 export default api;

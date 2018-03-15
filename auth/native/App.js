@@ -8,8 +8,8 @@ const store = configureStore();
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Root />
+      <Provider store={store} style={{ flex: 1 }}>
+        <Root style={{ flex: 1 }} />
       </Provider>
     );
   }

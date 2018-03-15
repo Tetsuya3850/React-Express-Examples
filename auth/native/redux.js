@@ -68,12 +68,13 @@ export const socialAuthUser = (token, redirect) => async dispatch => {
   redirect();
 };
 
-export const reAuthUser = redirect => async dispatch => {
-  const userInfo = getUserInfo();
+export const tokenAuthUser = (authResolve, redirect) => async dispatch => {
+  const userInfo = await getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
-  } else if (userInfo && userInfo.exp < Date.now() / 1000) {
     redirect();
+  } else {
+    authResolve();
   }
 };
 

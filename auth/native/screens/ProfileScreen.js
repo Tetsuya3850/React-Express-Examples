@@ -2,22 +2,24 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  Platform,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from "react-native";
 import { connect } from "react-redux";
 import { logoutUser } from "../redux";
+import { MaterialIcons } from "@expo/vector-icons";
 
 class ProfileScreen extends Component {
   static navigationOptions = {
     title: "Profile",
-    header: () => {
-      return {
-        style: {
-          marginTop: Platform.OS === "android" ? 24 : 0
-        }
-      };
+    tabBarIcon: ({ tintColor }) => {
+      return <MaterialIcons name="contacts" color={tintColor} size={25} />;
+    },
+    header: {
+      style: {
+        marginTop: Platform.OS === "android" ? 24 : 0
+      }
     }
   };
 

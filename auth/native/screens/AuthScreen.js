@@ -17,24 +17,18 @@ class AuthScreen extends Component {
     isReady: false
   };
 
-  async componentWillMount() {
+  checkAuthed = async () => {
     let url = await Linking.getInitialURL();
     if (url) {
       this._handleToken(url);
     }
 
     this.props.dispatch(
-      tokenAuthUser(
-        () => {
-          this.setState({ isReady: true });
-        },
-        () => {
-          this.props.navigation.navigate("profile");
-          this.setState({ isReady: true });
-        }
-      )
+      tokenAuthUser(() => {
+        this.props.navigation.navigate("profile");
+      })
     );
-  }
+  };
 
   _handleToken = async url => {
     let query = url.replace("exp://exp.host/@tetsuya3850/auth", "");
@@ -45,7 +39,7 @@ class AuthScreen extends Component {
     }
   };
 
-  _openWebBrowserAsync = async () => {
+  _openWebBrowserAsync = () => {
     Linking.openURL(
       `https://logsignserver.herokuapp.com/auth/facebook/?linkinguri=exp://exp.host/@tetsuya3850/auth`
     );
@@ -53,7 +47,13 @@ class AuthScreen extends Component {
 
   render() {
     if (!this.state.isReady) {
-      return <AppLoading />;
+      return (
+        <AppLoading
+          startAsync={this.checkAuthed}
+          onFinish={() => this.setState({ isReady: true })}
+          onError={console.warn}
+        />
+      );
     }
 
     return (

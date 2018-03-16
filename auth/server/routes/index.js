@@ -19,5 +19,7 @@ router.get("/auth/google", authCtrl.goAuth);
 router.get("/auth/google/callback", authCtrl.goAuthCB);
 
 router.get("/secret/:uid", auth, profileCtrl.secret);
+router.post("/pushtoken/add", profileCtrl.addPushNotificationId);
+router.post("/pushtoken/send", profileCtrl.sendPushNotifications);
 
 module.exports = router;

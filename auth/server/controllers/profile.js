@@ -12,3 +12,45 @@ module.exports.secret = function(req, res) {
     });
   }
 };
+
+module.exports.addPushNotificationId = async (req, res) => {
+  const { uid, token } = req.body;
+  try {
+    await User.findByIdAndUpdate(uid, { $set: { pushTokenId: token } });
+    res.json("success!");
+  } catch (e) {
+    res.json(e);
+  }
+};
+
+module.exports.sendPushNotifications = (req, res) => {
+  const somePushTokens = ["ExponentPushToken[ZkmuQHAXHp1_mt-mqRDaYh]"];
+  let messages = [];
+  const { title, body } = req.body;
+
+  for (let pushToken of somePushTokens) {
+    if (!Expo.isExpoPushToken(pushToken)) {
+      console.error(`Push token ${pushToken} is not a valid Expo push token`);
+      continue;
+    }
+    messages.push({
+      to: pushToken,
+      sound: "default",
+      title,
+      body,
+      data: { title, body }
+    });
+  }
+  let chunks = expo.chunkPushNotifications(messages);
+
+  (async () => {
+    for (let chunk of chunks) {
+      try {
+        let receipts = await expo.sendPushNotificationsAsync(chunk);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  })();
+  res.json("success!");
+};

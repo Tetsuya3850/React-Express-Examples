@@ -38,7 +38,8 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   hash: String,
-  salt: String
+  salt: String,
+  pushTokenId: String
 });
 
 userSchema.methods.setPassword = function(password) {

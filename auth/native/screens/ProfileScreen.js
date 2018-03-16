@@ -4,11 +4,14 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import { logoutUser } from "../redux";
 import { MaterialIcons } from "@expo/vector-icons";
+import { registerForPushNotificationsAsync } from "../services/push_notifications";
+import { Notifications } from "expo";
 
 class ProfileScreen extends Component {
   static navigationOptions = {
@@ -20,6 +23,21 @@ class ProfileScreen extends Component {
       style: {
         marginTop: Platform.OS === "android" ? 24 : 0
       }
+    }
+  };
+
+  componentDidMount() {
+    const { userInfo } = this.props.state;
+    registerForPushNotificationsAsync(userInfo._id);
+    this._notificationSubscription = Notifications.addListener(
+      this._handleNotification
+    );
+  }
+
+  _handleNotification = notification => {
+    const { data: { title, body }, origin } = notification;
+    if (origin === "received" && body) {
+      Alert.alert(title, body, [{ text: "OK" }]);
     }
   };
 

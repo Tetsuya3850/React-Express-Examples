@@ -6,11 +6,6 @@ const PUSH_ENDPOINT = "https://logsignserver.herokuapp.com/pushtoken/add";
 
 export const registerForPushNotificationsAsync = async uid => {
   try {
-    const previousToken = await AsyncStorage.getItem("pushtoken");
-    if (previousToken) {
-      return;
-    }
-
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
@@ -28,7 +23,6 @@ export const registerForPushNotificationsAsync = async uid => {
     let token = await Notifications.getExpoPushTokenAsync();
 
     await axios.post(PUSH_ENDPOINT, { token, uid });
-    await AsyncStorage.setItem("pushtoken", token);
   } catch (e) {
     console.log(e);
   }

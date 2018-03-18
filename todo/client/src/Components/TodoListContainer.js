@@ -1,34 +1,47 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { toggleTodo, deleteTodo } from "../reducer";
+import { handleFetchTodos, toggleTodo, deleteTodo } from "../reducer";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => (
-  <ul
-    style={{
-      width: 170
-    }}
-  >
-    {todos.map(todo => (
-      <Todo
-        key={todo._id}
-        {...todo}
-        onToggleClick={() => toggleTodo(todo._id)}
-        onDeleteClick={() => deleteTodo(todo._id)}
-      />
-    ))}
-  </ul>
-);
+class TodoListContainer extends Component {
+  componentDidMount() {
+    this.props.handleFetchTodos();
+  }
+
+  render() {
+    const { todos, error, isFetching, toggleTodo, deleteTodo } = this.props;
+    return (
+      <div style={{ textAlign: "center" }}>
+        {isFetching ? (
+          <p>LOADING</p>
+        ) : (
+          <ul>
+            {todos.map(todo => (
+              <Todo
+                key={todo._id}
+                {...todo}
+                onToggleClick={() => toggleTodo(todo._id)}
+                onDeleteClick={() => deleteTodo(todo._id)}
+              />
+            ))}
+          </ul>
+        )}
+        <p style={{ color: "red" }}>{error}</p>
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = state => {
-  return {
-    todos: state.todos
-  };
+  return state;
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ toggleTodo, deleteTodo }, dispatch);
+  return bindActionCreators(
+    { handleFetchTodos, toggleTodo, deleteTodo },
+    dispatch
+  );
 };
 
 TodoListContainer = connect(mapStateToProps, mapDispatchToProps)(

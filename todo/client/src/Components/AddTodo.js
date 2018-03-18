@@ -2,32 +2,31 @@ import React from "react";
 import { connect } from "react-redux";
 import { addTodo } from "../reducer";
 
-let AddTodo = ({ dispatch }) => {
-  let input;
-
-  return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        if (!input.value.trim()) {
-          return;
-        }
-        dispatch(addTodo(input.value));
-        input.value = "";
+let AddTodo = ({ dispatch }) => (
+  <form
+    style={{ textAlign: "center" }}
+    onSubmit={e => {
+      e.preventDefault();
+      dispatch(
+        addTodo(this.input.value, () => {
+          this.input.value = "";
+        })
+      );
+    }}
+  >
+    <input
+      ref={node => {
+        this.input = node;
       }}
-    >
-      <input
-        ref={node => {
-          input = node;
-        }}
-        placeholder="What to get done?"
-        type="text"
-        autoComplete="off"
-      />
-      <button type="submit">Go!</button>
-    </form>
-  );
-};
+      placeholder="What to get done?"
+      type="text"
+      required
+      maxLength="25"
+      autoFocus
+    />
+    <button type="submit">Go!</button>
+  </form>
+);
 
 AddTodo = connect()(AddTodo);
 

@@ -1,21 +1,32 @@
 import React from "react";
 
 const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
-  <div>
-    <li>
+  <li>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between"
+      }}
+    >
       <p
         onClick={onToggleClick}
         style={{
           textDecoration: done ? "line-through" : "none",
-          width: 120,
-          display: "inline-block"
+          cursor: "pointer"
         }}
       >
         {task}
       </p>
-      <span onClick={onDeleteClick}>&#10799;</span>
-    </li>
-  </div>
+      <p
+        onClick={onDeleteClick}
+        style={{
+          cursor: "pointer"
+        }}
+      >
+        &#10799;
+      </p>
+    </div>
+  </li>
 );
 
 export default Todo;

@@ -1,18 +1,11 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { handleFetchTodos } from "../reducer";
 import AddTodo from "./AddTodo";
 import TodoListContainer from "./TodoListContainer";
 
 class App extends Component {
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(handleFetchTodos());
-  }
-
   render() {
     return (
-      <div>
+      <div style={{ width: 180 }}>
         <AddTodo />
         <TodoListContainer />
       </div>
@@ -20,4 +13,4 @@ class App extends Component {
   }
 }
 
-export default connect()(App);
+export default App;

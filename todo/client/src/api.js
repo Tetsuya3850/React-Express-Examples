@@ -1,45 +1,10 @@
-async function receiveTodos() {
-  const response = await fetch("/todo", { method: "get" });
-  return await response.json();
-}
+import axios from "axios";
 
-async function addNewTodo(new_todo) {
-  await fetch("/add", {
-    method: "post",
-    body: JSON.stringify(new_todo),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-}
+const SERVER_URL = "http://localhost:5150";
+const fetchTodos = () => axios.get(`${SERVER_URL}/todo`);
+const addTodo = new_todo => axios.post(`${SERVER_URL}/add`, new_todo);
+const toggleTodo = _id => axios.post(`${SERVER_URL}/toggle`, { _id });
+const deleteTodo = _id => axios.post(`${SERVER_URL}/delete`, { _id });
 
-async function toggleTodo(_id) {
-  await fetch("/toggle", {
-    method: "post",
-    body: JSON.stringify({ _id }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-}
-
-async function deleteTodo(_id) {
-  await fetch("/delete", {
-    method: "post",
-    body: JSON.stringify({ _id }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-}
-
-const api = {
-  receiveTodos,
-  addNewTodo,
-  toggleTodo,
-  deleteTodo
-};
+const api = { fetchTodos, addTodo, toggleTodo, deleteTodo };
 export default api;

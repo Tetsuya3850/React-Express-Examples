@@ -8,10 +8,15 @@ require("dotenv").config();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
 
+mongoose.connect(mongoDB);
+mongoose.connection.on("error", err => {
+  console.error(err.message);
+});
+
 const todoSchema = mongoose.Schema({
   _id: String,
   task: String,
-  done: { type: Boolean, required: true },
+  done: Boolean,
   created: Date
 });
 const Todo = mongoose.model("Todo", todoSchema);
@@ -41,7 +46,7 @@ app.post("/add", async (req, res, next) => {
 
 app.post("/toggle", async (req, res, next) => {
   try {
-    const todo = await Todo.findOne({ _id: req.body._id });
+    const todo = await Todo.findById(req.body._id);
     todo.done = !todo.done;
     await todo.save();
     res.json("toggled!");
@@ -66,5 +71,4 @@ app.use((err, request, response, next) => {
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
-  mongoose.connect(mongoDB);
 });

@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import actions from "../actions";
+import { bindActionCreators } from "redux";
+import { toggleTodo, deleteTodo } from "../reducer";
 import Todo from "./Todo";
 
-let TodoListContainer = ({ todos, onToggleTodo, onDeleteTodo }) => (
+let TodoListContainer = ({ todos, toggleTodo, deleteTodo }) => (
   <ul
     style={{
       width: 170
@@ -13,8 +14,8 @@ let TodoListContainer = ({ todos, onToggleTodo, onDeleteTodo }) => (
       <Todo
         key={todo._id}
         {...todo}
-        onToggleClick={() => onToggleTodo(todo._id)}
-        onDeleteClick={() => onDeleteTodo(todo._id)}
+        onToggleClick={() => toggleTodo(todo._id)}
+        onDeleteClick={() => deleteTodo(todo._id)}
       />
     ))}
   </ul>
@@ -27,14 +28,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onToggleTodo: _id => {
-      dispatch(actions.toggleTodo(_id));
-    },
-    onDeleteTodo: _id => {
-      dispatch(actions.deleteTodo(_id));
-    }
-  };
+  return bindActionCreators({ toggleTodo, deleteTodo }, dispatch);
 };
 
 TodoListContainer = connect(mapStateToProps, mapDispatchToProps)(

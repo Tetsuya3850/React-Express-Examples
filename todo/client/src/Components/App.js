@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import actions from "../actions";
+import { handleFetchTodos } from "../reducer";
 import AddTodo from "./AddTodo";
 import TodoListContainer from "./TodoListContainer";
 
 class App extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(actions.receiveTodos());
+    dispatch(handleFetchTodos());
   }
 
   render() {

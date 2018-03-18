@@ -1,5 +1,6 @@
 import v4 from "uuid";
 import api from "./api";
+import { handleMongooseError } from "./helper";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
 const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
@@ -7,7 +8,7 @@ const FETCHING_TODOS_SUCCESS = "FETCHING_TODOS_SUCCESS";
 const REFRESHING_TODOS = "REFRESHING_TODOS";
 const REFRESHING_TODOS_ERROR = "REFRESHING_TODOS_ERROR";
 const REFRESHING_TODOS_SUCCESS = "REFRESHING_TODOS_SUCCESS";
-const ADD_NEW_TODO = "ADD_NEW_TODO";
+const ADD_TODO = "ADD_TODO";
 const TOGGLE_TODO = "TOGGLE_TODO";
 const DELETE_TODO = "DELETE_TODO";
 const TODO_ACTION_FAILURE = "TODO_ACTION_FAILURE";
@@ -15,24 +16,24 @@ const TODO_ACTION_FAILURE = "TODO_ACTION_FAILURE";
 export const handleFetchTodos = () => async dispatch => {
   dispatch({ type: FETCHING_TODOS });
   try {
-    const response = await api.fetchTodos();
-    dispatch({ type: FETCHING_TODOS_SUCCESS, todos: response });
+    let { data } = await api.fetchTodos();
+    dispatch({ type: FETCHING_TODOS_SUCCESS, todos: data });
   } catch (e) {
-    dispatch({ type: FETCHING_TODOS_ERROR, error: e.message });
+    dispatch({ type: FETCHING_TODOS_ERROR, error: "Something went wrong!" });
   }
 };
 
 export const refreshTodos = () => async dispatch => {
   dispatch({ type: REFRESHING_TODOS });
   try {
-    const response = await api.fetchTodos();
-    dispatch({ type: REFRESHING_TODOS_SUCCESS, todos: response });
+    let { data } = await api.fetchTodos();
+    dispatch({ type: REFRESHING_TODOS_SUCCESS, todos: data });
   } catch (e) {
-    dispatch({ type: REFRESHING_TODOS_ERROR, error: e.message });
+    dispatch({ type: REFRESHING_TODOS_ERROR, error: "Something went wrong!" });
   }
 };
 
-export const addNewTodo = (task, clearInputCB) => async dispatch => {
+export const addTodo = (task, clearInput) => async dispatch => {
   const newTodo = {
     task,
     _id: v4(),
@@ -40,11 +41,11 @@ export const addNewTodo = (task, clearInputCB) => async dispatch => {
     created: Date.now()
   };
   try {
-    await api.addNewTodo(newTodo);
-    dispatch({ type: ADD_NEW_TODO, todos: newTodo });
-    clearInputCB();
+    await api.addTodo(newTodo);
+    dispatch({ type: ADD_TODO, todo: newTodo });
+    clearInput();
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({ type: TODO_ACTION_FAILURE, error: handleMongooseError(e) });
   }
 };
 
@@ -53,7 +54,7 @@ export const toggleTodo = _id => async dispatch => {
     await api.toggleTodo(_id);
     dispatch({ type: TOGGLE_TODO, _id });
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({ type: TODO_ACTION_FAILURE, error: "Something went wrong!" });
   }
 };
 
@@ -62,7 +63,7 @@ export const deleteTodo = _id => async dispatch => {
     await api.deleteTodo(_id);
     dispatch({ type: DELETE_TODO, _id });
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({ type: TODO_ACTION_FAILURE, error: "Something went wrong!" });
   }
 };
 
@@ -111,14 +112,16 @@ const todoAppReducer = (state = initialState, action) => {
         error: "",
         todos: action.todos
       };
-    case ADD_NEW_TODO:
+    case ADD_TODO:
       return {
         ...state,
-        todos: [...[action.todos], ...state.todos]
+        error: "",
+        todos: [...[action.todo], ...state.todos]
       };
     case TOGGLE_TODO:
       return {
         ...state,
+        error: "",
         todos: state.todos.map(todo => {
           if (todo._id === action._id) {
             return { ...todo, done: !todo.done };
@@ -129,6 +132,7 @@ const todoAppReducer = (state = initialState, action) => {
     case DELETE_TODO:
       return {
         ...state,
+        error: "",
         todos: state.todos.filter(t => t._id !== action._id)
       };
     case TODO_ACTION_FAILURE:

@@ -1,59 +1,10 @@
-async function fetchTodos() {
-  const response = await fetch("http://10.0.1.6:5150/todo", {
-    method: "get"
-  });
-  if (response.ok) {
-    return await response.json();
-  }
-  throw new Error("Something went wrong! Please Refresh!");
-}
+import axios from "axios";
 
-async function addNewTodo(new_todo) {
-  const response = await fetch("http://10.0.1.6:5150/add", {
-    method: "post",
-    body: JSON.stringify(new_todo),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  if (!response.ok) {
-    throw new Error("Saving failed! Please try again!");
-  }
-}
+const SERVER_URL = "http://10.0.1.6:5150";
+const fetchTodos = () => axios.get(`${SERVER_URL}/todo`);
+const addTodo = new_todo => axios.post(`${SERVER_URL}/add`, new_todo);
+const toggleTodo = _id => axios.post(`${SERVER_URL}/toggle`, { _id });
+const deleteTodo = _id => axios.post(`${SERVER_URL}/delete`, { _id });
 
-async function toggleTodo(_id) {
-  const response = await fetch("http://10.0.1.6:5150/toggle", {
-    method: "post",
-    body: JSON.stringify({ _id }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  if (!response.ok) {
-    throw new Error("Toggling failed! Please try again!");
-  }
-}
-
-async function deleteTodo(_id) {
-  const response = await fetch("http://10.0.1.6:5150/delete", {
-    method: "post",
-    body: JSON.stringify({ _id }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  if (!response.ok) {
-    throw new Error("Delete failed! Please try again!");
-  }
-}
-
-const api = {
-  fetchTodos,
-  addNewTodo,
-  toggleTodo,
-  deleteTodo
-};
+const api = { fetchTodos, addTodo, toggleTodo, deleteTodo };
 export default api;

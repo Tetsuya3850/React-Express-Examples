@@ -20,8 +20,6 @@ let AddTodo = ({ dispatch }) => (
       }}
       placeholder="What to get done?"
       type="text"
-      required
-      maxLength="25"
       autoFocus
     />
     <button type="submit">Go!</button>

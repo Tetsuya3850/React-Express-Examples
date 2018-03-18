@@ -1,5 +1,9 @@
 import v4 from "uuid";
 import api from "./api";
+import {
+  handleNetworkServerErrors,
+  handleNetworkServerMongooseErrors
+} from "./helper";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
 const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
@@ -12,10 +16,13 @@ const TODO_ACTION_FAILURE = "TODO_ACTION_FAILURE";
 export const handleFetchTodos = () => async dispatch => {
   dispatch({ type: FETCHING_TODOS });
   try {
-    const { data } = await api.fetchTodos();
+    let { data } = await api.fetchTodos();
     dispatch({ type: FETCHING_TODOS_SUCCESS, todos: data });
   } catch (e) {
-    dispatch({ type: FETCHING_TODOS_ERROR, error: e.message });
+    dispatch({
+      type: FETCHING_TODOS_ERROR,
+      error: handleNetworkServerErrors(e)
+    });
   }
 };
 
@@ -31,7 +38,10 @@ export const addTodo = (task, clearInput) => async dispatch => {
     dispatch({ type: ADD_TODO, todo: newTodo });
     clearInput();
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({
+      type: TODO_ACTION_FAILURE,
+      error: handleNetworkServerMongooseErrors(e)
+    });
   }
 };
 
@@ -40,7 +50,10 @@ export const toggleTodo = _id => async dispatch => {
     await api.toggleTodo(_id);
     dispatch({ type: TOGGLE_TODO, _id });
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({
+      type: TODO_ACTION_FAILURE,
+      error: handleNetworkServerErrors(e)
+    });
   }
 };
 
@@ -49,7 +62,10 @@ export const deleteTodo = _id => async dispatch => {
     await api.deleteTodo(_id);
     dispatch({ type: DELETE_TODO, _id });
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: e.message });
+    dispatch({
+      type: TODO_ACTION_FAILURE,
+      error: handleNetworkServerErrors(e)
+    });
   }
 };
 

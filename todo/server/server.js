@@ -16,7 +16,11 @@ mongoose.connection.on("error", err => {
 
 const todoSchema = mongoose.Schema({
   _id: String,
-  task: String,
+  task: {
+    type: String,
+    required: [true, "Input required!"],
+    maxlength: [25, "Input too long!"]
+  },
   done: Boolean,
   created: Date
 });
@@ -32,7 +36,7 @@ app.get("/todo", async (req, res, next) => {
     const todos = await Todo.find().sort({ created: -1 });
     res.json(todos);
   } catch (e) {
-    next(e);
+    res.status(500).json(e);
   }
 });
 
@@ -42,7 +46,7 @@ app.post("/add", async (req, res, next) => {
     await newTodo.save();
     res.json("saved!");
   } catch (e) {
-    next(e);
+    res.status(500).json(e);
   }
 });
 
@@ -53,7 +57,7 @@ app.post("/toggle", async (req, res, next) => {
     await todo.save();
     res.json("toggled!");
   } catch (e) {
-    next(e);
+    res.status(500).json(e);
   }
 });
 
@@ -62,7 +66,7 @@ app.post("/delete", async (req, res, next) => {
     await Todo.findByIdAndRemove(req.body._id);
     res.json("deleted!");
   } catch (e) {
-    next(e);
+    res.status(500).json(e);
   }
 });
 

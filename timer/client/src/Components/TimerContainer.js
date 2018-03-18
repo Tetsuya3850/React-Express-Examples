@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
-import actions from "../actions";
+import { setTimer, startTimer, stopTimer, resetTimer } from "../reducer";
+import { bindActionCreators } from "redux";
 import Timer from "./Timer";
 
 const mapStateToProps = state => {
@@ -7,20 +8,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    onSetTimer: set_time => {
-      dispatch(actions.setTimer(set_time));
-    },
-    onStartTimer: () => {
-      dispatch(actions.startTimer());
-    },
-    onStopTimer: () => {
-      dispatch(actions.stopTimer());
-    },
-    onResetTimer: () => {
-      dispatch(actions.resetTimer());
-    }
-  };
+  return bindActionCreators(
+    { setTimer, startTimer, stopTimer, resetTimer },
+    dispatch
+  );
 };
 
 const TimerContainer = connect(mapStateToProps, mapDispatchToProps)(Timer);

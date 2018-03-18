@@ -1,21 +1,28 @@
-export function timeFormatter(seconds) {
-  const hours =
-    Math.floor(seconds / 3600) < 10
-      ? "0" + Math.floor(seconds / 3600)
-      : Math.floor(seconds / 3600);
-  seconds = seconds - hours * 3600;
+export const timeFormatter = s => {
+  const h = Math.floor(s / 3600);
+  s = s - h * 3600;
 
-  const minutes =
-    Math.floor(seconds / 60) < 10
-      ? "0" + Math.floor(seconds / 60)
-      : Math.floor(seconds / 60);
-  seconds = seconds - minutes * 60;
-  if (seconds < 10) {
-    seconds = "0" + seconds;
+  const m = Math.floor(s / 60);
+  s = s - m * 60;
+
+  return { h, m, s };
+};
+
+export const timeDisplay = timestamp => {
+  let { h, m, s } = timeFormatter(timestamp);
+  if (h < 10) {
+    h = "0" + h;
   }
-  return `${hours} : ${minutes} : ${seconds}`;
-}
+  if (m < 10) {
+    m = "0" + m;
+  }
+  if (s < 10) {
+    s = "0" + s;
+  }
 
-export function toSeconds(h, m, s) {
+  return `${h} : ${m} : ${s}`;
+};
+
+export const toSeconds = (h, m, s) => {
   return h * 3600 + m * 60 + s * 1;
-}
+};

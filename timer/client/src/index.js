@@ -1,6 +1,6 @@
 import React from "react";
-import { render } from "react-dom";
+import ReactDOM from "react-dom";
 import Root from "./Root";
 import "font-awesome/css/font-awesome.min.css";
 
-render(<Root />, document.getElementById("root"));
+ReactDOM.render(<Root />, document.getElementById("root"));

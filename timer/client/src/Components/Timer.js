@@ -1,41 +1,37 @@
 import React, { Component } from "react";
-import { timeFormatter, toSeconds } from "../helper";
+import { timeFormatter, timeDisplay, toSeconds } from "../helper";
 
 class Timer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      edit_mode: false
-    };
-  }
+  state = {
+    edit_mode: false,
+    h: 0,
+    m: 0,
+    s: 0
+  };
 
   editModeOn = () => {
-    this.props.onResetTimer();
-    this.setState({ edit_mode: true });
-    var handles = document.getElementsByName("handles");
-    for (var i = 0; i < handles.length; i++) {
-      handles[i].setAttribute("disabled", true);
+    this.props.resetTimer();
+    const { h, m, s } = timeFormatter(this.props.set_time);
+    this.setState({ edit_mode: true, h, m, s });
+    const handles = document.getElementsByName("handles");
+    for (let handle of handles) {
+      handle.setAttribute("disabled", true);
     }
   };
 
   editModeOff = () => {
-    this.h.value = "";
-    this.m.value = "";
-    this.s.value = "";
     this.setState({ edit_mode: false });
-    var handles = document.getElementsByName("handles");
-    for (var i = 0; i < handles.length; i++) {
-      handles[i].removeAttribute("disabled");
+    const handles = document.getElementsByName("handles");
+    for (let handle of handles) {
+      handle.removeAttribute("disabled");
     }
   };
 
   handleFormSubmit = e => {
     e.preventDefault();
-    if (!this.h.value.trim() || !this.m.value.trim() || !this.s.value.trim()) {
-      return;
-    }
-    const seconds = toSeconds(this.h.value, this.m.value, this.s.value);
-    this.props.onSetTimer(seconds);
+    const { h, m, s } = this.state;
+    const seconds = toSeconds(h, m, s);
+    this.props.setTimer(seconds);
     this.editModeOff();
   };
 
@@ -43,44 +39,40 @@ class Timer extends Component {
     const {
       remaining_time,
       is_timed,
-      onStartTimer,
-      onStopTimer,
-      onResetTimer
+      startTimer,
+      stopTimer,
+      resetTimer
     } = this.props;
+    const { edit_mode, h, m, s } = this.state;
 
     return (
       <div style={styles.container}>
-        {this.state.edit_mode ? (
+        {edit_mode ? (
           <form style={styles.editForm} onSubmit={this.handleFormSubmit}>
             <input
-              ref={node => {
-                this.h = node;
-              }}
+              value={h}
+              onChange={e => this.setState({ h: e.target.value })}
               size="3"
               type="number"
-              defaultValue="0"
               min="0"
               max="23"
             />
             <label>h</label>
             <input
-              ref={node => {
-                this.m = node;
-              }}
+              value={m}
+              onChange={e => this.setState({ m: e.target.value })}
               size="3"
               type="number"
-              defaultValue="0"
               min="0"
               max="59"
+              autoFocus
             />
             <label>m</label>
             <input
-              ref={node => {
-                this.s = node;
-              }}
+              value={s}
+              onChange={e => this.setState({ s: e.target.value })}
               size="3"
               type="number"
-              defaultValue="0"
               min="0"
               max="59"
             />
@@ -89,25 +81,25 @@ class Timer extends Component {
           </form>
         ) : (
           <p style={styles.timer}>
-            {timeFormatter(remaining_time)}{" "}
+            {timeDisplay(remaining_time)}
             <i
               className="fa fa-edit"
               style={styles.editBtn}
-              onClick={this.editModeOn}
+              onClick={() => this.editModeOn()}
             />
           </p>
         )}
         <div style={styles.handles}>
           {is_timed ? (
-            <button name="handles" onClick={() => onStopTimer()}>
+            <button name="handles" onClick={stopTimer}>
               Stop
             </button>
           ) : (
-            <button name="handles" onClick={() => onStartTimer()}>
+            <button name="handles" onClick={startTimer}>
               Start
             </button>
           )}
-          <button name="handles" onClick={() => onResetTimer()}>
+          <button name="handles" onClick={resetTimer}>
             Reset
           </button>
         </div>
@@ -116,7 +108,7 @@ class Timer extends Component {
   }
 }
 
-let styles = {
+const styles = {
   container: {
     margin: "auto",
     width: 250,

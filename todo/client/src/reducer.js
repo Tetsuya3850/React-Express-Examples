@@ -1,9 +1,6 @@
 import v4 from "uuid";
 import api from "./api";
-import {
-  handleNetworkServerErrors,
-  handleNetworkServerMongooseErrors
-} from "./helper";
+import { handleMongooseError } from "./helper";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
 const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
@@ -21,7 +18,7 @@ export const handleFetchTodos = () => async dispatch => {
   } catch (e) {
     dispatch({
       type: FETCHING_TODOS_ERROR,
-      error: handleNetworkServerErrors(e)
+      error: "Something went wrong!"
     });
   }
 };
@@ -40,7 +37,7 @@ export const addTodo = (task, clearInput) => async dispatch => {
   } catch (e) {
     dispatch({
       type: TODO_ACTION_FAILURE,
-      error: handleNetworkServerMongooseErrors(e)
+      error: handleMongooseError(e)
     });
   }
 };
@@ -52,7 +49,7 @@ export const toggleTodo = _id => async dispatch => {
   } catch (e) {
     dispatch({
       type: TODO_ACTION_FAILURE,
-      error: handleNetworkServerErrors(e)
+      error: "Something went wrong!"
     });
   }
 };
@@ -64,7 +61,7 @@ export const deleteTodo = _id => async dispatch => {
   } catch (e) {
     dispatch({
       type: TODO_ACTION_FAILURE,
-      error: handleNetworkServerErrors(e)
+      error: "Something went wrong!"
     });
   }
 };
@@ -98,11 +95,13 @@ const todoAppReducer = (state = initialState, action) => {
     case ADD_TODO:
       return {
         ...state,
+        error: "",
         todos: [...[action.todo], ...state.todos]
       };
     case TOGGLE_TODO:
       return {
         ...state,
+        error: "",
         todos: state.todos.map(todo => {
           if (todo._id === action._id) {
             return { ...todo, done: !todo.done };
@@ -113,6 +112,7 @@ const todoAppReducer = (state = initialState, action) => {
     case DELETE_TODO:
       return {
         ...state,
+        error: "",
         todos: state.todos.filter(t => t._id !== action._id)
       };
     case TODO_ACTION_FAILURE:

@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get("/todo", async (req, res, next) => {
   try {
     const todos = await Todo.find().sort({ created: -1 });
-    res.json(todos);
+    res.status(200).json(todos);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -44,7 +44,7 @@ app.post("/add", async (req, res, next) => {
   try {
     const newTodo = new Todo(req.body);
     await newTodo.save();
-    res.json("saved!");
+    res.status(200).json("saved!");
   } catch (e) {
     res.status(500).json(e);
   }
@@ -55,7 +55,7 @@ app.post("/toggle", async (req, res, next) => {
     const todo = await Todo.findById(req.body._id);
     todo.done = !todo.done;
     await todo.save();
-    res.json("toggled!");
+    res.status(200).json("toggled!");
   } catch (e) {
     res.status(500).json(e);
   }
@@ -64,15 +64,15 @@ app.post("/toggle", async (req, res, next) => {
 app.post("/delete", async (req, res, next) => {
   try {
     await Todo.findByIdAndRemove(req.body._id);
-    res.json("deleted!");
+    res.status(200).json("deleted!");
   } catch (e) {
     res.status(500).json(e);
   }
 });
 
-app.use((err, request, response, next) => {
+app.use((err, req, res, next) => {
   console.log(err);
-  response.status(500).send(err);
+  res.status(500).json(err);
 });
 
 app.listen(port, () => {

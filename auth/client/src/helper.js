@@ -1,7 +1,5 @@
 export const getToken = () => localStorage.getItem("jwt-token");
-
 export const saveToken = token => localStorage.setItem("jwt-token", token);
-
 export const removeToken = () => localStorage.removeItem("jwt-token");
 
 export const getUserInfo = () => {

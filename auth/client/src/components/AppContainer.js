@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { reAuthUser } from "../actions";
+import { reAuthUser } from "../reducer";
 import NavBar from "./NavBar";
 import Home from "./Home";
 import Register from "./Register";

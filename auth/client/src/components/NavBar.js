@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { logoutUser } from "../actions";
+import { logoutUser } from "../reducer";
 
 let NavBar = ({ isAuthed, dispatch, history, userInfo }) => {
   if (isAuthed) {

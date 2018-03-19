@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { registerUser } from "../actions";
+import { registerUser } from "../reducer";
 import SocialLoginLinks from "./SocialLoginLinks";
 
 class Register extends Component {

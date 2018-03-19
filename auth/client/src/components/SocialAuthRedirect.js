@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { socialAuthUser } from "../actions";
+import { socialAuthUser } from "../reducer";
 
 class SocialAuthRedirect extends Component {
   componentWillMount() {

@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import api from "./api";
 
 class Questionnaire extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {}
-    };
-  }
+  state = {
+    errors: {}
+  };
 
   handleFormSubmit = async e => {
     e.preventDefault();
@@ -22,8 +19,16 @@ class Questionnaire extends Component {
       colors: checkedCheckboxesValues,
       comments: this.comments.value
     };
-    const status = await api.addNewResponse(payLoad);
-    this.handleStatus(status);
+    try {
+      await api.addResponse(payLoad);
+      this.clearForm();
+    } catch (e) {
+      if (!e.response) {
+        console.log(e);
+        return;
+      }
+      this.handleStatus(e.response.data);
+    }
   };
 
   processCheckbox = () => {
@@ -44,19 +49,15 @@ class Questionnaire extends Component {
   };
 
   handleStatus = status => {
-    if (status !== "Response Added!") {
-      let err = { errors: {} };
-      if (status.code === 11000) {
-        err.errors.email = "Duplicate email!";
-      } else {
-        Object.keys(status.errors).map(key => {
-          err.errors[key] = status.errors[key].message;
-        });
-      }
-      this.setState(err);
+    let err = { errors: {} };
+    if (status.code === 11000) {
+      err.errors.email = "Duplicate email!";
     } else {
-      this.clearForm();
+      Object.keys(status.errors).map(key => {
+        err.errors[key] = status.errors[key].message;
+      });
     }
+    this.setState(err);
   };
 
   clearForm = () => {

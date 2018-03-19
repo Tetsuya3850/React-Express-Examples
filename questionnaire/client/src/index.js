@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Questionnaire from "./Questionnaire";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<Questionnaire />, document.getElementById("root"));

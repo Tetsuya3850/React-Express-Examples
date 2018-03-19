@@ -1,22 +1,10 @@
-async function receiveResponses() {
-  const response = await fetch("/response", { method: "get" });
-  return await response.json();
-}
+import axios from "axios";
 
-async function addNewResponse(new_response) {
-  const response = await fetch("/add", {
-    method: "post",
-    body: JSON.stringify(new_response),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    }
-  });
-  return await response.json();
-}
+const SERVER_URL = "http://localhost:5150";
+const addResponse = new_response =>
+  axios.post(`${SERVER_URL}/add`, new_response);
 
 const api = {
-  receiveResponses,
-  addNewResponse
+  addResponse
 };
 export default api;

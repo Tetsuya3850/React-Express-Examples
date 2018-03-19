@@ -1,12 +1,18 @@
 const express = require("express");
 const app = express();
 const helmet = require("helmet");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
 const port = process.env.PORT;
 const mongoDB = process.env.MONGODB;
+
+mongoose.connect(mongoDB);
+mongoose.connection.on("error", err => {
+  console.error(err.message);
+});
 
 const validateEmail = email => {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -51,30 +57,25 @@ const responseSchema = mongoose.Schema({
 const Response = mongoose.model("Response", responseSchema);
 
 app.use(helmet());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-app.get("/response", async (req, res) => {
-  const responses = await Response.find();
-  res.json(responses);
-});
 
 app.post("/add", async (req, res, next) => {
   const newResponse = new Response(req.body);
   try {
     await newResponse.save();
-    res.json("Response Added!");
-  } catch (err) {
-    return next(err);
+    res.status(200).json("Response Added!");
+  } catch (e) {
+    res.status(500).json(e);
   }
 });
 
-app.use((err, request, response, next) => {
+app.use((err, req, res, next) => {
   console.log(err);
-  response.send(err);
+  res.status(500).json(err);
 });
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
-  mongoose.connect(mongoDB);
 });

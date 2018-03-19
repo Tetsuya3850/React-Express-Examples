@@ -3,7 +3,8 @@ import api from "./api";
 
 class InquiryForm extends Component {
   state = {
-    errors: {}
+    errors: {},
+    mailerStatus: ""
   };
 
   handleFormSubmit = async e => {
@@ -13,9 +14,12 @@ class InquiryForm extends Component {
       subject: this.subject.value,
       text: this.text.value
     };
+    this.setState({ mailerStatus: "Sending..." });
     try {
       await api.sendInquiry(payLoad);
       this.clearForm();
+      this.setState({ errors: {}, mailerStatus: "Success!" });
+      setTimeout(() => this.setState({ errors: {}, mailerStatus: "" }), 2000);
     } catch (e) {
       if (!e.response) {
         console.log(e);
@@ -32,7 +36,7 @@ class InquiryForm extends Component {
         err.errors[express_err.param] = express_err.msg;
       });
     } else {
-      err.errors.mailer = "Something went wrong with the mailer system!";
+      this.setState({ mailerStatus: "Something went wrong!" });
     }
     this.setState(err);
   };
@@ -115,11 +119,10 @@ class InquiryForm extends Component {
             style={{
               display: "block",
               textAlign: "center",
-              color: "red",
               marginTop: 10
             }}
           >
-            {this.state.errors.mailer}
+            {this.state.mailerStatus}
           </span>
         </form>
       </div>

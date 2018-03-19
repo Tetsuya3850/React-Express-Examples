@@ -4,7 +4,7 @@ import { addTodo } from "../reducer";
 
 let AddTodo = ({ dispatch }) => (
   <form
-    style={styles.form}
+    style={{ textAlign: "center" }}
     onSubmit={e => {
       e.preventDefault();
       dispatch(
@@ -27,12 +27,6 @@ let AddTodo = ({ dispatch }) => (
     <button type="submit">Go!</button>
   </form>
 );
-
-const styles = {
-  form: {
-    textAlign: "center"
-  }
-};
 
 AddTodo = connect()(AddTodo);
 

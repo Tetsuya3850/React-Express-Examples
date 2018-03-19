@@ -12,7 +12,11 @@ class TodoListContainer extends Component {
   render() {
     const { todos, error, isFetching, toggleTodo, deleteTodo } = this.props;
     return (
-      <div style={styles.todolist}>
+      <div
+        style={{
+          textAlign: "center"
+        }}
+      >
         {isFetching ? (
           <p>LOADING</p>
         ) : (

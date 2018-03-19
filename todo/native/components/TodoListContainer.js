@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  View,
   Text,
   ScrollView,
   ActivityIndicator,
@@ -14,7 +13,7 @@ import {
   refreshTodos,
   toggleTodo,
   deleteTodo
-} from "../redux";
+} from "../reducer";
 import Todo from "./Todo";
 
 class TodoListContainer extends Component {
@@ -46,17 +45,15 @@ class TodoListContainer extends Component {
           <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
         }
       >
-        <View>
-          {todos.map(todo => (
-            <Todo
-              key={todo._id}
-              {...todo}
-              onTogglePress={() => toggleTodo(todo._id)}
-              onDeletePress={() => deleteTodo(todo._id)}
-            />
-          ))}
-          <Text style={styles.error}>{error}</Text>
-        </View>
+        {todos.map(todo => (
+          <Todo
+            key={todo._id}
+            {...todo}
+            onTogglePress={() => toggleTodo(todo._id)}
+            onDeletePress={() => deleteTodo(todo._id)}
+          />
+        ))}
+        <Text style={styles.error}>{error}</Text>
       </ScrollView>
     );
   }

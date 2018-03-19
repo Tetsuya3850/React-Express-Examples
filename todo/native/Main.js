@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import TodoListContainer from "./TodoListContainer";
-import AddTodo from "./AddTodo";
+import { View, Text, StyleSheet } from "react-native";
+import TodoListContainer from "./components/TodoListContainer";
+import AddTodo from "./components/AddTodo";
 import { Constants } from "expo";
 
-class TodoApp extends Component {
+class Main extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -37,4 +36,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect()(TodoApp);
+export default Main;

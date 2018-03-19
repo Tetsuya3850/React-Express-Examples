@@ -1,8 +1,9 @@
 A todo app example written by React.js, React Native, and Node.js.
 
-## Mock
+## How to play.
 
-![Alt text](./todo-mock.png?raw=true "Mock Image")
+* Native
+  https://exp.host/@tetsuya3850/todo
 
 ## Features
 

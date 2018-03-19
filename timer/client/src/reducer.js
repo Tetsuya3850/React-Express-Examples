@@ -1,16 +1,16 @@
 import { store } from "./Root";
 
-const TIMER_SET = "TIMER_SET";
-const TIMER_START = "TIMER_START";
-const TIMER_TICK = "TIMER_TICK";
-const TIMER_STOP = "TIMER_STOP";
-const TIMER_RESET = "TIMER_RESET";
+const SET_TIMER = "SET_TIMER";
+const START_TIMER = "START_TIMER";
+const TICK_TIMER = "TICK_TIMER";
+const STOP_TIMER = "STOP_TIMER";
+const RESET_TIMER = "RESET_TIMER";
 
 let timer = null;
 
 export const setTimer = set_time => {
   return {
-    type: TIMER_SET,
+    type: SET_TIMER,
     set_time
   };
 };
@@ -19,29 +19,28 @@ export const startTimer = () => dispatch => {
   clearInterval(timer);
   timer = setInterval(() => {
     if (store.getState().remaining_time === 0) {
-      clearInterval(timer);
-      dispatch({ type: TIMER_RESET });
       window.alert("Time Over!");
+      dispatch(resetTimer());
     } else {
       dispatch(tickTimer());
     }
   }, 1000);
-  dispatch({ type: TIMER_START });
+  dispatch({ type: START_TIMER });
   dispatch(tickTimer());
 };
 
 const tickTimer = () => {
-  return { type: TIMER_TICK };
+  return { type: TICK_TIMER };
 };
 
 export const stopTimer = () => {
   clearInterval(timer);
-  return { type: TIMER_STOP };
+  return { type: STOP_TIMER };
 };
 
 export const resetTimer = () => {
   clearInterval(timer);
-  return { type: TIMER_RESET };
+  return { type: RESET_TIMER };
 };
 
 const initialState = {
@@ -52,28 +51,28 @@ const initialState = {
 
 const timerAppReducer = (state = initialState, action) => {
   switch (action.type) {
-    case TIMER_SET:
+    case SET_TIMER:
       return {
         ...state,
         set_time: action.set_time,
         remaining_time: action.set_time
       };
-    case TIMER_START:
+    case START_TIMER:
       return {
         ...state,
         is_timed: true
       };
-    case TIMER_STOP:
+    case STOP_TIMER:
       return {
         ...state,
         is_timed: false
       };
-    case TIMER_TICK:
+    case TICK_TIMER:
       return {
         ...state,
         remaining_time: state.remaining_time - 1
       };
-    case TIMER_RESET:
+    case RESET_TIMER:
       return {
         ...state,
         is_timed: false,

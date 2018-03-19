@@ -1,11 +1,9 @@
-A timer app.
-
-## Requirements
-
-* You can custom set the time. Default is 5 minutes.
-* When you press start, button changes to stop.
-* While setting time, start and reset buttons are disabled.
+A timer app example written by React.js.
 
 ## Mock
 
 ![Alt text](./timer-mock.png?raw=true "Mock Image")
+
+## Features
+
+* Custom set the time. Default is 5 minutes.

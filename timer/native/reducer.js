@@ -1,4 +1,4 @@
-import { store } from "./index";
+import { store } from "./App";
 
 const SET_TIMER = "SET_TIMER";
 const START_TIMER = "START_TIMER";

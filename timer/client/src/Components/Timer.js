@@ -51,30 +51,32 @@ class Timer extends Component {
           <form style={styles.editForm} onSubmit={this.handleFormSubmit}>
             <input
               value={h}
-              onChange={e => this.setState({ h: e.target.value })}
-              size="3"
+              onChange={e => {
+                this.setState({ h: parseInt(e.target.value, 10) });
+              }}
+              size={3}
               type="number"
-              min="0"
-              max="23"
+              min={0}
+              max={23}
             />
             <label>h</label>
             <input
               value={m}
-              onChange={e => this.setState({ m: e.target.value })}
-              size="3"
+              onChange={e => this.setState({ m: parseInt(e.target.value, 10) })}
+              size={3}
               type="number"
-              min="0"
-              max="59"
+              min={0}
+              max={59}
               autoFocus
             />
             <label>m</label>
             <input
               value={s}
-              onChange={e => this.setState({ s: e.target.value })}
-              size="3"
+              onChange={e => this.setState({ s: parseInt(e.target.value, 10) })}
+              size={3}
               type="number"
-              min="0"
-              max="59"
+              min={0}
+              max={59}
             />
             <label>s</label>
             <input type="submit" style={{ display: "none" }} />
@@ -85,7 +87,7 @@ class Timer extends Component {
             <i
               className="fa fa-edit"
               style={styles.editBtn}
-              onClick={() => this.editModeOn()}
+              onClick={this.editModeOn}
             />
           </p>
         )}

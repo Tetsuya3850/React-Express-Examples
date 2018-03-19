@@ -1,5 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import InquiryForm from "./InquiryForm";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<InquiryForm />, document.getElementById("root"));

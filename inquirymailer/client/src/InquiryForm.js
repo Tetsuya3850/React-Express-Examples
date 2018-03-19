@@ -1,13 +1,10 @@
 import React, { Component } from "react";
-import { sendInquiry } from "./api";
+import api from "./api";
 
 class InquiryForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      errors: {}
-    };
-  }
+  state = {
+    errors: {}
+  };
 
   handleFormSubmit = async e => {
     e.preventDefault();
@@ -16,24 +13,28 @@ class InquiryForm extends Component {
       subject: this.subject.value,
       text: this.text.value
     };
-    const status = await sendInquiry(payLoad);
-    this.handleStatus(status);
+    try {
+      await api.sendInquiry(payLoad);
+      this.clearForm();
+    } catch (e) {
+      if (!e.response) {
+        console.log(e);
+        return;
+      }
+      this.handleStatus(e.response.data);
+    }
   };
 
   handleStatus = status => {
-    if (status !== "success") {
-      let err = { errors: {} };
-      if (status.expressValidator !== undefined) {
-        status.expressValidator.forEach(express_err => {
-          err.errors[express_err.param] = express_err.msg;
-        });
-      } else {
-        err.errors.mailer = "Something went wrong with the mailer system!";
-      }
-      this.setState(err);
+    let err = { errors: {} };
+    if (status.expressValidator !== undefined) {
+      status.expressValidator.forEach(express_err => {
+        err.errors[express_err.param] = express_err.msg;
+      });
     } else {
-      this.clearForm();
+      err.errors.mailer = "Something went wrong with the mailer system!";
     }
+    this.setState(err);
   };
 
   clearForm = () => {
@@ -44,7 +45,7 @@ class InquiryForm extends Component {
 
   render() {
     return (
-      <div style={{ margin: "auto", width: 400 }}>
+      <div style={{ margin: "auto", width: 300 }}>
         <form onSubmit={this.handleFormSubmit}>
           <h2 style={{ textAlign: "center" }}>Inquiry Form</h2>
           <hr />

@@ -1,5 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const { check, validationResult } = require("express-validator/check");
@@ -11,6 +12,7 @@ const gmail_pwd = process.env.GMAIL_PWD;
 const app = express();
 
 app.use(helmet());
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -44,7 +46,7 @@ app.post(
   (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length !== 0) {
-      res.json({ expressValidator: errors });
+      res.status(500).json({ expressValidator: errors });
       return;
     }
 
@@ -70,7 +72,7 @@ app.post(
           if (error) {
             next(error);
           } else {
-            res.json("success");
+            res.status(200).json("success");
           }
         });
       }
@@ -79,7 +81,7 @@ app.post(
 );
 
 app.use((err, req, res, next) => {
-  res.json(err);
+  res.status.json(err);
 });
 
 app.listen(port, () => {

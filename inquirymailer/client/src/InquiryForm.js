@@ -22,8 +22,7 @@ class InquiryForm extends Component {
       setTimeout(() => this.setState({ errors: {}, mailerStatus: "" }), 2000);
     } catch (e) {
       if (!e.response) {
-        console.log(e);
-        return;
+        return console.log(e);
       }
       this.handleStatus(e.response.data);
     }
@@ -35,10 +34,8 @@ class InquiryForm extends Component {
       status.expressValidator.forEach(express_err => {
         err.errors[express_err.param] = express_err.msg;
       });
-    } else {
-      this.setState({ mailerStatus: "Something went wrong!" });
     }
-    this.setState(err);
+    this.setState({ ...err, mailerStatus: "Something went wrong!" });
   };
 
   clearForm = () => {

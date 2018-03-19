@@ -46,8 +46,7 @@ app.post(
   (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length !== 0) {
-      res.status(500).json({ expressValidator: errors });
-      return;
+      return res.status(500).json({ expressValidator: errors });
     }
 
     const inquiryMailOptions = {
@@ -66,11 +65,11 @@ app.post(
 
     transporter.sendMail(inquiryMailOptions, function(error, info) {
       if (error) {
-        next(error);
+        return res.status(500).json(error);
       } else {
         transporter.sendMail(confirmMailOptions, function(error, info) {
           if (error) {
-            next(error);
+            return res.status(500).json(error);
           } else {
             res.status(200).json("success");
           }
@@ -81,7 +80,7 @@ app.post(
 );
 
 app.use((err, req, res, next) => {
-  res.status.json(err);
+  res.status(500).json(err);
 });
 
 app.listen(port, () => {

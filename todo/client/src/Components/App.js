@@ -5,7 +5,7 @@ import TodoListContainer from "./TodoListContainer";
 class App extends Component {
   render() {
     return (
-      <div style={{ width: 180 }}>
+      <div style={{ width: 200, display: "block", margin: "auto" }}>
         <AddTodo />
         <TodoListContainer />
       </div>

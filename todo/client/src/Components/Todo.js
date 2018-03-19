@@ -2,12 +2,7 @@ import React from "react";
 
 const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
   <li>
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between"
-      }}
-    >
+    <div style={styles.todo}>
       <p
         onClick={onToggleClick}
         style={{
@@ -17,16 +12,21 @@ const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
       >
         {task}
       </p>
-      <p
-        onClick={onDeleteClick}
-        style={{
-          cursor: "pointer"
-        }}
-      >
+      <p onClick={onDeleteClick} style={styles.cross}>
         &#10799;
       </p>
     </div>
   </li>
 );
+
+const styles = {
+  todo: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  cross: {
+    cursor: "pointer"
+  }
+};
 
 export default Todo;

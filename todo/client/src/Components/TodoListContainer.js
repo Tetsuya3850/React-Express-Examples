@@ -12,7 +12,7 @@ class TodoListContainer extends Component {
   render() {
     const { todos, error, isFetching, toggleTodo, deleteTodo } = this.props;
     return (
-      <div style={{ textAlign: "center" }}>
+      <div style={styles.todolist}>
         {isFetching ? (
           <p>LOADING</p>
         ) : (
@@ -27,11 +27,20 @@ class TodoListContainer extends Component {
             ))}
           </ul>
         )}
-        <p style={{ color: "red" }}>{error}</p>
+        <p style={styles.error}>{error}</p>
       </div>
     );
   }
 }
+
+const styles = {
+  todolist: {
+    textAlign: "center"
+  },
+  error: {
+    color: "red"
+  }
+};
 
 const mapStateToProps = state => {
   return state;

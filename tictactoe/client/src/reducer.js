@@ -1,4 +1,49 @@
-import { SET_MOVE, CHANGE_TURN, HAS_WON, IS_FAIR } from "./actions";
+import { judgeWinHelper, judgeFairHelper } from "./helper";
+import { store } from "./Root";
+
+const SET_MOVE = "SET_MOVE";
+const CHANGE_TURN = "CHANGE_TURN";
+const HAS_WON = "HAS_WON";
+const IS_FAIR = "IS_FAIR";
+const NEW_GAME = "NEW_GAME";
+
+const setMove = (pos, turn) => {
+  return {
+    type: SET_MOVE,
+    pos,
+    turn
+  };
+};
+
+const changeTurn = () => {
+  return { type: CHANGE_TURN };
+};
+
+const hasWon = () => {
+  return { type: HAS_WON };
+};
+
+const isFair = () => {
+  return { type: IS_FAIR };
+};
+
+export const newGame = () => {
+  return { type: NEW_GAME };
+};
+
+export const processMove = (pos, turn) => dispatch => {
+  dispatch(setMove(pos, turn));
+  const ticTacToe = store.getState().ticTacToe;
+  if (judgeWinHelper(ticTacToe)) {
+    dispatch(hasWon());
+    return;
+  }
+  if (judgeFairHelper(ticTacToe)) {
+    dispatch(isFair());
+    return;
+  }
+  dispatch(changeTurn());
+};
 
 const initialState = {
   ticTacToe: [null, null, null, null, null, null, null, null, null],
@@ -35,6 +80,8 @@ const ticTacToeReducer = (state = initialState, action) => {
         ...state,
         isFair: !state.isFair
       };
+    case NEW_GAME:
+      return initialState;
     default:
       return state;
   }

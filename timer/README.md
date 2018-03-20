@@ -8,3 +8,4 @@ A timer app example written by React.js & React Native.
 ## Try it
 
 * Web (https://timer-client-3850.herokuapp.com/)
+* Native (https://expo.io/@tetsuya3850/timer)

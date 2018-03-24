@@ -8,7 +8,7 @@ import {
   Alert
 } from "react-native";
 import { connect } from "react-redux";
-import { logoutUser } from "../redux";
+import { logoutUser } from "../reducer";
 import { MaterialIcons } from "@expo/vector-icons";
 import { registerForPushNotificationsAsync } from "../services/push_notifications";
 import { Notifications } from "expo";
@@ -45,8 +45,10 @@ class ProfileScreen extends Component {
     const { userInfo } = this.props.state;
     return (
       <View style={styles.container}>
-        <Text>{userInfo.email}</Text>
-        <Text>{userInfo.name}</Text>
+        <View>
+          <Text>{userInfo.email}</Text>
+          <Text>{userInfo.name}</Text>
+        </View>
         <TouchableOpacity
           onPress={() =>
             this.props.dispatch(
@@ -66,7 +68,7 @@ class ProfileScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center"
   }
 });

@@ -5,22 +5,30 @@ export const saveToken = token => AsyncStorage.setItem("jwt-token", token);
 export const removeToken = () => AsyncStorage.removeItem("jwt-token");
 
 export const getUserInfo = async () => {
-  const token = await getToken();
-  let payload;
-  if (token) {
-    payload = token.split(".")[1];
-    payload = Base64.atob(payload);
-    return JSON.parse(payload);
-  } else {
-    return null;
+  try {
+    const token = await getToken();
+    let payload;
+    if (token) {
+      payload = token.split(".")[1];
+      payload = Base64.atob(payload);
+      return JSON.parse(payload);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const parseToken = token => {
-  let payload;
-  payload = token.split(".")[1];
-  payload = Base64.atob(payload);
-  return JSON.parse(payload);
+  try {
+    let payload;
+    payload = token.split(".")[1];
+    payload = Base64.atob(payload);
+    return JSON.parse(payload);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const formatErrors = status => {

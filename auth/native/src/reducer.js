@@ -1,16 +1,10 @@
 import api from "./api";
-import {
-  saveToken,
-  removeToken,
-  getUserInfo,
-  parseToken,
-  formatErrors
-} from "./utils";
+import { saveToken, removeToken, getUserInfo, formatErrors } from "./utils";
 
-export const AUTH_USER = "AUTH_USER";
-export const UNAUTH_USER = "UNAUTH_USER";
-export const REGISTER_FAIL = "REGISTER_FAIL";
-export const LOGIN_FAIL = "LOGIN_FAIL";
+const AUTH_USER = "AUTH_USER";
+const UNAUTH_USER = "UNAUTH_USER";
+const REGISTER_FAIL = "REGISTER_FAIL";
+const LOGIN_FAIL = "LOGIN_FAIL";
 
 const authUser = userInfo => {
   return {
@@ -60,12 +54,6 @@ export const loginUser = (userInfo, redirect) => async dispatch => {
     let { data } = e.response;
     dispatch(loginFail(data));
   }
-};
-
-export const socialAuthUser = (token, redirect) => async dispatch => {
-  await saveToken(token);
-  dispatch(authUser(parseToken(token)));
-  redirect();
 };
 
 export const tokenAuthUser = redirect => async dispatch => {

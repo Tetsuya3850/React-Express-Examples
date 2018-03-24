@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { logoutUser } from "../reducer";
+import api from "../api";
 import { MaterialIcons } from "@expo/vector-icons";
 import { registerForPushNotificationsAsync } from "../services/push_notifications";
 import { Notifications } from "expo";
@@ -41,14 +42,29 @@ class ProfileScreen extends Component {
     }
   };
 
+  handleSecret = async () => {
+    try {
+      let { data } = await api.getSecret(this.props.state.userInfo._id);
+      Alert.alert("Secret", data.code, [{ text: "OK" }]);
+    } catch (e) {
+      let { data } = e.response;
+      Alert.alert("Error", data.code, [{ text: "OK" }]);
+    }
+  };
+
   render() {
     const { userInfo } = this.props.state;
     return (
       <View style={styles.container}>
         <View>
-          <Text>{userInfo.email}</Text>
-          <Text>{userInfo.name}</Text>
+          <Text>Email: {userInfo.email}</Text>
+          <Text>Name: {userInfo.name}</Text>
         </View>
+
+        <TouchableOpacity onPress={this.handleSecret}>
+          <Text>Click here for a secret message!</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           onPress={() =>
             this.props.dispatch(

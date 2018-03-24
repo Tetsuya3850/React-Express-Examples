@@ -3,13 +3,13 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "./SweetContainer";
 import Comments from "./Comments";
-import { handleReceiveSweet, handleAddComment } from "../reducer/sweets";
+import { handleFetchSweet, handleAddComment } from "../reducer/sweets";
 
 class SweetComments extends Component {
   componentDidMount() {
-    const { match, handleReceiveSweet } = this.props;
+    const { match, handleFetchSweet } = this.props;
     const { sweetId } = match.params;
-    handleReceiveSweet(sweetId);
+    handleFetchSweet(sweetId);
   }
 
   handleFormSubmit = e => {
@@ -84,7 +84,7 @@ const mapStateToProps = ({ users, sweets }, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleReceiveSweet,
+      handleFetchSweet,
       handleAddComment
     },
     dispatch

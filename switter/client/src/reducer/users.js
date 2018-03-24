@@ -39,8 +39,8 @@ export const logoutUser = redirect => async dispatch => {
 };
 
 export const receiveUserInfo = uid => async dispatch => {
-  const userInfo = await getUser(uid);
-  dispatch(receiveUser(userInfo));
+  const { data } = await getUser(uid);
+  dispatch(receiveUser(data));
 };
 
 const initialState = {

@@ -1,9 +1,10 @@
-import { postToggleSweet, postComment, getSweet } from "../api";
+import { getSweet, postToggleSweet, postComment } from "../api";
 
 const FETCHING_SWEET = "FETCHING_SWEET";
-const RECEIVE_SWEETS = "RECEIVE_SWEETS";
-export const LIKE_SWEET = "LIKE_SWEET";
-export const UNLIKE_SWEET = "UNLIKE_SWEET";
+const FETCHING_SWEET_ERROR = "FETCHING_SWEET_ERROR";
+const FETCHING_SWEETS_SUCCESS = "FETCHING_SWEETS_SUCCESS";
+const LIKE_SWEET = "LIKE_SWEET";
+const UNLIKE_SWEET = "UNLIKE_SWEET";
 const ADD_COMMENT = "ADD_COMMENT";
 
 const fetchingSweet = () => {
@@ -12,9 +13,15 @@ const fetchingSweet = () => {
   };
 };
 
-export const receiveSweets = sweets => {
+const fetchingSweetError = () => {
   return {
-    type: RECEIVE_SWEETS,
+    type: FETCHING_SWEET_ERROR
+  };
+};
+
+export const fetchingSweetsSuccess = sweets => {
+  return {
+    type: FETCHING_SWEETS_SUCCESS,
     sweets
   };
 };
@@ -43,26 +50,43 @@ const addComment = (sweetId, comment) => {
   };
 };
 
-export const handleReceiveSweet = sweetId => async dispatch => {
+export const handleFetchSweet = sweetId => async dispatch => {
   dispatch(fetchingSweet());
-  const sweet = await getSweet(sweetId);
-  const normalizedSweet = { [sweetId]: sweet };
-  dispatch(receiveSweets(normalizedSweet));
+  try {
+    let { data } = await getSweet(sweetId);
+    const normalizedSweet = { [sweetId]: data };
+    dispatch(fetchingSweetsSuccess(normalizedSweet));
+  } catch (e) {
+    let { data } = e.response;
+    dispatch(fetchingSweetError(data));
+  }
 };
 
 export const handleLikeSweet = (sweetId, uid) => async dispatch => {
-  const reponse = await postToggleSweet(sweetId);
-  dispatch(likeSweet(sweetId, uid));
+  try {
+    await postToggleSweet(sweetId);
+    dispatch(likeSweet(sweetId, uid));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleUnlikeSweet = (sweetId, uid) => async dispatch => {
-  const reponse = await postToggleSweet(sweetId);
-  dispatch(unlikeSweet(sweetId, uid));
+  try {
+    await postToggleSweet(sweetId);
+    dispatch(unlikeSweet(sweetId, uid));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleAddComment = (sweetId, comment) => async dispatch => {
-  const commentWithId = await postComment({ sweetId, comment });
-  dispatch(addComment(sweetId, commentWithId));
+  try {
+    const { data } = await postComment({ sweetId, comment });
+    dispatch(addComment(sweetId, data));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const likeCommentReducer = (state, action) => {
@@ -88,14 +112,17 @@ const likeCommentReducer = (state, action) => {
 };
 
 const initialState = {
-  isFetching: false
+  isFetching: false,
+  error: ""
 };
 
 const sweets = (state = initialState, action) => {
   switch (action.type) {
     case FETCHING_SWEET:
       return { ...state, isFetching: true };
-    case RECEIVE_SWEETS:
+    case FETCHING_SWEET_ERROR:
+      return { ...state, error: action.error, isFetching: false };
+    case FETCHING_SWEETS_SUCCESS:
       return { ...state, ...action.sweets, isFetching: false };
     case LIKE_SWEET:
     case UNLIKE_SWEET:

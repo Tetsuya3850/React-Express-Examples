@@ -1,6 +1,6 @@
 import { getUserSweets } from "../api";
-import { receiveSweets } from "./sweets";
-import { normalizeSweets, getSweetIds } from "../helper";
+import { fetchingSweetsSuccess } from "./sweets";
+import { normalizeSweets, selectSweetIds } from "../helper";
 
 const FETCHING_USER_SWEETS = "FETCHING_USER_SWEETS";
 const RECEIVE_USER_SWEETIDS = "RECEIVE_USER_SWEETIDS";
@@ -21,10 +21,10 @@ const receiveUserSweetIds = (uid, sweetIds) => {
 
 export const receiveUserSweets = uid => async dispatch => {
   dispatch(fetchingUserSweets());
-  const userSweets = await getUserSweets(uid);
-  const normalizedUserSweets = normalizeSweets(userSweets);
-  const userSweetIds = getSweetIds(userSweets);
-  dispatch(receiveSweets(normalizedUserSweets));
+  const { data } = await getUserSweets(uid);
+  const normalizedUserSweets = normalizeSweets(data);
+  const userSweetIds = selectSweetIds(data);
+  dispatch(fetchingSweetsSuccess(normalizedUserSweets));
   dispatch(receiveUserSweetIds(uid, userSweetIds));
 };
 

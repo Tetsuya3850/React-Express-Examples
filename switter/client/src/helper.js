@@ -47,6 +47,6 @@ export const normalizeSweets = sweets => {
   return normalizedSweets;
 };
 
-export const getSweetIds = sweets => {
+export const selectSweetIds = sweets => {
   return sweets.map(sweet => sweet._id);
 };

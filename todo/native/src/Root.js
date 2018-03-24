@@ -4,7 +4,7 @@ import TodoListContainer from "./components/TodoListContainer";
 import AddTodo from "./components/AddTodo";
 import { Constants } from "expo";
 
-class Main extends Component {
+class Root extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Main;
+export default Root;

@@ -1,6 +1,6 @@
 import v4 from "uuid";
 import api from "./api";
-import { handleMongooseError } from "./helper";
+import { formatMongooseError } from "./helper";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
 const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
@@ -23,7 +23,7 @@ export const handleFetchTodos = () => async dispatch => {
   }
 };
 
-export const refreshTodos = () => async dispatch => {
+export const handleRefreshTodos = () => async dispatch => {
   dispatch({ type: REFRESHING_TODOS });
   try {
     let { data } = await api.fetchTodos();
@@ -45,7 +45,7 @@ export const addTodo = (task, clearInput) => async dispatch => {
     dispatch({ type: ADD_TODO, todo: newTodo });
     clearInput();
   } catch (e) {
-    dispatch({ type: TODO_ACTION_FAILURE, error: handleMongooseError(e) });
+    dispatch({ type: TODO_ACTION_FAILURE, error: formatMongooseError(e) });
   }
 };
 

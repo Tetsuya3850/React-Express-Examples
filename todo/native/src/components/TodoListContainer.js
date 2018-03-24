@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
   handleFetchTodos,
-  refreshTodos,
+  handleRefreshTodos,
   toggleTodo,
   deleteTodo
 } from "../reducer";
@@ -22,7 +22,7 @@ class TodoListContainer extends Component {
   }
 
   _onRefresh = () => {
-    this.props.refreshTodos();
+    this.props.handleRefreshTodos();
   };
 
   render() {
@@ -75,7 +75,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       handleFetchTodos,
-      refreshTodos,
+      handleRefreshTodos,
       toggleTodo,
       deleteTodo
     },

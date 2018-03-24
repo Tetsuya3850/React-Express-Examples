@@ -1,4 +1,4 @@
-export const handleMongooseError = e => {
+export const formatMongooseError = e => {
   if (e.response.data.errors.task) {
     return e.response.data.errors.task.message;
   }

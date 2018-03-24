@@ -1,4 +1,5 @@
 import { store } from "../App";
+import { Alert } from "react-native";
 
 const SET_TIMER = "SET_TIMER";
 const START_TIMER = "START_TIMER";
@@ -19,7 +20,7 @@ export const startTimer = () => dispatch => {
   clearInterval(timer);
   timer = setInterval(() => {
     if (store.getState().remaining_time === 0) {
-      window.alert("Time Over!");
+      Alert.alert("Time Over!", "Stop your work!!", [{ text: "OK" }]);
       dispatch(resetTimer());
     } else {
       dispatch(tickTimer());

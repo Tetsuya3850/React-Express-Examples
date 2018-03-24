@@ -12,7 +12,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { timeFormatter, timeDisplay, toSeconds } from "../helper";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class Timer extends Component {
   state = {
@@ -31,7 +30,7 @@ class Timer extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     const { h, m, s } = this.state;
-    if (h > 23 || m > 59 || s > 59) {
+    if (h > 23 || m > 59 || s > 59 || (h == 0 && m == 0 && s == 0)) {
       this.setState({ edit_mode: false });
       return;
     }

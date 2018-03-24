@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TextInput,
   Button,
-  Dimensions
+  Dimensions,
+  TouchableOpacity
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { timeFormatter, timeDisplay, toSeconds } from "../helper";
@@ -30,6 +31,10 @@ class Timer extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     const { h, m, s } = this.state;
+    if (h > 23 || m > 59 || s > 59) {
+      this.setState({ edit_mode: false });
+      return;
+    }
     const seconds = toSeconds(h, m, s);
     this.props.setTimer(seconds);
     this.setState({ edit_mode: false });
@@ -50,61 +55,67 @@ class Timer extends Component {
         <View style={styles.timer}>
           {edit_mode ? (
             <View style={styles.setTimeForm}>
-              <TextInput
-                value={`${h}`}
-                onChangeText={h => this.setState({ h })}
-                maxLength={2}
-                keyboardType="numeric"
-                returnKeyType="done"
-                autoFocus
-                onSubmitEditing={() => {
-                  this._m.focus();
-                }}
-                blurOnSubmit={false}
-                style={styles.input}
-              />
-              <Text>h</Text>
-              <TextInput
-                ref={view => {
-                  this._m = view;
-                }}
-                value={`${m}`}
-                onChangeText={m => this.setState({ m })}
-                maxLength={2}
-                keyboardType="numeric"
-                returnKeyType="done"
-                onSubmitEditing={() => {
-                  this._s.focus();
-                }}
-                blurOnSubmit={false}
-                style={styles.input}
-              />
-              <Text>m</Text>
-              <TextInput
-                ref={view => {
-                  this._s = view;
-                }}
-                value={`${s}`}
-                onChangeText={s => this.setState({ s })}
-                maxLength={2}
-                keyboardType="numeric"
-                returnKeyType="done"
-                onSubmitEditing={this.handleFormSubmit}
-                style={styles.input}
-              />
-              <Text>s</Text>
+              <View style={styles.setTime}>
+                <TextInput
+                  value={`${h}`}
+                  onChangeText={h => this.setState({ h })}
+                  maxLength={2}
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  autoFocus
+                  onSubmitEditing={() => {
+                    this._m.focus();
+                  }}
+                  blurOnSubmit={false}
+                  style={styles.input}
+                />
+                <Text style={styles.hms}>h</Text>
+              </View>
+              <View style={styles.setTime}>
+                <TextInput
+                  ref={view => {
+                    this._m = view;
+                  }}
+                  value={`${m}`}
+                  onChangeText={m => this.setState({ m })}
+                  maxLength={2}
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  onSubmitEditing={() => {
+                    this._s.focus();
+                  }}
+                  blurOnSubmit={false}
+                  style={styles.input}
+                />
+                <Text style={styles.hms}>m</Text>
+              </View>
+              <View style={styles.setTime}>
+                <TextInput
+                  ref={view => {
+                    this._s = view;
+                  }}
+                  value={`${s}`}
+                  onChangeText={s => this.setState({ s })}
+                  maxLength={2}
+                  keyboardType="numeric"
+                  returnKeyType="done"
+                  onSubmitEditing={this.handleFormSubmit}
+                  style={styles.input}
+                />
+                <Text style={styles.hms}>s</Text>
+              </View>
             </View>
           ) : (
             <View style={styles.time}>
               <Text style={styles.remainTime}>
                 {timeDisplay(remaining_time)}
               </Text>
-              <FontAwesome
-                style={styles.editBtn}
-                name="edit"
+              <TouchableOpacity
                 onPress={this.editModeOn}
-                size={20}
-              />
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <FontAwesome style={styles.editBtn} name="edit" size={20} />
+              </TouchableOpacity>
             </View>
           )}
           <View style={styles.handles}>
@@ -144,11 +155,22 @@ const styles = StyleSheet.create({
   },
   setTimeForm: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     marginTop: 20
   },
+  setTime: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20
+  },
   input: {
-    width: 20
+    width: 35,
+    textAlign: "right",
+    fontSize: 25
+  },
+  hms: {
+    fontSize: 20
   },
   timer: {
     width: SCREEN_WIDTH * 0.8,

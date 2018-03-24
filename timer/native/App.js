@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Provider } from "react-redux";
-import configureStore from "./configureStore";
-import TimerContainer from "./components/TimerContainer";
+import configureStore from "./src/configureStore";
+import TimerContainer from "./src/components/TimerContainer";
 
 export const store = configureStore();
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -14,3 +14,5 @@ export default class App extends Component {
     );
   }
 }
+
+export default App;

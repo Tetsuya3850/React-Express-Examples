@@ -1,13 +1,12 @@
-An auth app.
+An auth app example written by React.js, React Native, and Node.js.
 
-## Requirements
+## Features
 
-* Users can register and login.
-* Don't save the passwords directly.
-* Keep the login session alive for some time.
-* Have some pages that only logged in users can access.
-* Change the nav bar's UI based on whether the user is authed or not.
+* Users can register and login with email and password.
+* SocialAuth with Google & Facebook are supported as well.
+* Some content are protected for logged in users.
 
-## Mock
+## Try it
 
-![Alt text](./auth-mock.png?raw=true "Mock Image")
+* Web (https://auth-client-3850.herokuapp.com/)
+* Native (https://exp.host/@tetsuya3850/auth)

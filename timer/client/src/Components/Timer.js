@@ -30,6 +30,10 @@ class Timer extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     const { h, m, s } = this.state;
+    if (h > 23 || m > 59 || s > 59 || (h === 0 && m === 0 && s === 0)) {
+      this.editModeOff();
+      return;
+    }
     const seconds = toSeconds(h, m, s);
     this.props.setTimer(seconds);
     this.editModeOff();

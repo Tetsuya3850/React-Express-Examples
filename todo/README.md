@@ -1,4 +1,4 @@
-A todo app example written by React.js, React Native, and Node.js.
+A todo app example written by React.js, React Native, and Node.js
 
 ## Features
 

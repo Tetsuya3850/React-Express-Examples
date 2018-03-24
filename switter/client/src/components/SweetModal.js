@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import { postNewSweet } from "../api";
+import { postSweet } from "../api";
 
 class SweetModal extends Component {
   state = {
@@ -25,7 +25,7 @@ class SweetModal extends Component {
       author: this.props.users.ownInfo._id,
       comments: []
     };
-    postNewSweet(sweet);
+    postSweet(sweet);
     this.text.value = "";
     this.closeModal();
   };

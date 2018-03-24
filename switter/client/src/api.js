@@ -1,80 +1,17 @@
+import axios from "axios";
 import { getToken } from "./helper";
+const SERVER_URL = "https://switter-server-3850.herokuapp.com";
+axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
-export async function getFeedSweets() {
-  const response = await fetch("/sweets/feed", {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function getUser(uid) {
-  const response = await fetch(`/users/${uid}`, {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function getUserSweets(uid) {
-  const response = await fetch(`/sweets/users/${uid}`, {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function getSweet(sweetId) {
-  const response = await fetch(`/sweets/comments/${sweetId}`, {
-    method: "get",
-    headers: {
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function postNewSweet(new_sweet) {
-  const response = await fetch(`/sweets/add/`, {
-    method: "post",
-    body: JSON.stringify(new_sweet),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function postToggleSweet(sweetId) {
-  const response = await fetch(`/sweets/togglelike/`, {
-    method: "post",
-    body: JSON.stringify({ sweetId }),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
-
-export async function postComment(payload) {
-  const response = await fetch(`/sweets/comment/`, {
-    method: "post",
-    body: JSON.stringify(payload),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      authorization: `Bearer ${getToken()}`
-    }
-  });
-  return await response.json();
-}
+export const getFeedSweets = () => axios.get(`${SERVER_URL}/sweets/feed`);
+export const getUser = uid => axios.get(`${SERVER_URL}/users/${uid}`);
+export const getUserSweets = uid =>
+  axios.get(`${SERVER_URL}/sweets/users/${uid}`);
+export const getSweet = sweetId =>
+  axios.get(`${SERVER_URL}/sweets/comments/${sweetId}`);
+export const postSweet = new_sweet =>
+  axios.post(`${SERVER_URL}/sweets/add/`, new_sweet);
+export const postToggleSweet = sweetId =>
+  axios.post(`${SERVER_URL}/sweets/togglelike/`);
+export const postComment = payload =>
+  axios.post(`${SERVER_URL}/sweets/comment/`, payload);

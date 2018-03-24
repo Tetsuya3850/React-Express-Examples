@@ -5,12 +5,10 @@ import { getCookie } from "../helper";
 
 class SocialAuthRedirect extends Component {
   componentWillMount() {
-    const { dispatch, history } = this.props;
-    dispatch(
-      socialAuthUser(getCookie("auth"), () => {
-        document.cookie =
-          "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        history.push("/");
+    const searchParams = new URLSearchParams(window.location.search);
+    this.props.dispatch(
+      socialAuthUser(searchParams.get("token"), () => {
+        this.props.history.push("/");
       })
     );
   }

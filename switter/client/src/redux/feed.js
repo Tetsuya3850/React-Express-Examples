@@ -28,9 +28,9 @@ const addFeedIds = sweetIds => {
 
 export const handleFeedSweets = () => async dispatch => {
   dispatch(fetchingFeedIds());
-  const feedSweets = await getFeedSweets();
-  const normalizedFeedSweets = normalizeSweets(feedSweets);
-  const feedSweetIds = getSweetIds(feedSweets);
+  const { data } = await getFeedSweets();
+  const normalizedFeedSweets = normalizeSweets(data);
+  const feedSweetIds = getSweetIds(data);
   dispatch(receiveSweets(normalizedFeedSweets));
   dispatch(receiveFeedIds(feedSweetIds));
 };

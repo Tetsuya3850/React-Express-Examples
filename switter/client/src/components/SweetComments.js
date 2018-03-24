@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "./SweetContainer";
 import Comments from "./Comments";
-import { handleReceiveSweet, handleAddComment } from "../redux/sweets";
+import { handleReceiveSweet, handleAddComment } from "../reducer/sweets";
 
 class SweetComments extends Component {
   componentDidMount() {

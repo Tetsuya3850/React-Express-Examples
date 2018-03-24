@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { socialAuthUser } from "../redux/users";
+import { socialAuthUser } from "../reducer/users";
 import { getCookie } from "../helper";
 
 class SocialAuthRedirect extends Component {

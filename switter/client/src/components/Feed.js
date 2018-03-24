@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { handleFeedSweets } from "../redux/feed";
+import { handleFeedSweets } from "../reducer/feed";
 import SweetContainer from "./SweetContainer";
 
 class Feed extends Component {

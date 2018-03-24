@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Sweet from "./Sweet";
-import { handleLikeSweet, handleUnlikeSweet } from "../redux/sweets";
+import { handleLikeSweet, handleUnlikeSweet } from "../reducer/sweets";
 
 const mapStateToProps = ({ sweets, users }, ownProps) => {
   const sweet = sweets[ownProps.sweetId];

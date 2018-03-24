@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { receiveUserInfo } from "../redux/users";
-import { receiveUserSweets } from "../redux/userSweets";
+import { receiveUserInfo } from "../reducer/users";
+import { receiveUserSweets } from "../reducer/userSweets";
 import SweetContainer from "./SweetContainer";
 
 class Profile extends Component {

@@ -1,6 +1,6 @@
 import v4 from "uuid";
 import api from "./api";
-import { handleMongooseError } from "./helper";
+import { formatMongooseError } from "./helper";
 
 const FETCHING_TODOS = "FETCHING_TODOS";
 const FETCHING_TODOS_ERROR = "FETCHING_TODOS_ERROR";
@@ -37,7 +37,7 @@ export const addTodo = (task, clearInput) => async dispatch => {
   } catch (e) {
     dispatch({
       type: TODO_ACTION_FAILURE,
-      error: handleMongooseError(e)
+      error: formatMongooseError(e)
     });
   }
 };

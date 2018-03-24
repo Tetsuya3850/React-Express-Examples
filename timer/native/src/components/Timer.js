@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   remainTime: {
+    width: SCREEN_WIDTH * 0.42,
     fontSize: 25
   },
   editBtn: {

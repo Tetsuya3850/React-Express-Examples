@@ -8,14 +8,14 @@ const SocialLoginLinks = () => (
 
     <div style={{ display: "flex" }}>
       <a
-        href={`https://logsignserver.herokuapp.com/auth/facebook?linkinguri=${
+        href={`https://auth-server-3850.herokuapp.com/auth/facebook?linkinguri=${
           window.location.origin
         }/socialauthredirect`}
       >
         <img src={fb} alt={"fblogo"} style={{ flexGrow: 1, width: "95%" }} />
       </a>
       <a
-        href={`https://logsignserver.herokuapp.com/auth/google?linkinguri=${
+        href={`https://auth-server-3850.herokuapp.com/auth/google?linkinguri=${
           window.location.origin
         }/socialauthredirect`}
       >

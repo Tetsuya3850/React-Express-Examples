@@ -22,7 +22,7 @@ const Cell = ({ move, hasWon, isFair, onMoveClick }) => {
   );
 };
 
-let styles = {
+const styles = {
   container: {
     width: 100,
     height: 100,

@@ -36,13 +36,11 @@ export const processMove = (pos, turn) => dispatch => {
   const ticTacToe = store.getState().ticTacToe;
   if (judgeWinHelper(ticTacToe)) {
     dispatch(hasWon());
-    return;
-  }
-  if (judgeFairHelper(ticTacToe)) {
+  } else if (judgeFairHelper(ticTacToe)) {
     dispatch(isFair());
-    return;
+  } else {
+    dispatch(changeTurn());
   }
-  dispatch(changeTurn());
 };
 
 const initialState = {

@@ -1,4 +1,4 @@
-export function judgeWinHelper(ticTacToe) {
+export const judgeWinHelper = ticTacToe => {
   let hasWon = false;
 
   for (let i = 0; i < 9; i += 3) {
@@ -38,9 +38,9 @@ export function judgeWinHelper(ticTacToe) {
   }
 
   return hasWon;
-}
+};
 
-export function judgeFairHelper(ticTacToe) {
+export const judgeFairHelper = ticTacToe => {
   let isFair = true;
   ticTacToe.forEach(function(cell) {
     if (cell === null) {
@@ -48,4 +48,4 @@ export function judgeFairHelper(ticTacToe) {
     }
   });
   return isFair;
-}
+};

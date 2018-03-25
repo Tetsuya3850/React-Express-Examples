@@ -18,13 +18,13 @@ const Cell = ({ move, hasWon, isFair, onMoveClick }) => {
 
   return (
     <TouchableOpacity onPress={handleMoveClick}>
-      <View style={styles.container}>{renderState}</View>
+      <View style={styles.cell}>{renderState}</View>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  cell: {
     width: 100,
     height: 100,
     borderWidth: 1,

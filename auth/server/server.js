@@ -8,9 +8,9 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 const passport = require("passport");
 
-require("./models/user");
+require("./userModel");
 require("./config/passport");
-const routes = require("./routes/index");
+const routes = require("./routes");
 
 const app = express();
 

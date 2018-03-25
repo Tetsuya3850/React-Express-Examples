@@ -11,8 +11,8 @@ passport.use(
     {
       usernameField: "email"
     },
-    function(username, password, done) {
-      User.findOne({ email: username }, function(err, user) {
+    (username, password, done) => {
+      User.findOne({ email: username }, (err, user) => {
         if (err) {
           return done(err);
         }
@@ -57,8 +57,8 @@ passport.use(
   )
 );
 
-function findUserOrCreate(profile, done) {
-  User.findOne({ email: profile.emails[0].value }, function(err, user) {
+const findUserOrCreate = (profile, done) => {
+  User.findOne({ email: profile.emails[0].value }, (err, user) => {
     if (err) {
       return done(err);
     }
@@ -68,7 +68,7 @@ function findUserOrCreate(profile, done) {
       new_user.name = `${profile.name.givenName} ${profile.name.familyName}`;
       new_user.email = profile.emails[0].value;
 
-      new_user.save(function(err, new_user) {
+      new_user.save((err, new_user) => {
         if (err) return done(err);
         return done(null, new_user);
       });
@@ -76,4 +76,4 @@ function findUserOrCreate(profile, done) {
       return done(null, user);
     }
   });
-}
+};

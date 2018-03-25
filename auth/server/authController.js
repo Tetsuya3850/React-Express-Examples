@@ -16,7 +16,7 @@ module.exports.register = async (req, res, next) => {
   try {
     await user.save();
     const token = user.generateJwt();
-    res.json({
+    res.status(200).json({
       userInfo: user,
       token: token
     });
@@ -25,17 +25,16 @@ module.exports.register = async (req, res, next) => {
   }
 };
 
-module.exports.login = function(req, res) {
-  passport.authenticate("local", function(err, user, info) {
+module.exports.login = (req, res) => {
+  passport.authenticate("local", (err, user, info) => {
     if (err) {
-      res.status(404).json(err);
+      res.status(401).json(err);
       return;
     }
 
     if (user) {
       const token = user.generateJwt();
-      res.status(200);
-      res.json({
+      res.status(200).json({
         userInfo: user,
         token: token
       });
@@ -45,32 +44,32 @@ module.exports.login = function(req, res) {
   })(req, res);
 };
 
-module.exports.fbAuth = function(req, res, next) {
+module.exports.fbAuth = (req, res, next) => {
   passport.authenticate("facebook", {
     state: req.query.linkinguri
   })(req, res, next);
 };
 
-module.exports.fbAuthCB = function(req, res, next) {
+module.exports.fbAuthCB = (req, res, next) => {
   passport.authenticate("facebook", (err, user, info) =>
-    generateTokenAndRedirect(err, user, info, req, res, next)
-  )(req, res);
+    generateTokenAndRedirect(req, res, next, err, user, info)
+  )(req, res, next);
 };
 
-module.exports.goAuth = function(req, res, next) {
+module.exports.goAuth = (req, res, next) => {
   passport.authenticate("google", {
     scope: ["profile", "email"],
     state: req.query.linkinguri
   })(req, res, next);
 };
 
-module.exports.goAuthCB = function(req, res, next) {
+module.exports.goAuthCB = (req, res, next) => {
   passport.authenticate("google", (err, user, info) =>
-    generateTokenAndRedirect(err, user, info, req, res, next)
-  )(req, res);
+    generateTokenAndRedirect(req, res, next, err, user, info)
+  )(req, res, next);
 };
 
-function generateTokenAndRedirect(err, user, info, req, res, next) {
+const generateTokenAndRedirect = (req, res, next, err, user, info) => {
   if (err) {
     return next(err);
   }
@@ -80,4 +79,4 @@ function generateTokenAndRedirect(err, user, info, req, res, next) {
   } else {
     return res.redirect("${req.query.state}");
   }
-}
+};

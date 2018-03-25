@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var User = mongoose.model("User");
+const mongoose = require("mongoose");
+const User = mongoose.model("User");
 
-module.exports.secret = function(req, res) {
+module.exports.secret = (req, res) => {
   if (req.payload._id !== req.params.uid) {
     res.status(401).json({
       code: "You are spoofing!"

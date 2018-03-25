@@ -1,11 +1,10 @@
-A Tic Tac Toe app.
+A Tic Tac Toe app example written by React.js & React Native
 
-## Requirements
+## Features
 
-* Circle and Cross take turns.
-* Game state such as which turn, game fair, or win is indicated.
-* When game ends, further interactions are disabled.
+* Functioning Tic Tac Toe game.
 
-## Mock
+## Try it
 
-![Alt text](./tictactoe-mock.png?raw=true "Mock Image")
+* Web (https://tictactoe-client-3850.herokuapp.com/)
+* Native (https://exp.host/@tetsuya3850/tictactoe)

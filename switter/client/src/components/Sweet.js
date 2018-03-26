@@ -34,7 +34,9 @@ const Sweet = ({
             className="fa fa-thumbs-up"
             onClick={() => handleUnlikeSweet(sweet._id, uid)}
           >
-            <span style={{ marginLeft: "3px" }}>{sweet.likedByIds.length}</span>
+            <span style={{ marginLeft: "3px" }}>
+              {sweet.likedUserIds.length}
+            </span>
           </i>
         ) : (
           <i
@@ -42,7 +44,9 @@ const Sweet = ({
             className="fa fa-thumbs-o-up"
             onClick={() => handleLikeSweet(sweet._id, uid)}
           >
-            <span style={{ marginLeft: "3px" }}>{sweet.likedByIds.length}</span>
+            <span style={{ marginLeft: "3px" }}>
+              {sweet.likedUserIds.length}
+            </span>
           </i>
         )}
         <Link to={`/comments/${sweet._id}`} style={{ color: "black" }}>

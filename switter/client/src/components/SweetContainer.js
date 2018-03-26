@@ -5,7 +5,7 @@ import { handleLikeSweet, handleUnlikeSweet } from "../reducer/sweets";
 
 const mapStateToProps = ({ sweets, users }, ownProps) => {
   const sweet = sweets[ownProps.sweetId];
-  const hasLiked = sweet.likedByIds.indexOf(users.ownInfo._id) > -1;
+  const hasLiked = sweet.likedUserIds.indexOf(users.ownInfo._id) > -1;
   return { sweet, hasLiked, uid: users.ownInfo._id };
 };
 

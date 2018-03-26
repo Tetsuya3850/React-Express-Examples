@@ -21,7 +21,7 @@ class SweetModal extends Component {
     const sweet = {
       text: this.text.value,
       created: Date.now(),
-      likedByIds: [],
+      likedUserIds: [],
       author: this.props.users.ownInfo._id,
       comments: []
     };

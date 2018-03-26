@@ -6,7 +6,9 @@ class Auth extends Component {
     return (
       <div style={{ margin: "auto", width: 400 }}>
         <a
-          href="http://localhost:5150/auth/google"
+          href={`https://switter-server-3850.herokuapp.com/auth/google?linkinguri=${
+            window.location.origin
+          }/socialauthredirect`}
           style={{ textAlign: "center", display: "block" }}
         >
           <img src={google} alt={"googlelogo"} />

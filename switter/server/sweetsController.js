@@ -50,7 +50,7 @@ module.exports.add = async (req, res, next) => {
 module.exports.toggleLike = async (req, res, next) => {
   try {
     const uid = req.me._id;
-    const sweetId = req.body.sweetId;
+    const { sweetId } = req.params;
     const user = await User.findOne({
       _id: uid,
       likedSweetIds: sweetId
@@ -75,9 +75,9 @@ module.exports.toggleLike = async (req, res, next) => {
 
 module.exports.comment = async (req, res, next) => {
   try {
-    const { sweetId, comment } = req.body;
+    const { sweetId } = req.params;
     const sweet = await Sweet.findOne({ _id: sweetId });
-    sweet.comments.push(comment);
+    sweet.comments.push(req.body);
     await sweet.save();
     await sweet.populate("comments.author").execPopulate();
     const commentWithIdAndAuthor = sweet.comments[sweet.comments.length - 1];

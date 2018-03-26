@@ -19,7 +19,7 @@ router.get("/sweets/feed", auth, sweetsCtrl.getFeed);
 router.get("/sweets/users/:uid", auth, sweetsCtrl.getUserSweets);
 router.get("/sweets/comments/:sweetId", auth, sweetsCtrl.getSweet);
 router.post("/sweets/add", auth, sweetsCtrl.add);
-router.post("/sweets/togglelike", auth, sweetsCtrl.toggleLike);
-router.post("/sweets/comment", auth, sweetsCtrl.comment);
+router.post("/sweets/togglelike/:sweetId", auth, sweetsCtrl.toggleLike);
+router.post("/sweets/comment/:sweetId", auth, sweetsCtrl.comment);
 
 module.exports = router;

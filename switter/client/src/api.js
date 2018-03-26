@@ -12,6 +12,6 @@ export const getSweet = sweetId =>
 export const postSweet = new_sweet =>
   axios.post(`${SERVER_URL}/sweets/add/`, new_sweet);
 export const postToggleSweet = sweetId =>
-  axios.post(`${SERVER_URL}/sweets/togglelike/`);
-export const postComment = payload =>
-  axios.post(`${SERVER_URL}/sweets/comment/`, payload);
+  axios.post(`${SERVER_URL}/sweets/togglelike/${sweetId}`);
+export const postComment = (sweetId, comment) =>
+  axios.post(`${SERVER_URL}/sweets/comment/${sweetId}`, comment);

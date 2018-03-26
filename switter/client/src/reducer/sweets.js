@@ -82,7 +82,7 @@ export const handleUnlikeSweet = (sweetId, uid) => async dispatch => {
 
 export const handleAddComment = (sweetId, comment) => async dispatch => {
   try {
-    const { data } = await postComment({ sweetId, comment });
+    const { data } = await postComment(sweetId, comment);
     dispatch(addComment(sweetId, data));
   } catch (e) {
     console.log(e);
@@ -94,12 +94,12 @@ const likeCommentReducer = (state, action) => {
     case LIKE_SWEET:
       return {
         ...state,
-        likedByIds: [...state.likedByIds, ...[action.uid]]
+        likedUserIds: [...state.likedUserIds, ...[action.uid]]
       };
     case UNLIKE_SWEET:
       return {
         ...state,
-        likedByIds: state.likedByIds.filter(uid => uid !== action.uid)
+        likedUserIds: state.likedUserIds.filter(uid => uid !== action.uid)
       };
     case ADD_COMMENT:
       return {

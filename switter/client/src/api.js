@@ -8,7 +8,7 @@ export const getUser = uid => axios.get(`${SERVER_URL}/users/${uid}`);
 export const getUserSweets = uid =>
   axios.get(`${SERVER_URL}/sweets/users/${uid}`);
 export const getSweet = sweetId =>
-  axios.get(`${SERVER_URL}/sweets/comments/${sweetId}`);
+  axios.get(`${SERVER_URL}/sweets/sweet/${sweetId}`);
 export const postSweet = new_sweet =>
   axios.post(`${SERVER_URL}/sweets/add/`, new_sweet);
 export const postToggleSweet = sweetId =>

@@ -3,22 +3,30 @@ export const saveToken = token => localStorage.setItem("jwt-token", token);
 export const removeToken = () => localStorage.removeItem("jwt-token");
 
 export const getUserInfo = () => {
-  const token = getToken();
-  let payload;
-  if (token) {
-    payload = token.split(".")[1];
-    payload = window.atob(payload);
-    return JSON.parse(payload);
-  } else {
-    return null;
+  try {
+    const token = getToken();
+    let payload;
+    if (token) {
+      payload = token.split(".")[1];
+      payload = window.atob(payload);
+      return JSON.parse(payload);
+    } else {
+      return null;
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const parseToken = token => {
-  let payload;
-  payload = token.split(".")[1];
-  payload = window.atob(payload);
-  return JSON.parse(payload);
+  try {
+    let payload;
+    payload = token.split(".")[1];
+    payload = window.atob(payload);
+    return JSON.parse(payload);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const formatErrors = status => {

@@ -28,7 +28,7 @@ class ProfileScreen extends Component {
   };
 
   componentDidMount() {
-    const { userInfo } = this.props.state;
+    const { userInfo } = this.props;
     registerForPushNotificationsAsync(userInfo._id);
     this._notificationSubscription = Notifications.addListener(
       this._handleNotification
@@ -44,16 +44,20 @@ class ProfileScreen extends Component {
 
   handleSecret = async () => {
     try {
-      let { data } = await api.getSecret(this.props.state.userInfo._id);
+      let { data } = await api.getSecret(this.props.userInfo._id);
       Alert.alert("Secret", data.code, [{ text: "OK" }]);
     } catch (e) {
+      if (!e.response) {
+        console.log(e);
+        return;
+      }
       let { data } = e.response;
       Alert.alert("Error", data.code, [{ text: "OK" }]);
     }
   };
 
   render() {
-    const { userInfo } = this.props.state;
+    const { userInfo } = this.props;
     return (
       <View style={styles.container}>
         <View>
@@ -61,7 +65,10 @@ class ProfileScreen extends Component {
           <Text>Name: {userInfo.name}</Text>
         </View>
 
-        <TouchableOpacity onPress={this.handleSecret}>
+        <TouchableOpacity
+          onPress={this.handleSecret}
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
+        >
           <Text>Click here for a secret message!</Text>
         </TouchableOpacity>
 
@@ -73,6 +80,7 @@ class ProfileScreen extends Component {
               })
             )
           }
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
         >
           <Text>LOGOUT</Text>
         </TouchableOpacity>
@@ -90,7 +98,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return { state };
+  return state;
 };
 
 ProfileScreen = connect(mapStateToProps, null)(ProfileScreen);

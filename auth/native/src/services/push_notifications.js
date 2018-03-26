@@ -2,7 +2,7 @@ import { Permissions, Notifications } from "expo";
 import axios from "axios";
 import { AsyncStorage } from "react-native";
 
-const PUSH_ENDPOINT = "https://logsignserver.herokuapp.com/pushtoken/add";
+const PUSH_ENDPOINT = "https://auth-server-3850.herokuapp.com/pushtoken/add";
 
 export const registerForPushNotificationsAsync = async uid => {
   try {

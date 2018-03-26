@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import queryString from "query-string";
 import { AppLoading } from "expo";
 import { tokenAuthUser } from "../reducer";
-import { saveToken } from "../utils";
+import { saveToken } from "../helper";
 
 class AuthScreen extends Component {
   state = {
@@ -24,7 +24,7 @@ class AuthScreen extends Component {
     }
     this.props.dispatch(
       tokenAuthUser(() => {
-        this.props.navigation.navigate("profile");
+        this.props.navigation.navigate("main");
       })
     );
   };
@@ -44,13 +44,13 @@ class AuthScreen extends Component {
 
   _openFBAuthAsync = () => {
     Linking.openURL(
-      `https://logsignserver.herokuapp.com/auth/facebook/?linkinguri=exp://exp.host/@tetsuya3850/auth`
+      `https://auth-server-3850.herokuapp.com/auth/facebook/?linkinguri=exp://exp.host/@tetsuya3850/auth`
     );
   };
 
   _openGoogleAuthAsync = () => {
     Linking.openURL(
-      `https://logsignserver.herokuapp.com/auth/google/?linkinguri=exp://exp.host/@tetsuya3850/auth`
+      `https://auth-server-3850.herokuapp.com/auth/google/?linkinguri=exp://exp.host/@tetsuya3850/auth`
     );
   };
 
@@ -67,9 +67,6 @@ class AuthScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={this._openFBAuthAsync}>
-          <Image source={require("../../assets/fb_signin.png")} />
-        </TouchableOpacity>
         <TouchableOpacity onPress={this._openGoogleAuthAsync}>
           <Image source={require("../../assets/google_signin.png")} />
         </TouchableOpacity>

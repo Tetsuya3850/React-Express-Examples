@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateJwt = function() {
-  var expiry = new Date();
+  let expiry = new Date();
   expiry.setDate(expiry.getDate() + 7);
 
   return jwt.sign(

@@ -26,7 +26,7 @@ const sweetSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  likedByIds: [
+  likedUserIds: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "User"

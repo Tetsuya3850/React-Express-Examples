@@ -16,8 +16,8 @@ passport.use(
   )
 );
 
-function findUserOrCreate(profile, done) {
-  User.findOne({ email: profile.emails[0].value }, function(err, user) {
+const findUserOrCreate = (profile, done) => {
+  User.findOne({ email: profile.emails[0].value }, (err, user) => {
     if (err) {
       return done(err);
     }
@@ -28,7 +28,7 @@ function findUserOrCreate(profile, done) {
       new_user.email = profile.emails[0].value;
       new_user.pic = profile.photos[0].value.split("?")[0] + "?sz=70";
 
-      new_user.save(function(err, new_user) {
+      new_user.save((err, new_user) => {
         if (err) return done(err);
         return done(null, new_user);
       });
@@ -36,4 +36,4 @@ function findUserOrCreate(profile, done) {
       return done(null, user);
     }
   });
-}
+};

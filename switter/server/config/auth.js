@@ -6,6 +6,6 @@ module.exports = {
   googleAuth: {
     appID: GO_APP_ID,
     appSecret: GO_SECRET,
-    callbackURL: "http://localhost:5150/auth/google/callback"
+    callbackURL: "https://switter-server-3850/auth/google/callback"
   }
 };

@@ -6,12 +6,12 @@ import SocialLoginLinks from "./SocialLoginLinks";
 class Login extends Component {
   handleFormSubmit = async e => {
     e.preventDefault();
-    const payLoad = {
+    const payload = {
       email: this.email.value,
       password: this.password.value
     };
     this.props.dispatch(
-      loginUser(payLoad, () => {
+      loginUser(payload, () => {
         this.clearForm();
         const { from } = this.props.location.state || {
           from: { pathname: "/profile" }
@@ -30,7 +30,7 @@ class Login extends Component {
     const { loginErrors } = this.props;
 
     return (
-      <div style={{ margin: "auto", width: 400 }}>
+      <div>
         <form onSubmit={this.handleFormSubmit}>
           <h2 style={{ textAlign: "center" }}>Login</h2>
           <hr />

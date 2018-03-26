@@ -4,12 +4,9 @@ import { registerUser } from "../reducer";
 import SocialLoginLinks from "./SocialLoginLinks";
 
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      unMatchPwd: ""
-    };
-  }
+  state = {
+    unMatchPwd: ""
+  };
 
   handleFormSubmit = e => {
     e.preventDefault();
@@ -44,7 +41,7 @@ class Register extends Component {
     const { unMatchPwd } = this.state;
 
     return (
-      <div style={{ margin: "auto", width: 400 }}>
+      <div>
         <form onSubmit={this.handleFormSubmit}>
           <h2 style={{ textAlign: "center" }}>Register</h2>
           <hr />

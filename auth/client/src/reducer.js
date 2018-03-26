@@ -26,14 +26,14 @@ const unAuthUser = () => {
 const registerFail = errors => {
   return {
     type: REGISTER_FAIL,
-    registerErrors: errors
+    errors
   };
 };
 
 const loginFail = errors => {
   return {
     type: LOGIN_FAIL,
-    loginErrors: errors
+    errors
   };
 };
 
@@ -44,6 +44,10 @@ export const registerUser = (userInfo, redirect) => async dispatch => {
     dispatch(authUser(data.userInfo));
     redirect();
   } catch (e) {
+    if (!e.response) {
+      console.log(e);
+      return;
+    }
     let { data } = e.response;
     const formattedErrors = formatErrors(data);
     dispatch(registerFail(formattedErrors));
@@ -57,6 +61,10 @@ export const loginUser = (userInfo, redirect) => async dispatch => {
     dispatch(authUser(data.userInfo));
     redirect();
   } catch (e) {
+    if (!e.response) {
+      console.log(e);
+      return;
+    }
     let { data } = e.response;
     dispatch(loginFail(data));
   }
@@ -100,21 +108,16 @@ const authReducer = (state = initialState, action) => {
         userInfo: action.userInfo
       };
     case UNAUTH_USER:
-      return {
-        isAuthed: false,
-        registerErrors: {},
-        loginErrors: {},
-        userInfo: {}
-      };
+      return initialState;
     case REGISTER_FAIL:
       return {
         ...state,
-        registerErrors: action.registerErrors
+        registerErrors: action.errors
       };
     case LOGIN_FAIL:
       return {
         ...state,
-        loginErrors: action.loginErrors
+        loginErrors: action.errors
       };
     default:
       return state;

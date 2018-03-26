@@ -3,18 +3,19 @@ import { connect } from "react-redux";
 import api from "../api";
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      code: ""
-    };
-  }
+  state = {
+    code: ""
+  };
 
   handleSecret = async () => {
     try {
       let { data } = await api.getSecret(this.props.match.params.uid);
       this.setState({ code: data.code });
     } catch (e) {
+      if (!e.response) {
+        console.log(e);
+        return;
+      }
       let { data } = e.response;
       this.setState({ code: data.code });
     }

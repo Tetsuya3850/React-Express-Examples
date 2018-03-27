@@ -1,9 +1,10 @@
-A twiiter mock.
+A twitter like app example written by React.js, React Native, and Node.js
 
-## Requirements
+## Features
 
-* Copy Twitter!!
+* Copy Twitter!
 
-## Mock
+## Try it
 
-![Alt text](./twitter-mock.png?raw=true "Mock Image")
+* Web (https://switter-client-3850.herokuapp.com/)
+* Native (https://exp.host/@tetsuya3850/switter)

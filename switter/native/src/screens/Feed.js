@@ -10,9 +10,11 @@ class Feed extends Component {
   static navigationOptions = {
     title: "Switter"
   };
+
   componentDidMount() {
     this.props.handleFetchFeedSweets();
   }
+
   render() {
     const { isFetching, error, sweetIds } = this.props;
     return (
@@ -24,10 +26,7 @@ class Feed extends Component {
             {sweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
-            <Text
-              style={{ textAlign: "center", color: "red", marginTop: 10 }}
-              onPress={() => this.props.logoutUser(() => {})}
-            >
+            <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
               {error}
             </Text>
           </View>
@@ -44,8 +43,7 @@ const mapStateToProps = ({ feed }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleFetchFeedSweets,
-      logoutUser
+      handleFetchFeedSweets
     },
     dispatch
   );

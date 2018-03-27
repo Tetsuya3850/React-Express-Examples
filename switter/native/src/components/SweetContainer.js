@@ -7,7 +7,7 @@ const mapStateToProps = ({ sweets, users }, ownProps) => {
   const sweet = sweets[ownProps.sweetId];
   const uid = users.ownInfo._id;
   const hasLiked = sweet.likedUserIds.indexOf(uid) > -1;
-  return { ...sweet, hasLiked, uid };
+  return { sweet, hasLiked, uid };
 };
 
 const mapDispatchToProps = dispatch => {

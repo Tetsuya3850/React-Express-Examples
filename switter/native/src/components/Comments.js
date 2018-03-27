@@ -1,22 +1,27 @@
 import React from "react";
+import { View, Text, Image } from "react-native";
 import { latencyConverter } from "../helper";
 
 const Comments = props =>
   props.comments.map(comment => (
-    <div key={comment._id} style={styles.container}>
-      <div style={styles.comment}>
-        <img src={comment.author.pic} style={styles.profilePic} alt="profile" />
-        <div style={styles.content}>
-          <p>
-            <span style={styles.author}>{comment.author.name}</span>
-            <span style={styles.time}>
+    <View key={comment._id} style={styles.container}>
+      <View style={styles.comment}>
+        <Image
+          source={{ uri: comment.author.pic }}
+          style={styles.profilePic}
+          alt="profile"
+        />
+        <View style={styles.content}>
+          <Text>
+            <Text>{comment.author.name}</Text>
+            <Text style={styles.time}>
               {latencyConverter(Date.now() - Date.parse(comment.created))}
-            </span>
-          </p>
+            </Text>
+          </Text>
           <p>{comment.text}</p>
-        </div>
-      </div>
-    </div>
+        </View>
+      </View>
+    </View>
   ));
 
 const styles = {
@@ -37,9 +42,6 @@ const styles = {
   },
   content: {
     width: "80%"
-  },
-  author: {
-    cursor: "pointer"
   },
   time: {
     color: "grey"

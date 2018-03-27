@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { View, Text } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchUser } from "../reducer/users";
 import { handleFetchUserSweets } from "../reducer/userSweets";
-import SweetContainer from "./SweetContainer";
+import SweetContainer from "../components/SweetContainer";
 
 class Profile extends Component {
   componentDidMount() {
@@ -14,21 +15,21 @@ class Profile extends Component {
   render() {
     const { isFetching, name, userSweetIds, error } = this.props;
     return (
-      <div>
+      <View>
         {isFetching ? (
-          <p style={{ textAlign: "center" }}>LOADING</p>
+          <Text style={{ textAlign: "center" }}>LOADING</Text>
         ) : (
-          <div>
-            <p style={{ textAlign: "center" }}>{name}</p>
+          <View>
+            <Text style={{ textAlign: "center" }}>{name}</Text>
             {userSweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
-            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+            <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
               {error}
-            </p>
-          </div>
+            </Text>
+          </View>
         )}
-      </div>
+      </View>
     );
   }
 }

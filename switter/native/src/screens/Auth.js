@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import queryString from "query-string";
 import { AppLoading } from "expo";
-import { tokenAuthUser } from "../reducer";
+import { tokenAuthUser } from "../reducer/users";
 import { saveToken } from "../helper";
 
 class AuthScreen extends Component {
@@ -30,7 +30,7 @@ class AuthScreen extends Component {
   };
 
   _handleToken = async url => {
-    let query = url.replace("exp://exp.host/@tetsuya3850/auth", "");
+    let query = url.replace("exp://exp.host/@tetsuya3850/switter", "");
     const data = queryString.parse(query);
     const token = data.token;
     if (token) {
@@ -42,15 +42,9 @@ class AuthScreen extends Component {
     }
   };
 
-  _openFBAuthAsync = () => {
-    Linking.openURL(
-      `https://auth-server-3850.herokuapp.com/auth/facebook/?linkinguri=exp://exp.host/@tetsuya3850/auth`
-    );
-  };
-
   _openGoogleAuthAsync = () => {
     Linking.openURL(
-      `https://auth-server-3850.herokuapp.com/auth/google/?linkinguri=exp://exp.host/@tetsuya3850/auth`
+      `https://switter-server-3850.herokuapp.com/auth/google/?linkinguri=exp://exp.host/@tetsuya3850/switter`
     );
   };
 

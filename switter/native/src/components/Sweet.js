@@ -1,93 +1,117 @@
 import React from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import { latencyConverter } from "../helper";
-import { Link } from "react-router-dom";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Sweet = ({
-  _id,
-  author,
-  created,
-  text,
-  likedUserIds,
-  comments,
+  sweet,
   hasLiked,
   uid,
   handleLikeSweet,
   handleUnlikeSweet
 }) => (
-  <div style={styles.container}>
-    <div style={styles.sweet}>
-      <Link to={`/profile/${author._id}`}>
-        <img src={author.pic} style={styles.profilePic} alt="profile" />
-      </Link>
-      <div style={styles.content}>
-        <p>
-          <Link to={`/profile/${author._id}`}>
-            <span>{author.name}</span>
-          </Link>
-          <span style={styles.time}>
-            {latencyConverter(Date.now() - Date.parse(created))}
-          </span>
-        </p>
-        <p>{text}</p>
-        {hasLiked ? (
-          <i
-            style={styles.likeIcon}
-            className="fa fa-thumbs-up"
-            onClick={() => handleUnlikeSweet(_id, uid)}
+  <View style={styles.container}>
+    <View style={styles.sweet}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate("profile", { _id: sweet.author._id });
+        }}
+      >
+        <Image
+          source={{ uri: sweet.author.pic }}
+          style={styles.profilePic}
+          alt="profile"
+        />
+      </TouchableOpacity>
+      <View style={styles.content}>
+        <View style={styles.row}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate("profile", {
+                _id: sweet.author._id
+              });
+            }}
           >
-            <span style={styles.likeNum}>{likedUserIds.length}</span>
-          </i>
-        ) : (
-          <i
-            style={styles.likeIcon}
-            className="fa fa-thumbs-o-up"
-            onClick={() => handleLikeSweet(_id, uid)}
+            <Text>{sweet.author.name}</Text>
+          </TouchableOpacity>
+          <Text style={styles.time}>
+            {latencyConverter(Date.now() - Date.parse(sweet.created))}
+          </Text>
+        </View>
+        <Text style={styles.row}>{sweet.text}</Text>
+        <View style={styles.row}>
+          {hasLiked ? (
+            <View style={styles.row}>
+              <FontAwesome
+                style={styles.likeIcon}
+                name="heart"
+                onClick={() => handleUnlikeSweet(sweet._id, uid)}
+              />
+              <Text style={styles.likeNum}>{sweet.likedUserIds.length}</Text>
+            </View>
+          ) : (
+            <View style={styles.row}>
+              <FontAwesome
+                style={styles.likeIcon}
+                name="heart-o"
+                onClick={() => handleLikeSweet(sweet._id, uid)}
+              />
+              <Text style={styles.likeNum}>{sweet.likedUserIds.length}</Text>
+            </View>
+          )}
+          <TouchableOpacity
+            style={styles.row}
+            onPress={() => {
+              this.props.navigation.navigate("detail", { _id: sweet._id });
+            }}
           >
-            <span style={styles.likeNum}>{likedUserIds.length}</span>
-          </i>
-        )}
-        <Link to={`/detail/${_id}`} style={{ color: "black" }}>
-          <i style={styles.replyIcon} className="fa fa-reply">
-            <span style={styles.replyNum}>{comments.length}</span>
-          </i>
-        </Link>
-      </div>
-    </div>
-  </div>
+            <FontAwesome
+              style={styles.replyIcon}
+              name="reply"
+              onClick={() => handleLikeSweet(sweet._id, uid)}
+            />
+            <Text style={styles.replyNum}>{sweet.comments.length}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  </View>
 );
 
 const styles = {
   container: {
     borderStyle: "solid",
-    borderWidth: "0.5px"
+    borderWidth: 0.5
   },
   sweet: {
-    display: "flex",
-    margin: "15px",
-    width: "100%"
+    flexDirection: "row",
+    margin: 15
   },
   profilePic: {
-    height: "70px",
-    borderRadius: "50%"
+    width: 60,
+    height: 60,
+    borderRadius: 30
   },
   content: {
     width: "80%"
+  },
+  row: {
+    flexDirection: "row"
   },
   time: {
     color: "grey"
   },
   likeIcon: {
-    cursor: "pointer",
-    marginLeft: "5px"
+    marginLeft: 5
   },
   likeNum: {
-    marginLeft: "3px"
+    marginLeft: 3
   },
   replyIcon: {
-    marginLeft: "10px"
+    marginLeft: 10
   },
   replyNum: {
-    marginLeft: "4px"
+    marginLeft: 4
   }
 };
 

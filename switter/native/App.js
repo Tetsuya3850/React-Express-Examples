@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "./src/configureStore";
-import AppContainer from "./src/components/AppContainer";
+import Root from "./src/Root";
 
 const store = configureStore();
 
@@ -9,7 +9,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer />
+        <Root />
       </Provider>
     );
   }

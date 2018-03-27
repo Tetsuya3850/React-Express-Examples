@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { View, Text, TextInput, Button } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import SweetContainer from "./SweetContainer";
-import Comments from "./Comments";
+import SweetContainer from "../components/SweetContainer";
+import Comments from "../components/Comments";
 import { handleFetchSweetDetail } from "../reducer/sweetDetail";
 import { handleAddComment } from "../reducer/sweets";
 
@@ -28,47 +29,45 @@ class SweetDetail extends Component {
   render() {
     const { isFetching, sweet, error } = this.props;
     return (
-      <div>
+      <View>
         {isFetching ? (
-          <p style={{ textAlign: "center" }}>LOADING</p>
+          <Text style={{ textAlign: "center" }}>LOADING</Text>
         ) : (
-          <div>
+          <View>
             {sweet.map(sweet => (
-              <div key={`div${sweet._id}`}>
+              <View key={`div${sweet._id}`}>
                 <SweetContainer sweetId={sweet._id} />
                 <hr />
                 <Comments comments={sweet.comments} />
-              </div>
+              </View>
             ))}
-            <form onSubmit={this.handleFormSubmit}>
-              <textarea
-                rows="4"
-                ref={node => {
-                  this.text = node;
-                }}
-                required
-                autoFocus
-                placeholder="Leave a Comment!"
-                maxLength="140"
-                style={{
-                  width: "80%",
-                  display: "block",
-                  margin: "10px auto",
-                  fontSize: "14px"
-                }}
-              />
-              <input
-                type="submit"
-                value="Comment!"
-                style={{ display: "block", margin: "auto" }}
-              />
-            </form>
-            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+            <TextInput
+              rows="4"
+              ref={node => {
+                this.text = node;
+              }}
+              required
+              autoFocus
+              placeholder="Leave a Comment!"
+              maxLength="140"
+              style={{
+                width: "80%",
+                display: "block",
+                margin: "10px auto",
+                fontSize: "14px"
+              }}
+            />
+            <Button
+              type="submit"
+              value="Comment!"
+              style={{ display: "block", margin: "auto" }}
+            />
+            <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
               {error}
-            </p>
-          </div>
+            </Text>
+          </View>
         )}
-      </div>
+      </View>
     );
   }
 }

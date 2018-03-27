@@ -1,4 +1,5 @@
-import { saveToken, removeToken, getOwnInfo } from "../helper";
+import { saveToken, getToken, removeToken, getOwnInfo } from "../helper";
+import axios from "axios";
 import { getUser } from "../api";
 
 const AUTH_USER = "AUTH_USER";
@@ -19,9 +20,11 @@ const fetchingUserSuccess = userInfo => {
 
 export const tokenAuthUser = redirect => async dispatch => {
   try {
-    const userInfo = await getUserInfo();
+    const userInfo = await getOwnInfo();
+    const token = await getToken();
     if (userInfo && userInfo.exp >= Date.now() / 1000) {
       dispatch(authUser(userInfo));
+      axios.defaults.headers.common["authorization"] = `Bearer ${token}`;
       redirect();
     }
   } catch (e) {

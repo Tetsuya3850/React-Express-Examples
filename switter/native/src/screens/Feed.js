@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { View, Text, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchFeedSweets } from "../reducer/feed";
-import SweetContainer from "./SweetContainer";
+import { logoutUser } from "../reducer/users";
+import SweetContainer from "../components/SweetContainer";
 
 class Feed extends Component {
   componentDidMount() {
@@ -11,20 +13,23 @@ class Feed extends Component {
   render() {
     const { isFetching, error, sweetIds } = this.props;
     return (
-      <div>
+      <ScrollView>
         {isFetching ? (
-          <p style={{ textAlign: "center" }}>LOADING</p>
+          <Text style={{ textAlign: "center" }}>LOADING</Text>
         ) : (
-          <div>
+          <View>
             {sweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
-            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+            <Text
+              style={{ textAlign: "center", color: "red", marginTop: 10 }}
+              onPress={() => this.props.logoutUser(() => {})}
+            >
               {error}
-            </p>
-          </div>
+            </Text>
+          </View>
         )}
-      </div>
+      </ScrollView>
     );
   }
 }
@@ -36,7 +41,8 @@ const mapStateToProps = ({ feed }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleFetchFeedSweets
+      handleFetchFeedSweets,
+      logoutUser
     },
     dispatch
   );

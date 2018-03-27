@@ -39,8 +39,12 @@ export const logoutUser = redirect => dispatch => {
 };
 
 export const handleFetchUser = uid => async dispatch => {
-  const { data } = await getUser(uid);
-  dispatch(fetchingUserSuccess(data));
+  try {
+    const { data } = await getUser(uid);
+    dispatch(fetchingUserSuccess(data));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const initialState = {

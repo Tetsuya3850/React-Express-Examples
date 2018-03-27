@@ -1,4 +1,4 @@
-import { saveToken, removeToken, getOwnInfo, parseToken } from "../helper";
+import { saveToken, removeToken, getOwnInfo } from "../helper";
 import { getUser } from "../api";
 
 const AUTH_USER = "AUTH_USER";
@@ -17,30 +17,35 @@ const fetchingUserSuccess = userInfo => {
   return { type: FETCHING_USER_SUCCESS, userInfo };
 };
 
-export const socialAuthUser = (token, redirect) => async dispatch => {
-  await saveToken(token);
-  dispatch(authUser(parseToken(token)));
-  redirect();
-};
-
-export const reAuthUser = redirect => async dispatch => {
-  const ownInfo = await getOwnInfo();
-  if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
-    dispatch(authUser(ownInfo));
-  } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {
-    redirect();
+export const tokenAuthUser = redirect => async dispatch => {
+  try {
+    const userInfo = await getUserInfo();
+    if (userInfo && userInfo.exp >= Date.now() / 1000) {
+      dispatch(authUser(userInfo));
+      redirect();
+    }
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const logoutUser = redirect => async dispatch => {
-  removeToken();
-  dispatch(unAuthUser());
-  redirect();
+  try {
+    await removeToken();
+    dispatch(unAuthUser());
+    redirect();
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleFetchUser = uid => async dispatch => {
-  const { data } = await getUser(uid);
-  dispatch(fetchingUserSuccess(data));
+  try {
+    const { data } = await getUser(uid);
+    dispatch(fetchingUserSuccess(data));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const initialState = {

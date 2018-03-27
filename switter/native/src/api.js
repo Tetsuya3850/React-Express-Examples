@@ -1,7 +1,10 @@
 import axios from "axios";
 import { getToken } from "./helper";
 const SERVER_URL = "https://switter-server-3850.herokuapp.com";
-axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
+axios.defaults.headers.common["authorization"] = async () => {
+  token = await getToken();
+  return `Bearer ${token}`;
+};
 
 export const getFeedSweets = () => axios.get(`${SERVER_URL}/sweets/feed`);
 export const getUser = uid => axios.get(`${SERVER_URL}/users/${uid}`);

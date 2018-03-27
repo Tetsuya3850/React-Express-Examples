@@ -17,13 +17,13 @@ const fetchingUserSuccess = userInfo => {
   return { type: FETCHING_USER_SUCCESS, userInfo };
 };
 
-export const socialAuthUser = (token, redirect) => async dispatch => {
+export const socialAuthUser = (token, redirect) => dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
   redirect();
 };
 
-export const reAuthUser = redirect => async dispatch => {
+export const reAuthUser = redirect => dispatch => {
   const ownInfo = getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
@@ -32,7 +32,7 @@ export const reAuthUser = redirect => async dispatch => {
   }
 };
 
-export const logoutUser = redirect => async dispatch => {
+export const logoutUser = redirect => dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();

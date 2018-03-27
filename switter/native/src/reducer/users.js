@@ -18,13 +18,13 @@ const fetchingUserSuccess = userInfo => {
 };
 
 export const socialAuthUser = (token, redirect) => async dispatch => {
-  saveToken(token);
+  await saveToken(token);
   dispatch(authUser(parseToken(token)));
   redirect();
 };
 
 export const reAuthUser = redirect => async dispatch => {
-  const ownInfo = getOwnInfo();
+  const ownInfo = await getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
   } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {

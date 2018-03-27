@@ -3,30 +3,30 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "./SweetContainer";
 import Comments from "./Comments";
-import { handleFetchSweet, handleAddComment } from "../reducer/sweets";
+import { handleFetchSweetDetail } from "../reducer/sweetDetail";
+import { handleAddComment } from "../reducer/sweets";
 
-class SweetComments extends Component {
+class SweetDetail extends Component {
   componentDidMount() {
-    const { match, handleFetchSweet } = this.props;
-    const { sweetId } = match.params;
-    handleFetchSweet(sweetId);
+    const { sweetId, handleFetchSweetDetail } = this.props;
+    handleFetchSweetDetail(sweetId);
   }
 
   handleFormSubmit = e => {
-    const { match, handleAddComment, uid } = this.props;
-    const { sweetId } = match.params;
     e.preventDefault();
+    const { sweetId, handleAddComment, uid } = this.props;
     const comment = {
       text: this.text.value,
       created: Date.now(),
       author: uid
     };
-    handleAddComment(sweetId, comment);
-    this.text.value = "";
+    handleAddComment(sweetId, comment, () => {
+      this.text.value = "";
+    });
   };
 
   render() {
-    const { isFetching, sweet } = this.props;
+    const { isFetching, sweet, error } = this.props;
     return (
       <div>
         {isFetching ? (
@@ -57,13 +57,15 @@ class SweetComments extends Component {
                   fontSize: "14px"
                 }}
               />
-
               <input
                 type="submit"
                 value="Comment!"
                 style={{ display: "block", margin: "auto" }}
               />
             </form>
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {error}
+            </p>
           </div>
         )}
       </div>
@@ -71,10 +73,12 @@ class SweetComments extends Component {
   }
 }
 
-const mapStateToProps = ({ users, sweets }, ownProps) => {
+const mapStateToProps = ({ users, sweets, sweetDetail }, ownProps) => {
   return {
     uid: users.ownInfo._id,
-    isFetching: sweets.isFetching,
+    sweetId: ownProps.match.params.sweetId,
+    isFetching: sweetDetail.isFetching,
+    error: sweetDetail.error,
     sweet: sweets[ownProps.match.params.sweetId]
       ? [sweets[ownProps.match.params.sweetId]]
       : []
@@ -84,13 +88,13 @@ const mapStateToProps = ({ users, sweets }, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleFetchSweet,
+      handleFetchSweetDetail,
       handleAddComment
     },
     dispatch
   );
 };
 
-SweetComments = connect(mapStateToProps, mapDispatchToProps)(SweetComments);
+SweetDetail = connect(mapStateToProps, mapDispatchToProps)(SweetDetail);
 
-export default SweetComments;
+export default SweetDetail;

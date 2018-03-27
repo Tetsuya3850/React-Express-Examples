@@ -3,7 +3,7 @@ import { getUser } from "../api";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
-const RECEIVE_USER = "RECEIVE_USER";
+const FETCHING_USER_SUCCESS = "FETCHING_USER_SUCCESS";
 
 const authUser = ownInfo => {
   return { type: AUTH_USER, ownInfo };
@@ -13,8 +13,8 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
-const receiveUser = userInfo => {
-  return { type: RECEIVE_USER, userInfo };
+const fetchingUserSuccess = userInfo => {
+  return { type: FETCHING_USER_SUCCESS, userInfo };
 };
 
 export const socialAuthUser = (token, redirect) => async dispatch => {
@@ -38,9 +38,9 @@ export const logoutUser = redirect => async dispatch => {
   redirect();
 };
 
-export const receiveUserInfo = uid => async dispatch => {
+export const handleFetchUser = uid => async dispatch => {
   const { data } = await getUser(uid);
-  dispatch(receiveUser(data));
+  dispatch(fetchingUserSuccess(data));
 };
 
 const initialState = {
@@ -62,7 +62,7 @@ const users = (state = initialState, action) => {
         isAuthed: false,
         ownInfo: {}
       };
-    case RECEIVE_USER:
+    case FETCHING_USER_SUCCESS:
       return {
         ...state,
         [action.userInfo._id]: action.userInfo

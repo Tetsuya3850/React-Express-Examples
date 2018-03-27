@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import Modal from "react-modal";
-import { postSweet } from "../api";
+import { handleAddSweet } from "../reducer/sweets";
 
 class SweetModal extends Component {
   state = {
@@ -22,12 +23,13 @@ class SweetModal extends Component {
       text: this.text.value,
       created: Date.now(),
       likedUserIds: [],
-      author: this.props.users.ownInfo._id,
+      author: this.props.uid,
       comments: []
     };
-    postSweet(sweet);
-    this.text.value = "";
-    this.closeModal();
+    this.props.handleAddSweet(sweet, () => {
+      this.text.value = "";
+      this.closeModal();
+    });
   };
 
   render() {
@@ -39,14 +41,9 @@ class SweetModal extends Component {
           onRequestClose={this.closeModal}
           style={styles}
         >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between"
-            }}
-          >
+          <div style={innerStyles.container}>
             <p>New Sweet</p>
-            <p onClick={this.closeModal} style={{ cursor: "pointer" }}>
+            <p onClick={this.closeModal} style={innerStyles.close}>
               X
             </p>
           </div>
@@ -60,14 +57,11 @@ class SweetModal extends Component {
               required
               placeholder="What's Up Dood?"
               maxLength="140"
-              style={{ width: "100%", margin: "10px 0px", fontSize: "14px" }}
+              style={innerStyles.text}
             />
-            <input
-              type="submit"
-              value="Sweet!"
-              style={{ display: "block", margin: "auto" }}
-            />
+            <input type="submit" value="Sweet!" style={innerStyles.submit} />
           </form>
+          <p style={innerStyles.error}>{this.props.error}</p>
         </Modal>
       </div>
     );
@@ -87,10 +81,47 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ users }) => {
-  return { users };
+const innerStyles = {
+  container: {
+    display: "flex",
+    justifyContent: "space-between"
+  },
+  close: {
+    cursor: "pointer"
+  },
+  text: {
+    width: "100%",
+    margin: "10px 0px",
+    fontSize: "14px"
+  },
+  submit: {
+    display: "block",
+    margin: "auto"
+  },
+  error: {
+    textAlign: "center",
+    color: "red",
+    marginTop: 10,
+    marginBottom: 0
+  }
 };
 
-SweetModal = connect(mapStateToProps, null)(SweetModal);
+const mapStateToProps = ({ users, sweets }) => {
+  return {
+    uid: users.ownInfo._id,
+    error: sweets.error
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleAddSweet
+    },
+    dispatch
+  );
+};
+
+SweetModal = connect(mapStateToProps, mapDispatchToProps)(SweetModal);
 
 export default SweetModal;

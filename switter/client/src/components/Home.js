@@ -5,13 +5,12 @@ import Hello from "./Hello";
 
 class Home extends Component {
   render() {
-    const { users } = this.props;
-    return <div>{users.isAuthed ? <Feed /> : <Hello />}</div>;
+    return <div>{this.props.isAuthed ? <Feed /> : <Hello />}</div>;
   }
 }
 
 const mapStateToProps = ({ users }) => {
-  return { users };
+  return users;
 };
 
 Home = connect(mapStateToProps, null)(Home);

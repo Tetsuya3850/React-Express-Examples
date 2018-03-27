@@ -3,7 +3,8 @@ import { fetchingSweetsSuccess } from "./sweets";
 import { normalizeSweets, selectSweetIds } from "../helper";
 
 const FETCHING_USER_SWEETS = "FETCHING_USER_SWEETS";
-const RECEIVE_USER_SWEETIDS = "RECEIVE_USER_SWEETIDS";
+const FETCHING_USER_SWEETS_ERROR = "FETCHING_USER_SWEETS_ERROR";
+const FETCHING_USER_SWEETS_SUCCESS = "FETCHING_USER_SWEETS_SUCCESS";
 
 const fetchingUserSweets = () => {
   return {
@@ -11,25 +12,37 @@ const fetchingUserSweets = () => {
   };
 };
 
-const receiveUserSweetIds = (uid, sweetIds) => {
+const fetchingUserSweetsError = error => {
   return {
-    type: RECEIVE_USER_SWEETIDS,
+    type: FETCHING_USER_SWEETS_ERROR,
+    error
+  };
+};
+
+const fetchingUserSweetsSuccess = (uid, sweetIds) => {
+  return {
+    type: FETCHING_USER_SWEETS_SUCCESS,
     uid,
     sweetIds
   };
 };
 
-export const receiveUserSweets = uid => async dispatch => {
+export const handleFetchUserSweets = uid => async dispatch => {
   dispatch(fetchingUserSweets());
-  const { data } = await getUserSweets(uid);
-  const normalizedUserSweets = normalizeSweets(data);
-  const userSweetIds = selectSweetIds(data);
-  dispatch(fetchingSweetsSuccess(normalizedUserSweets));
-  dispatch(receiveUserSweetIds(uid, userSweetIds));
+  try {
+    const { data } = await getUserSweets(uid);
+    const normalizedUserSweets = normalizeSweets(data);
+    const userSweetIds = selectSweetIds(data);
+    dispatch(fetchingSweetsSuccess(normalizedUserSweets));
+    dispatch(fetchingUserSweetsSuccess(uid, userSweetIds));
+  } catch (e) {
+    dispatch(fetchingUserSweetsError("Sorry, Please Reload!"));
+  }
 };
 
 const initialState = {
-  isFetching: false
+  isFetching: false,
+  error: ""
 };
 
 const userSweets = (state = initialState, action) => {
@@ -39,10 +52,17 @@ const userSweets = (state = initialState, action) => {
         ...state,
         isFetching: true
       };
-    case RECEIVE_USER_SWEETIDS:
+    case FETCHING_USER_SWEETS_ERROR:
       return {
         ...state,
         isFetching: false,
+        error: action.error
+      };
+    case FETCHING_USER_SWEETS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
         [action.uid]: action.sweetIds
       };
     default:

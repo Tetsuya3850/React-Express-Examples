@@ -1,38 +1,31 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { receiveUserInfo } from "../reducer/users";
-import { receiveUserSweets } from "../reducer/userSweets";
+import { handleFetchUser } from "../reducer/users";
+import { handleFetchUserSweets } from "../reducer/userSweets";
 import SweetContainer from "./SweetContainer";
 
 class Profile extends Component {
   componentDidMount() {
-    const { match, receiveUserInfo, receiveUserSweets } = this.props;
-    const { uid } = match.params;
-    receiveUserInfo(uid);
-    receiveUserSweets(uid);
+    const { uid, handleFetchUser, handleFetchUserSweets } = this.props;
+    handleFetchUser(uid);
+    handleFetchUserSweets(uid);
   }
   render() {
-    const { match, userSweets, users } = this.props;
-    const { uid } = match.params;
-    if (users[uid] === undefined) {
-      users[uid] = {};
-    }
-    if (userSweets[uid] === undefined) {
-      userSweets[uid] = [];
-    }
+    const { isFetching, name, userSweetIds, error } = this.props;
     return (
       <div>
-        {userSweets.isFetching ? (
+        {isFetching ? (
           <p style={{ textAlign: "center" }}>LOADING</p>
         ) : (
           <div>
-            <p style={{ textAlign: "center" }}>
-              {users[match.params.uid].name}&#39;s Sweets
-            </p>
-            {userSweets[match.params.uid].map(sweetId => (
+            <p style={{ textAlign: "center" }}>{name}</p>
+            {userSweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {error}
+            </p>
           </div>
         )}
       </div>
@@ -40,15 +33,25 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = ({ userSweets, users }) => {
-  return { userSweets, users };
+const mapStateToProps = ({ userSweets, users }, ownProps) => {
+  return {
+    uid: ownProps.match.params.uid,
+    isFetching: userSweets.isFetching,
+    name: users[ownProps.match.params.uid]
+      ? users[ownProps.match.params.uid].name
+      : "",
+    userSweetIds: userSweets[ownProps.match.params.uid]
+      ? userSweets[ownProps.match.params.uid]
+      : [],
+    error: userSweets.error
+  };
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      receiveUserInfo,
-      receiveUserSweets
+      handleFetchUser,
+      handleFetchUserSweets
     },
     dispatch
   );

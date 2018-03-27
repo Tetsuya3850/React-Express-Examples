@@ -3,26 +3,26 @@ export const saveToken = token => localStorage.setItem("jwt-token", token);
 export const removeToken = () => localStorage.removeItem("jwt-token");
 
 export const getOwnInfo = () => {
-  const token = getToken();
-  let payload;
-  if (token) {
-    payload = token.split(".")[1];
-    payload = window.atob(payload);
-    try {
+  try {
+    const token = getToken();
+    let payload;
+    if (token) {
+      payload = token.split(".")[1];
+      payload = window.atob(payload);
       return JSON.parse(payload);
-    } catch (e) {
-      console.log(e);
+    } else {
+      return null;
     }
-  } else {
-    return null;
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const parseToken = token => {
-  let payload;
-  payload = token.split(".")[1];
-  payload = window.atob(payload);
   try {
+    let payload;
+    payload = token.split(".")[1];
+    payload = window.atob(payload);
     return JSON.parse(payload);
   } catch (e) {
     console.log(e);
@@ -33,9 +33,9 @@ export const latencyConverter = timestamp => {
   if (timestamp > 86400000) {
     return "";
   } else if (timestamp > 3600000) {
-    return ` ${Math.ceil(timestamp / 3600000)} hr`;
+    return ` ${Math.ceil(timestamp / 3600000)} hr ago`;
   } else {
-    return ` ${Math.ceil(timestamp / 60000)} min`;
+    return ` ${Math.ceil(timestamp / 60000)} min ago`;
   }
 };
 

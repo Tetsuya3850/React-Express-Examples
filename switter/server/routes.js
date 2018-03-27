@@ -17,7 +17,7 @@ router.get("/users/:uid", auth, usersCtrl.getUser);
 
 router.get("/sweets/feed", auth, sweetsCtrl.getFeed);
 router.get("/sweets/users/:uid", auth, sweetsCtrl.getUserSweets);
-router.get("/sweets/sweet/:sweetId", auth, sweetsCtrl.getSweet);
+router.get("/sweets/detail/:sweetId", auth, sweetsCtrl.getSweetDetail);
 router.post("/sweets/add", auth, sweetsCtrl.add);
 router.post("/sweets/togglelike/:sweetId", auth, sweetsCtrl.toggleLike);
 router.post("/sweets/comment/:sweetId", auth, sweetsCtrl.comment);

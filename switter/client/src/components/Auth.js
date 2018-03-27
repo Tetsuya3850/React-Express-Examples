@@ -4,7 +4,7 @@ import google from "../assets/google_signin.png";
 class Auth extends Component {
   render() {
     return (
-      <div style={{ margin: "auto", width: 400 }}>
+      <div>
         <a
           href={`https://switter-server-3850.herokuapp.com/auth/google?linkinguri=${
             window.location.origin

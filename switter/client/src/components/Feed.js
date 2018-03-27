@@ -1,25 +1,27 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { handleFeedSweets } from "../reducer/feed";
+import { handleFetchFeedSweets } from "../reducer/feed";
 import SweetContainer from "./SweetContainer";
 
 class Feed extends Component {
   componentDidMount() {
-    const { handleFeedSweets } = this.props;
-    handleFeedSweets();
+    this.props.handleFetchFeedSweets();
   }
   render() {
-    const { feed } = this.props;
+    const { isFetching, error, sweetIds } = this.props;
     return (
       <div>
-        {feed.isFetching ? (
+        {isFetching ? (
           <p style={{ textAlign: "center" }}>LOADING</p>
         ) : (
           <div>
-            {feed.sweetIds.map(sweetId => (
+            {sweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {error}
+            </p>
           </div>
         )}
       </div>
@@ -28,13 +30,13 @@ class Feed extends Component {
 }
 
 const mapStateToProps = ({ feed }) => {
-  return { feed };
+  return feed;
 };
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleFeedSweets
+      handleFetchFeedSweets
     },
     dispatch
   );

@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
-let PrivateRoute = ({ component: Component, users, ...rest }) => (
+let PrivateRoute = ({ component: Component, isAuthed, ...rest }) => (
   <Route
     {...rest}
     render={props => {
-      if (users.isAuthed) {
+      if (isAuthed) {
         return <Component {...props} />;
       } else {
         return (
@@ -23,7 +23,7 @@ let PrivateRoute = ({ component: Component, users, ...rest }) => (
 );
 
 const mapStateToProps = ({ users }) => {
-  return { users };
+  return users;
 };
 
 PrivateRoute = connect(mapStateToProps, null)(PrivateRoute);

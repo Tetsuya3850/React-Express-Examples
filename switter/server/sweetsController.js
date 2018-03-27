@@ -10,7 +10,7 @@ module.exports.getFeed = async (req, res, next) => {
       .populate("author");
     res.status(200).json(sweets);
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };
 
@@ -22,18 +22,18 @@ module.exports.getUserSweets = async (req, res, next) => {
       .populate("author");
     res.status(200).json(userSweets);
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };
 
-module.exports.getSweet = async (req, res, next) => {
+module.exports.getSweetDetail = async (req, res, next) => {
   try {
     const sweet = await Sweet.findOne({ _id: req.params.sweetId })
       .populate("author")
       .populate("comments.author");
     res.status(200).json(sweet);
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };
 
@@ -41,9 +41,10 @@ module.exports.add = async (req, res, next) => {
   const newSweet = new Sweet(req.body);
   try {
     await newSweet.save();
-    res.status(200).json("Sweet Added!");
+    await newSweet.populate("author").execPopulate();
+    res.status(200).json(newSweet);
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };
 
@@ -69,7 +70,7 @@ module.exports.toggleLike = async (req, res, next) => {
       res.status(200).json("Unliked!");
     }
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };
 
@@ -83,6 +84,6 @@ module.exports.comment = async (req, res, next) => {
     const commentWithIdAndAuthor = sweet.comments[sweet.comments.length - 1];
     res.status(200).json(commentWithIdAndAuthor);
   } catch (e) {
-    res.status(401).json(e);
+    res.status(500).json(e);
   }
 };

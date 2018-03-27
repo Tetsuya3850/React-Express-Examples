@@ -13,12 +13,12 @@ class NavBar extends Component {
   }
 
   render() {
-    const { users, logoutUser, history } = this.props;
+    const { isAuthed, ownInfo, logoutUser, history } = this.props;
     return (
       <div>
-        {users.isAuthed ? (
+        {isAuthed ? (
           <AuthNavBar
-            uid={users.ownInfo._id}
+            uid={ownInfo._id}
             onLogout={() => logoutUser(() => history.push("/"))}
           />
         ) : (
@@ -30,7 +30,7 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = ({ users }) => {
-  return { users };
+  return users;
 };
 
 const mapDispatchToProps = dispatch => {

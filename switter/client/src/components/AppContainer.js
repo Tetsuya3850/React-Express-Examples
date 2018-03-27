@@ -6,7 +6,7 @@ import Home from "./Home";
 import Auth from "./Auth";
 import SocialAuthRedirect from "./SocialAuthRedirect";
 import Profile from "./Profile";
-import SweetComments from "./SweetComments";
+import SweetDetail from "./SweetDetail";
 
 class AppContainer extends Component {
   render() {
@@ -18,7 +18,7 @@ class AppContainer extends Component {
           <Route path="/auth" component={Auth} />
           <Route path="/socialauthredirect/" component={SocialAuthRedirect} />
           <PrivateRoute path="/profile/:uid" component={Profile} />
-          <PrivateRoute path="/comments/:sweetId" component={SweetComments} />
+          <PrivateRoute path="/detail/:sweetId" component={SweetDetail} />
         </div>
       </Router>
     );

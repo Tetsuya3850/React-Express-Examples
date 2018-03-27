@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, Button, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "../components/SweetContainer";
@@ -8,6 +16,10 @@ import { handleFetchSweetDetail } from "../reducer/sweetDetail";
 import { handleAddComment } from "../reducer/sweets";
 
 class SweetDetail extends Component {
+  state = {
+    text: ""
+  };
+
   componentDidMount() {
     const { sweetId, handleFetchSweetDetail } = this.props;
     handleFetchSweetDetail(sweetId);
@@ -16,22 +28,25 @@ class SweetDetail extends Component {
   handleFormSubmit = e => {
     e.preventDefault();
     const { sweetId, handleAddComment, uid } = this.props;
+    const { text } = this.state;
     const comment = {
-      text: this.text.value,
+      text,
       created: Date.now(),
       author: uid
     };
     handleAddComment(sweetId, comment, () => {
-      this.text.value = "";
+      this.setState({ text: "" });
     });
   };
 
   render() {
     const { isFetching, sweet, error } = this.props;
+    const { text } = this.state;
+
     return (
-      <View>
+      <View style={styles.container}>
         {isFetching ? (
-          <Text style={{ textAlign: "center" }}>LOADING</Text>
+          <View />
         ) : (
           <ScrollView>
             {sweet.map(sweet => (
@@ -40,28 +55,18 @@ class SweetDetail extends Component {
                 <Comments comments={sweet.comments} />
               </View>
             ))}
-            <TextInput
-              rows="4"
-              ref={node => {
-                this.text = node;
-              }}
-              required
-              autoFocus
-              placeholder="Leave a Comment!"
-              maxLength={140}
-              style={{
-                width: "80%",
-                fontSize: 14
-              }}
-            />
-            <Button
-              onPress={this.handleFormSubmit}
-              title="Comment!"
-              style={{ display: "block", margin: "auto" }}
-            />
-            <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
-              {error}
-            </Text>
+            <View style={styles.row}>
+              <TextInput
+                style={styles.textinput}
+                value={text}
+                placeholder={"Leave a Comment!"}
+                onChangeText={text => this.setState({ text })}
+                maxLength={30}
+                onSubmitEditing={this.handleFormSubmit}
+              />
+            </View>
+
+            <Text style={styles.error}>{error}</Text>
           </ScrollView>
         )}
       </View>
@@ -89,6 +94,29 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  loading: {
+    textAlign: "center"
+  },
+  row: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: "#ccc"
+  },
+  textinput: {
+    height: 45,
+    paddingHorizontal: 15
+  },
+  error: {
+    textAlign: "center",
+    color: "red",
+    marginTop: 10
+  }
+});
 
 SweetDetail = connect(mapStateToProps, mapDispatchToProps)(SweetDetail);
 

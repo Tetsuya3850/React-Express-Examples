@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchFeedSweets } from "../reducer/feed";
@@ -18,9 +18,9 @@ class Feed extends Component {
   render() {
     const { isFetching, error, sweetIds } = this.props;
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "#fff" }}>
         {isFetching ? (
-          <Text style={{ textAlign: "center" }}>LOADING</Text>
+          <ActivityIndicator size="large" style={{ marginTop: 15 }} />
         ) : (
           <View>
             {sweetIds.map(sweetId => (

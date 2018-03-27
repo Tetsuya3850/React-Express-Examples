@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchUser } from "../reducer/users";
@@ -21,7 +21,7 @@ class Profile extends Component {
     return (
       <ScrollView>
         {isFetching ? (
-          <Text style={{ textAlign: "center" }}>LOADING</Text>
+          <ActivityIndicator size="large" style={{ marginTop: 15 }} />
         ) : (
           <View>
             {userSweetIds.map(sweetId => (

@@ -34,15 +34,12 @@ class Profile extends Component {
 }
 
 const mapStateToProps = ({ userSweets, users }, ownProps) => {
+  const uid = ownProps.match.params.uid;
   return {
-    uid: ownProps.match.params.uid,
+    uid,
     isFetching: userSweets.isFetching,
-    name: users[ownProps.match.params.uid]
-      ? users[ownProps.match.params.uid].name
-      : "",
-    userSweetIds: userSweets[ownProps.match.params.uid]
-      ? userSweets[ownProps.match.params.uid]
-      : [],
+    name: users[uid] ? users[uid].name : "",
+    userSweetIds: userSweets[uid] ? userSweets[uid] : [],
     error: userSweets.error
   };
 };

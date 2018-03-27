@@ -15,8 +15,7 @@ class Root extends Component {
 
     const MainNavigator = TabNavigator(
       {
-        sweet: { screen: SweetsStack },
-        ownprofile: { screen: Profile }
+        sweet: { screen: SweetsStack }
       },
       {
         tabBarPosition: "bottom",

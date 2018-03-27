@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchUser } from "../reducer/users";
@@ -7,6 +7,10 @@ import { handleFetchUserSweets } from "../reducer/userSweets";
 import SweetContainer from "../components/SweetContainer";
 
 class Profile extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.state.params.name
+  });
+
   componentDidMount() {
     const { uid, handleFetchUser, handleFetchUserSweets } = this.props;
     handleFetchUser(uid);
@@ -15,12 +19,11 @@ class Profile extends Component {
   render() {
     const { isFetching, name, userSweetIds, error } = this.props;
     return (
-      <View>
+      <ScrollView>
         {isFetching ? (
           <Text style={{ textAlign: "center" }}>LOADING</Text>
         ) : (
           <View>
-            <Text style={{ textAlign: "center" }}>{name}</Text>
             {userSweetIds.map(sweetId => (
               <SweetContainer key={sweetId} sweetId={sweetId} />
             ))}
@@ -29,21 +32,18 @@ class Profile extends Component {
             </Text>
           </View>
         )}
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const mapStateToProps = ({ userSweets, users }, ownProps) => {
+  const uid = ownProps.navigation.state.params._id;
   return {
-    uid: ownProps.match.params.uid,
+    uid,
     isFetching: userSweets.isFetching,
-    name: users[ownProps.match.params.uid]
-      ? users[ownProps.match.params.uid].name
-      : "",
-    userSweetIds: userSweets[ownProps.match.params.uid]
-      ? userSweets[ownProps.match.params.uid]
-      : [],
+    name: ownProps.navigation.state.params.name,
+    userSweetIds: userSweets[uid] ? userSweets[uid] : [],
     error: userSweets.error
   };
 };

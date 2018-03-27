@@ -4,6 +4,7 @@ import { latencyConverter } from "../helper";
 import { FontAwesome } from "@expo/vector-icons";
 
 const Sweet = ({
+  navigation,
   sweet,
   hasLiked,
   uid,
@@ -14,7 +15,10 @@ const Sweet = ({
     <View style={styles.sweet}>
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("profile", { _id: sweet.author._id });
+          navigation.navigate("profile", {
+            _id: sweet.author._id,
+            name: sweet.author.name
+          });
         }}
       >
         <Image
@@ -23,52 +27,51 @@ const Sweet = ({
           alt="profile"
         />
       </TouchableOpacity>
-      <View style={styles.content}>
+      <View style={styles.details}>
         <View style={styles.row}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate("profile", {
+              navigation.navigate("profile", {
                 _id: sweet.author._id
               });
             }}
           >
-            <Text>{sweet.author.name}</Text>
+            <Text style={styles.author}>{sweet.author.name}</Text>
           </TouchableOpacity>
           <Text style={styles.time}>
             {latencyConverter(Date.now() - Date.parse(sweet.created))}
           </Text>
         </View>
-        <Text style={styles.row}>{sweet.text}</Text>
+        <Text style={styles.text}>{sweet.text}</Text>
         <View style={styles.row}>
           {hasLiked ? (
-            <View style={styles.row}>
-              <FontAwesome
-                style={styles.likeIcon}
-                name="heart"
-                onClick={() => handleUnlikeSweet(sweet._id, uid)}
-              />
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => handleUnlikeSweet(sweet._id, uid)}
+            >
+              <FontAwesome style={styles.likeIcon} name="heart" size={18} />
               <Text style={styles.likeNum}>{sweet.likedUserIds.length}</Text>
-            </View>
+            </TouchableOpacity>
           ) : (
-            <View style={styles.row}>
-              <FontAwesome
-                style={styles.likeIcon}
-                name="heart-o"
-                onClick={() => handleLikeSweet(sweet._id, uid)}
-              />
+            <TouchableOpacity
+              style={styles.row}
+              onPress={() => handleLikeSweet(sweet._id, uid)}
+            >
+              <FontAwesome style={styles.likeIcon} name="heart-o" size={18} />
               <Text style={styles.likeNum}>{sweet.likedUserIds.length}</Text>
-            </View>
+            </TouchableOpacity>
           )}
           <TouchableOpacity
             style={styles.row}
             onPress={() => {
-              this.props.navigation.navigate("detail", { _id: sweet._id });
+              navigation.navigate("detail", { _id: sweet._id });
             }}
           >
             <FontAwesome
               style={styles.replyIcon}
               name="reply"
               onClick={() => handleLikeSweet(sweet._id, uid)}
+              size={18}
             />
             <Text style={styles.replyNum}>{sweet.comments.length}</Text>
           </TouchableOpacity>
@@ -81,19 +84,28 @@ const Sweet = ({
 const styles = {
   container: {
     borderStyle: "solid",
-    borderWidth: 0.5
+    borderWidth: 0.3
   },
   sweet: {
     flexDirection: "row",
-    margin: 15
+    margin: 5
   },
   profilePic: {
     width: 60,
     height: 60,
-    borderRadius: 30
+    borderRadius: 30,
+    margin: 10
   },
-  content: {
-    width: "80%"
+  details: {
+    justifyContent: "space-between",
+    margin: 5
+  },
+  author: {
+    textDecorationLine: "underline"
+  },
+  text: {
+    flexDirection: "row",
+    fontSize: 16
   },
   row: {
     flexDirection: "row"

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, Text, TextInput, Button, ScrollView } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import SweetContainer from "../components/SweetContainer";
@@ -33,11 +33,10 @@ class SweetDetail extends Component {
         {isFetching ? (
           <Text style={{ textAlign: "center" }}>LOADING</Text>
         ) : (
-          <View>
+          <ScrollView>
             {sweet.map(sweet => (
-              <View key={`div${sweet._id}`}>
+              <View key={`${sweet._id}`}>
                 <SweetContainer sweetId={sweet._id} />
-                <hr />
                 <Comments comments={sweet.comments} />
               </View>
             ))}
@@ -49,23 +48,21 @@ class SweetDetail extends Component {
               required
               autoFocus
               placeholder="Leave a Comment!"
-              maxLength="140"
+              maxLength={140}
               style={{
                 width: "80%",
-                display: "block",
-                margin: "10px auto",
-                fontSize: "14px"
+                fontSize: 14
               }}
             />
             <Button
-              type="submit"
-              value="Comment!"
+              onPress={this.handleFormSubmit}
+              title="Comment!"
               style={{ display: "block", margin: "auto" }}
             />
             <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
               {error}
             </Text>
-          </View>
+          </ScrollView>
         )}
       </View>
     );
@@ -73,14 +70,13 @@ class SweetDetail extends Component {
 }
 
 const mapStateToProps = ({ users, sweets, sweetDetail }, ownProps) => {
+  const sweetId = ownProps.navigation.state.params._id;
   return {
     uid: users.ownInfo._id,
-    sweetId: ownProps.match.params.sweetId,
+    sweetId,
     isFetching: sweetDetail.isFetching,
     error: sweetDetail.error,
-    sweet: sweets[ownProps.match.params.sweetId]
-      ? [sweets[ownProps.match.params.sweetId]]
-      : []
+    sweet: sweets[sweetId] ? [sweets[sweetId]] : []
   };
 };
 

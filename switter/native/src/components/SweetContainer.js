@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Sweet from "./Sweet";
 import { handleLikeSweet, handleUnlikeSweet } from "../reducer/sweets";
+import { withNavigation } from "react-navigation";
 
 const mapStateToProps = ({ sweets, users }, ownProps) => {
   const sweet = sweets[ownProps.sweetId];
@@ -20,4 +21,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sweet);
+export default withNavigation(
+  connect(mapStateToProps, mapDispatchToProps)(Sweet)
+);

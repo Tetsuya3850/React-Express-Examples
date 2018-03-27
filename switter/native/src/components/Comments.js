@@ -11,14 +11,14 @@ const Comments = props =>
           style={styles.profilePic}
           alt="profile"
         />
-        <View style={styles.content}>
+        <View style={styles.details}>
           <Text>
             <Text>{comment.author.name}</Text>
             <Text style={styles.time}>
               {latencyConverter(Date.now() - Date.parse(comment.created))}
             </Text>
           </Text>
-          <p>{comment.text}</p>
+          <Text style={styles.text}>{comment.text}</Text>
         </View>
       </View>
     </View>
@@ -27,24 +27,26 @@ const Comments = props =>
 const styles = {
   container: {
     borderStyle: "solid",
-    borderWidth: "0.2px",
-    width: "80%",
-    display: "block",
-    margin: "auto"
+    borderWidth: 0.2
   },
   comment: {
-    display: "flex",
-    margin: "15px"
+    flexDirection: "row",
+    margin: 10
   },
   profilePic: {
-    height: "50px",
-    borderRadius: "50%"
+    width: 50,
+    height: 50,
+    borderRadius: 25
   },
-  content: {
-    width: "80%"
+  details: {
+    justifyContent: "space-between",
+    margin: 5
   },
   time: {
     color: "grey"
+  },
+  text: {
+    fontSize: 16
   }
 };
 

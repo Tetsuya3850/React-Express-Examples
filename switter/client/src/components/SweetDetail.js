@@ -74,14 +74,13 @@ class SweetDetail extends Component {
 }
 
 const mapStateToProps = ({ users, sweets, sweetDetail }, ownProps) => {
+  const sweetId = ownProps.match.params.sweetId;
   return {
     uid: users.ownInfo._id,
-    sweetId: ownProps.match.params.sweetId,
+    sweetId,
     isFetching: sweetDetail.isFetching,
     error: sweetDetail.error,
-    sweet: sweets[ownProps.match.params.sweetId]
-      ? [sweets[ownProps.match.params.sweetId]]
-      : []
+    sweet: sweets[sweetId] ? [sweets[sweetId]] : []
   };
 };
 

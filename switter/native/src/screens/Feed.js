@@ -7,6 +7,9 @@ import { logoutUser } from "../reducer/users";
 import SweetContainer from "../components/SweetContainer";
 
 class Feed extends Component {
+  static navigationOptions = {
+    title: "Switter"
+  };
   componentDidMount() {
     this.props.handleFetchFeedSweets();
   }

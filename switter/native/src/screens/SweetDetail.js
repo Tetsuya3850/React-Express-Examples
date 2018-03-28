@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SweetContainer from "../components/SweetContainer";
 import Comments from "../components/Comments";
 import { handleFetchSweetDetail } from "../reducer/sweetDetail";
@@ -48,7 +49,7 @@ class SweetDetail extends Component {
         {isFetching ? (
           <View />
         ) : (
-          <ScrollView>
+          <KeyboardAwareScrollView>
             {sweet.map(sweet => (
               <View key={`${sweet._id}`}>
                 <SweetContainer sweetId={sweet._id} />
@@ -67,7 +68,7 @@ class SweetDetail extends Component {
             </View>
 
             <Text style={styles.error}>{error}</Text>
-          </ScrollView>
+          </KeyboardAwareScrollView>
         )}
       </View>
     );

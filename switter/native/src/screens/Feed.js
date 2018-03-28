@@ -1,14 +1,24 @@
 import React, { Component } from "react";
-import { View, Text, ScrollView, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  Button
+} from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchFeedSweets } from "../reducer/feed";
 import { logoutUser } from "../reducer/users";
 import SweetContainer from "../components/SweetContainer";
+import SweetModal from "../components/SweetModal";
 
 class Feed extends Component {
-  static navigationOptions = {
-    title: "Switter"
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "Switter",
+      headerRight: <SweetModal />
+    };
   };
 
   componentDidMount() {

@@ -5,10 +5,12 @@ import { connect } from "react-redux";
 import { handleFetchUser } from "../reducer/users";
 import { handleFetchUserSweets } from "../reducer/userSweets";
 import SweetContainer from "../components/SweetContainer";
+import SweetModal from "../components/SweetModal";
 
 class Profile extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.name
+    title: navigation.state.params.name,
+    headerRight: <SweetModal />
   });
 
   componentDidMount() {

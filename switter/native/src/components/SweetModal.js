@@ -1,102 +1,108 @@
 import React, { Component } from "react";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Button,
+  Dimensions
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Modal from "react-modal";
 import { handleAddSweet } from "../reducer/sweets";
+import Modal from "react-native-modal";
+import { FontAwesome } from "@expo/vector-icons";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("window").height;
 
 class SweetModal extends Component {
   state = {
-    modalIsOpen: false
+    text: "",
+    isVisible: false
   };
 
-  openModal = () => {
-    this.setState({ modalIsOpen: true });
-  };
-
-  closeModal = () => {
-    this.setState({ modalIsOpen: false });
-  };
+  _toggleModal = () => this.setState({ isVisible: !this.state.isVisible });
 
   handleFormSubmit = e => {
     e.preventDefault();
     const sweet = {
-      text: this.text.value,
+      text: this.state.text,
       created: Date.now(),
       likedUserIds: [],
       author: this.props.uid,
       comments: []
     };
     this.props.handleAddSweet(sweet, () => {
-      this.text.value = "";
-      this.closeModal();
+      this.setState({ text: "" });
+      this._toggleModal();
     });
   };
 
   render() {
     return (
-      <div>
-        <button onClick={this.openModal}>Sweet</button>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={styles}
-        >
-          <div style={innerStyles.container}>
-            <p>New Sweet</p>
-            <p onClick={this.closeModal} style={innerStyles.close}>
-              X
-            </p>
-          </div>
-          <form onSubmit={this.handleFormSubmit}>
-            <textarea
-              rows="6"
-              ref={node => {
-                this.text = node;
-              }}
-              autoFocus
-              required
-              placeholder="What's Up Dood?"
-              maxLength="140"
-              style={innerStyles.text}
+      <View style={{ flex: 1 }}>
+        <TouchableOpacity onPress={this._toggleModal}>
+          <FontAwesome name="edit" size={25} />
+        </TouchableOpacity>
+        <Modal isVisible={this.state.isVisible} style={styles.modal}>
+          <View style={styles.container}>
+            <View style={styles.header}>
+              <View />
+              <Text style={styles.title}>New Sweet</Text>
+              <TouchableOpacity
+                onPress={this._toggleModal}
+                style={styles.closeBtn}
+              >
+                <Text style={styles.close}>X</Text>
+              </TouchableOpacity>
+            </View>
+            <TextInput
+              style={styles.textinput}
+              value={this.state.text}
+              placeholder={"What's up dood!"}
+              onChangeText={text => this.setState({ text })}
+              maxLength={30}
             />
-            <input type="submit" value="Sweet!" style={innerStyles.submit} />
-          </form>
-          <p style={innerStyles.error}>{this.props.error}</p>
+            <Button title="Sweet!" onPress={this.handleFormSubmit} />
+            <Text>{this.props.error}</Text>
+          </View>
         </Modal>
-      </div>
+      </View>
     );
   }
 }
 
-Modal.setAppElement("#root");
-
 const styles = {
-  content: {
-    top: "10%",
-    left: "50%",
-    right: "80%",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%)"
-  }
-};
-
-const innerStyles = {
+  modal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
   container: {
-    display: "flex",
+    width: SCREEN_WIDTH * 0.8,
+    height: SCREEN_HEIGHT * 0.3,
+    backgroundColor: "white",
     justifyContent: "space-between"
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 20
+  },
+  closeBtn: {
+    flexDirection: "row"
+  },
   close: {
-    cursor: "pointer"
+    fontSize: 20
   },
-  text: {
-    width: "100%",
-    margin: "10px 0px",
-    fontSize: "14px"
-  },
-  submit: {
-    display: "block",
-    margin: "auto"
+  textinput: {
+    height: 45,
+    paddingHorizontal: 15
   },
   error: {
     textAlign: "center",

@@ -45,7 +45,11 @@ class SweetModal extends Component {
         <TouchableOpacity onPress={this._toggleModal}>
           <FontAwesome name="edit" size={25} />
         </TouchableOpacity>
-        <Modal isVisible={this.state.isVisible} style={styles.modal}>
+        <Modal
+          isVisible={this.state.isVisible}
+          style={styles.modal}
+          onBackdropPress={this._toggleModal}
+        >
           <View style={styles.container}>
             <View style={styles.header}>
               <View />
@@ -53,6 +57,7 @@ class SweetModal extends Component {
               <TouchableOpacity
                 onPress={this._toggleModal}
                 style={styles.closeBtn}
+                hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
               >
                 <Text style={styles.close}>X</Text>
               </TouchableOpacity>

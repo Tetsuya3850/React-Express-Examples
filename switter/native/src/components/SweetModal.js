@@ -59,7 +59,6 @@ class SweetModal extends Component {
         >
           <View style={styles.container}>
             <View style={styles.header}>
-              <View style={styles.invisible} />
               <Text style={styles.title}>New Sweet</Text>
               <TouchableOpacity
                 onPress={this._toggleModal}
@@ -110,14 +109,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 10
-  },
-  invisible: {
-    flex: 1
+    margin: 15
   },
   title: {
     flex: 3,
-    textAlign: "center",
     fontSize: 20
   },
   closeBtn: {

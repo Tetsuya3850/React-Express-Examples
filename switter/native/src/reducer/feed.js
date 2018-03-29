@@ -5,6 +5,9 @@ import { normalizeSweets, selectSweetIds } from "../helper";
 const FETCHING_FEED = "FETCHING_FEED";
 const FETCHING_FEED_ERROR = "FETCHING_FEED_ERROR";
 const FETCHING_FEED_SUCCESS = "FETCHING_FEED_SUCCESS";
+const REFRESHING_FEED = "REFRESHING_FEED";
+const REFRESHING_FEED_ERROR = "REFRESHING_FEED_ERROR";
+const REFRESHING_FEED_SUCCESS = "REFRESHING_FEED_SUCCESS";
 const ADD_FEEDIDS = "ADD_FEEDIDS";
 
 const fetchingFeed = () => {
@@ -23,6 +26,26 @@ const fetchingFeedError = error => {
 const fetchingFeedSuccess = sweetIds => {
   return {
     type: FETCHING_FEED_SUCCESS,
+    sweetIds
+  };
+};
+
+const refreshingFeed = () => {
+  return {
+    type: REFRESHING_FEED
+  };
+};
+
+const refreshingFeedError = error => {
+  return {
+    type: REFRESHING_FEED_ERROR,
+    error
+  };
+};
+
+const refreshingFeedSuccess = sweetIds => {
+  return {
+    type: REFRESHING_FEED_SUCCESS,
     sweetIds
   };
 };
@@ -47,8 +70,22 @@ export const handleFetchFeedSweets = () => async dispatch => {
   }
 };
 
+export const handleRefreshFeedSweets = () => async dispatch => {
+  dispatch(refreshingFeed());
+  try {
+    let { data } = await getFeedSweets();
+    const normalizedFeedSweets = normalizeSweets(data);
+    const feedSweetIds = selectSweetIds(data);
+    dispatch(fetchingSweetsSuccess(normalizedFeedSweets));
+    dispatch(refreshingFeedSuccess(feedSweetIds));
+  } catch (e) {
+    dispatch(refreshingFeedError("Sorry, Please Reload!"));
+  }
+};
+
 const initialState = {
   isFetching: false,
+  isRefreshing: false,
   error: "",
   sweetIds: []
 };
@@ -68,12 +105,32 @@ const feed = (state = initialState, action) => {
       };
     case FETCHING_FEED_SUCCESS:
       return {
+        ...state,
         isFetching: false,
+        error: "",
+        sweetIds: action.sweetIds
+      };
+    case REFRESHING_FEED:
+      return {
+        ...state,
+        isRefreshing: true
+      };
+    case REFRESHING_FEED_ERROR:
+      return {
+        ...state,
+        isRefreshing: false,
+        error: action.error
+      };
+    case REFRESHING_FEED_SUCCESS:
+      return {
+        ...state,
+        isRefreshing: false,
         error: "",
         sweetIds: action.sweetIds
       };
     case ADD_FEEDIDS:
       return {
+        ...state,
         isFetching: false,
         sweetIds: [...[action.sweetIds], ...state.sweetIds]
       };

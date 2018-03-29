@@ -4,11 +4,14 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
-  Button
+  RefreshControl
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { handleFetchFeedSweets } from "../reducer/feed";
+import {
+  handleFetchFeedSweets,
+  handleRefreshFeedSweets
+} from "../reducer/feed";
 import { logoutUser } from "../reducer/users";
 import SweetContainer from "../components/SweetContainer";
 import SweetModal from "../components/SweetModal";
@@ -27,9 +30,17 @@ class Feed extends Component {
   }
 
   render() {
-    const { isFetching, error, sweetIds } = this.props;
+    const { isFetching, error, sweetIds, isRefreshing } = this.props;
     return (
-      <ScrollView style={{ backgroundColor: "#fff" }}>
+      <ScrollView
+        style={{ backgroundColor: "#fff" }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={this.handleRefreshFeedSweets}
+          />
+        }
+      >
         {isFetching ? (
           <ActivityIndicator size="large" style={{ marginTop: 15 }} />
         ) : (
@@ -54,7 +65,8 @@ const mapStateToProps = ({ feed }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleFetchFeedSweets
+      handleFetchFeedSweets,
+      handleRefreshFeedSweets
     },
     dispatch
   );

@@ -10,6 +10,7 @@ import SweetModal from "../components/SweetModal";
 class Profile extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: "Profile",
+    headerStyle: { paddingHorizontal: 5 },
     headerRight: <SweetModal />
   });
 

@@ -17,6 +17,7 @@ class Feed extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: "Switter",
+      headerStyle: { paddingHorizontal: 5 },
       headerRight: <SweetModal />
     };
   };

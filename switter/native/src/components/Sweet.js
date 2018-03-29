@@ -85,7 +85,7 @@ const Sweet = ({
 const styles = {
   container: {
     borderStyle: "solid",
-    borderWidth: 0.3
+    borderBottomWidth: 0.3
   },
   sweet: {
     flexDirection: "row",

@@ -32,12 +32,14 @@ export const parseToken = token => {
 };
 
 export const latencyConverter = timestamp => {
-  if (timestamp > 86400000) {
+  if (timestamp > 2592000000) {
     return "";
+  } else if (timestamp > 86400000) {
+    return ` ${Math.ceil(timestamp / 86400000)}d`;
   } else if (timestamp > 3600000) {
-    return ` ${Math.ceil(timestamp / 3600000)} hr ago`;
+    return ` ${Math.ceil(timestamp / 3600000)}hr`;
   } else {
-    return ` ${Math.ceil(timestamp / 60000)} min ago`;
+    return ` ${Math.ceil(timestamp / 60000)}min`;
   }
 };
 

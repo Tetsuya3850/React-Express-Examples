@@ -4,13 +4,14 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { handleFetchUser } from "../reducer/users";
 import { handleFetchUserSweets } from "../reducer/userSweets";
+import Profile from "../components/Profile";
 import SweetContainer from "../components/SweetContainer";
 import SweetModal from "../components/SweetModal";
 
-class Profile extends Component {
+class User extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: "Profile",
-    headerStyle: { paddingHorizontal: 5 },
+    title: "User",
+    headerStyle: { paddingRight: 5 },
     headerRight: <SweetModal />
   });
 
@@ -19,8 +20,9 @@ class Profile extends Component {
     handleFetchUser(uid);
     handleFetchUserSweets(uid);
   }
+
   render() {
-    const { isFetching, name, userSweetIds, error } = this.props;
+    const { isFetching, name, email, pic, userSweetIds, error } = this.props;
     return (
       <ScrollView style={{ backgroundColor: "#fff" }}>
         {isFetching ? (
@@ -41,17 +43,24 @@ class Profile extends Component {
 }
 
 const mapStateToProps = ({ userSweets, users }, ownProps) => {
-  let uid, name;
+  let uid, name, email, pic;
   if (ownProps.navigation.state.params) {
-    (uid = ownProps.navigation.state.params._id),
-      (name = ownProps.navigation.state.params.name);
+    uid = ownProps.navigation.state.params._id;
+    name = users[uid] ? users[uid].name : "";
+    email = users[uid] ? users[uid].email : "";
+    pic = users[uid] ? users[uid].pic : "../../assets/icon.png";
   } else {
-    (uid = users.ownInfo._id), (name = users.ownInfo.name);
+    uid = users.ownInfo._id;
+    name = users.ownInfo.name;
+    email = users.ownInfo.email;
+    pic = users.ownInfo.pic;
   }
   return {
     uid,
-    isFetching: userSweets.isFetching,
     name,
+    email,
+    pic,
+    isFetching: userSweets.isFetching,
     userSweetIds: userSweets[uid] ? userSweets[uid] : [],
     error: userSweets.error
   };
@@ -67,6 +76,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 
-Profile = connect(mapStateToProps, mapDispatchToProps)(Profile);
+User = connect(mapStateToProps, mapDispatchToProps)(User);
 
-export default Profile;
+export default User;

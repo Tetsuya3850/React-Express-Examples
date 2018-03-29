@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import Auth from "./screens/Auth";
 import Feed from "./screens/Feed";
-import Profile from "./screens/Profile";
+import User from "./screens/User";
 import SweetDetail from "./screens/SweetDetail";
 import { FontAwesome, Feather } from "@expo/vector-icons";
 
@@ -16,7 +16,7 @@ class Root extends Component {
     const SweetsStack = StackNavigator(
       {
         feed: { screen: Feed },
-        userProfile: { screen: Profile },
+        userProfile: { screen: User },
         detail: { screen: SweetDetail }
       },
       {
@@ -31,7 +31,7 @@ class Root extends Component {
 
     const ProfileStack = StackNavigator(
       {
-        profileHome: { screen: Profile }
+        home: { screen: User }
       },
       {
         navigationOptions: {

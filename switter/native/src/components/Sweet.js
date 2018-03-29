@@ -18,8 +18,7 @@ const Sweet = ({
       <TouchableOpacity
         onPress={() => {
           navigation.navigate("userProfile", {
-            _id: sweet.author._id,
-            name: sweet.author.name
+            _id: sweet.author._id
           });
         }}
       >

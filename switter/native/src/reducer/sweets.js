@@ -15,7 +15,7 @@ export const fetchingSweetsSuccess = sweets => {
   };
 };
 
-const addSweetError = error => {
+export const addSweetError = error => {
   return {
     type: ADD_SWEET_ERROR,
     error

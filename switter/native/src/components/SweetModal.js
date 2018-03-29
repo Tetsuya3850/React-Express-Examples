@@ -5,11 +5,12 @@ import {
   View,
   TextInput,
   Button,
-  Dimensions
+  Dimensions,
+  StyleSheet
 } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { handleAddSweet } from "../reducer/sweets";
+import { handleAddSweet, addSweetError } from "../reducer/sweets";
 import Modal from "react-native-modal";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -26,6 +27,10 @@ class SweetModal extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault();
+    if (this.state.text === "") {
+      this.props.addSweetError("Empty!");
+      return;
+    }
     const sweet = {
       text: this.state.text,
       created: Date.now(),
@@ -49,10 +54,12 @@ class SweetModal extends Component {
           isVisible={this.state.isVisible}
           style={styles.modal}
           onBackdropPress={this._toggleModal}
+          avoidKeyboard={true}
+          backdropOpacity={0.5}
         >
           <View style={styles.container}>
             <View style={styles.header}>
-              <View />
+              <View style={styles.invisible} />
               <Text style={styles.title}>New Sweet</Text>
               <TouchableOpacity
                 onPress={this._toggleModal}
@@ -67,10 +74,18 @@ class SweetModal extends Component {
               value={this.state.text}
               placeholder={"What's up dood!"}
               onChangeText={text => this.setState({ text })}
-              maxLength={30}
+              maxLength={140}
+              multiline={true}
             />
-            <Button title="Sweet!" onPress={this.handleFormSubmit} />
-            <Text>{this.props.error}</Text>
+            <Text style={styles.error}>{this.props.error}</Text>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity
+                style={styles.submitBtn}
+                onPress={this.handleFormSubmit}
+              >
+                <Text style={styles.submitTxt}>Go</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modal>
       </View>
@@ -78,7 +93,7 @@ class SweetModal extends Component {
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: "center",
@@ -88,19 +103,27 @@ const styles = {
     width: SCREEN_WIDTH * 0.8,
     height: SCREEN_HEIGHT * 0.3,
     backgroundColor: "white",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    borderRadius: 15
   },
   header: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10
   },
+  invisible: {
+    flex: 1
+  },
   title: {
+    flex: 3,
     textAlign: "center",
     fontSize: 20
   },
   closeBtn: {
-    flexDirection: "row"
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "flex-end"
   },
   close: {
     fontSize: 20
@@ -112,10 +135,24 @@ const styles = {
   error: {
     textAlign: "center",
     color: "red",
-    marginTop: 10,
-    marginBottom: 0
+    marginTop: 10
+  },
+  btnContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    margin: 10
+  },
+  submitBtn: {
+    width: SCREEN_WIDTH * 0.2,
+    backgroundColor: "#68a0cf",
+    borderRadius: 10
+  },
+  submitTxt: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 20
   }
-};
+});
 
 const mapStateToProps = ({ users, sweets }) => {
   return {
@@ -127,7 +164,8 @@ const mapStateToProps = ({ users, sweets }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      handleAddSweet
+      handleAddSweet,
+      addSweetError
     },
     dispatch
   );

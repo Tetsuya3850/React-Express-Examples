@@ -19,7 +19,7 @@ const commentSchema = new mongoose.Schema({
 const sweetSchema = new mongoose.Schema({
   text: {
     type: String,
-    required: [true, "Empty Sweet!"],
+    required: [true, "Empty!"],
     maxlength: [140, "Too Long!"]
   },
   created: {

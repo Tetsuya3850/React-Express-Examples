@@ -1,7 +1,9 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import { latencyConverter } from "../helper";
 import { FontAwesome } from "@expo/vector-icons";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const Sweet = ({
   navigation,
@@ -46,7 +48,7 @@ const Sweet = ({
         <View style={styles.row}>
           {hasLiked ? (
             <TouchableOpacity
-              style={styles.row}
+              style={styles.likeReplyContainer}
               onPress={() => handleUnlikeSweet(sweet._id, uid)}
             >
               <FontAwesome style={styles.likeIcon} name="heart" size={18} />
@@ -54,7 +56,7 @@ const Sweet = ({
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              style={styles.row}
+              style={styles.likeReplyContainer}
               onPress={() => handleLikeSweet(sweet._id, uid)}
             >
               <FontAwesome style={styles.likeIcon} name="heart-o" size={18} />
@@ -62,7 +64,7 @@ const Sweet = ({
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            style={styles.row}
+            style={styles.likeReplyContainer}
             onPress={() => {
               navigation.navigate("detail", { _id: sweet._id });
             }}
@@ -105,6 +107,7 @@ const styles = {
   },
   text: {
     flexDirection: "row",
+    width: SCREEN_WIDTH * 0.7,
     fontSize: 16
   },
   row: {
@@ -112,6 +115,10 @@ const styles = {
   },
   time: {
     color: "grey"
+  },
+  likeReplyContainer: {
+    flexDirection: "row",
+    width: SCREEN_WIDTH * 0.1
   },
   likeIcon: {
     marginLeft: 5

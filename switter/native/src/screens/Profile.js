@@ -9,7 +9,7 @@ import SweetModal from "../components/SweetModal";
 
 class Profile extends Component {
   static navigationOptions = ({ navigation }) => ({
-    title: navigation.state.params.name,
+    title: "Profile",
     headerRight: <SweetModal />
   });
 
@@ -21,7 +21,7 @@ class Profile extends Component {
   render() {
     const { isFetching, name, userSweetIds, error } = this.props;
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: "#fff" }}>
         {isFetching ? (
           <ActivityIndicator size="large" style={{ marginTop: 15 }} />
         ) : (
@@ -40,11 +40,17 @@ class Profile extends Component {
 }
 
 const mapStateToProps = ({ userSweets, users }, ownProps) => {
-  const uid = ownProps.navigation.state.params._id;
+  let uid, name;
+  if (ownProps.navigation.state.params) {
+    (uid = ownProps.navigation.state.params._id),
+      (name = ownProps.navigation.state.params.name);
+  } else {
+    (uid = users.ownInfo._id), (name = users.ownInfo.name);
+  }
   return {
     uid,
     isFetching: userSweets.isFetching,
-    name: ownProps.navigation.state.params.name,
+    name,
     userSweetIds: userSweets[uid] ? userSweets[uid] : [],
     error: userSweets.error
   };

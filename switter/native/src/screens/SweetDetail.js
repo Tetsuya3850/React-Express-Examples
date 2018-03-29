@@ -17,6 +17,10 @@ import { handleFetchSweetDetail } from "../reducer/sweetDetail";
 import { handleAddComment } from "../reducer/sweets";
 
 class SweetDetail extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    title: "Sweet"
+  });
+
   state = {
     text: ""
   };

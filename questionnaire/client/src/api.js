@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER_URL = "http://localhost:5150";
+const SERVER_URL = "https://questionnaire-server-3850.herokuapp.com";
 const addResponse = new_response =>
   axios.post(`${SERVER_URL}/add`, new_response);
 

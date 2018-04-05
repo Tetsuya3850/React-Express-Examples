@@ -65,7 +65,6 @@ class App extends Component {
                 this.onToggleBounce(location.id);
                 this.onToggleInfo(location.id);
               }}
-              defaultAnimation={window.google.maps.Animation.BOUNCE}
               animation={location.animation}
             >
               {location.info_open && (
@@ -117,6 +116,9 @@ class App extends Component {
                   onClick={() => {
                     this.onToggleBounce(location.id);
                     this.onToggleInfo(location.id);
+                  }}
+                  style={{
+                    cursor: "pointer"
                   }}
                 >
                   {location.title}

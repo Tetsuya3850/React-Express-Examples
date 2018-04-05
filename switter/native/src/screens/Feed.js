@@ -30,7 +30,13 @@ class Feed extends Component {
   }
 
   render() {
-    const { isFetching, error, sweetIds, isRefreshing } = this.props;
+    const {
+      isFetching,
+      error,
+      sweetIds,
+      isRefreshing,
+      logoutUser
+    } = this.props;
     return (
       <ScrollView
         style={{ backgroundColor: "#fff" }}
@@ -51,6 +57,7 @@ class Feed extends Component {
             <Text style={{ textAlign: "center", color: "red", marginTop: 10 }}>
               {error}
             </Text>
+            <Text onPress={logoutUser}>LOGOUT</Text>
           </View>
         )}
       </ScrollView>
@@ -66,7 +73,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       handleFetchFeedSweets,
-      handleRefreshFeedSweets
+      handleRefreshFeedSweets,
+      logoutUser
     },
     dispatch
   );

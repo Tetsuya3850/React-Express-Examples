@@ -67,6 +67,7 @@ class Questionnaire extends Component {
     this.comments.value = "";
     const ele = document.getElementsByName("colors");
     for (let i = 0; i < ele.length; i++) ele[i].checked = false;
+    this.setState({ errors: {} });
   };
 
   render() {

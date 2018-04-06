@@ -1,11 +1,10 @@
-A questionnaire app.
+A questionnaire written by React.js and Node.js
 
-## Requirements
+## Features
 
-* Clients can post a response to the server.
+* Responses are posted to Node.js server and persisted to MongoDB.
 * POST validation is done both client-side and server-side.
-* Error messages are displayed.
 
-## Mock
+## Try it
 
-![Alt text](./questionnaire-mock.png?raw=true "Mock Image")
+* Web (https://questionnaire-client-3850.herokuapp.com/)

@@ -29,7 +29,7 @@ module.exports.getSearch = async (req, res, next) => {
   }
 };
 
-module.exports.getProduct = async (req, res, next) => {
+module.exports.getItem = async (req, res, next) => {
   try {
     const item = await Item.findOne({ _id: req.params.itemid });
     res.status(200).json(item);

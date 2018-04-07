@@ -10,7 +10,7 @@ class AppContainer extends Component {
   render() {
     return (
       <Router>
-        <div style={{ margin: "auto", width: 400 }}>
+        <div style={{ margin: "auto", width: 320 }}>
           <NavBar />
           <Route exact path="/" component={Home} />
           <Route path="/auth" component={Auth} />

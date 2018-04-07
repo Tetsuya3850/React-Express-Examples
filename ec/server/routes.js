@@ -22,7 +22,7 @@ router.post("/users/order", auth, usersCtrl.order);
 router.get("/items/all", itemsCtrl.getAll);
 router.get("/items/category/:key", itemsCtrl.getCategory);
 router.get("/items/search/:query", itemsCtrl.getSearch);
-router.get("/items/details/:itemid", itemsCtrl.getProduct);
+router.get("/items/details/:itemid", itemsCtrl.getItem);
 router.post("/items/:itemid/addreview", itemsCtrl.addReview);
 
 module.exports = router;

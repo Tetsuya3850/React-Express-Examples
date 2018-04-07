@@ -1,47 +1,77 @@
-import { fetchingSweetsSuccess, ADD_COMMENT } from "./sweets";
-import { getSweetDetail } from "../api";
+import { fetchingItemsSuccess } from "./items";
+import { getItem, addReview } from "../api";
 
 const FETCHING_ITEM_DETAIL = "FETCHING_SWEET_DETAIL";
-const FETCHING_SWEET_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
-const FETCHING_SWEET_DETAIL_SUCCESS = "FETCHING_SWEET_DETAIL_SUCCESS";
-const ADD_COMMENT_ERROR = "ADD_COMMENT_ERROR";
+const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
+const FETCHING_ITEM_DETAIL_SUCCESS = "FETCHING_SWEET_DETAIL_SUCCESS";
+const ADD_REVIEW_ERROR = "ADD_REVIEW_ERROR";
+const ADD_REVIEW_SUCCESS = "ADD_REVIEW_SUCCESS";
 
-const fetchingSweetDetail = () => {
+const fetchingItemDetail = () => {
   return {
-    type: FETCHING_SWEET_DETAIL
+    type: FETCHING_ITEM_DETAIL
   };
 };
 
-const fetchingSweetDetailError = error => {
+const fetchingItemDetailError = error => {
   return {
-    type: FETCHING_SWEET_DETAIL_ERROR,
+    type: FETCHING_ITEM_DETAIL_ERROR,
     error
   };
 };
 
-const fetchingSweetDetailSuccess = () => {
+const fetchingItemDetailSuccess = () => {
   return {
-    type: FETCHING_SWEET_DETAIL_SUCCESS
+    type: FETCHING_ITEM_DETAIL_SUCCESS
   };
 };
 
-export const addCommentError = error => {
+const addReviewError = error => {
   return {
-    type: ADD_COMMENT_ERROR,
+    type: ADD_REVIEW_ERROR,
     error
   };
 };
 
-export const handleFetchSweetDetail = sweetId => async dispatch => {
-  dispatch(fetchingSweetDetail());
+const addReviewSuccess = () => {
+  return {
+    type: ADD_REVIEW_SUCCESS
+  };
+};
+
+export const handleFetchItemDetail = itemId => async dispatch => {
+  dispatch(fetchingItemDetail());
   try {
-    let { data } = await getSweetDetail(sweetId);
-    const normalizedSweet = { [sweetId]: data };
-    dispatch(fetchingSweetsSuccess(normalizedSweet));
-    dispatch(fetchingSweetDetailSuccess());
+    let { data } = await getItem(itemId);
+    const normalizedItem = { [itemId]: data };
+    dispatch(fetchingItemsSuccess(normalizedItem));
+    dispatch(fetchingItemDetailSuccess());
   } catch (e) {
-    dispatch(fetchingSweetDetailError("Sorry, Please Reload!"));
+    dispatch(fetchingItemDetailError("Sorry, Please Reload!"));
   }
+};
+
+export const handleAddReview = (itemId, review) => async dispatch => {
+  try {
+    let { data } = await addReview(itemId, review);
+    dispatch(addReviewSuccess());
+  } catch (e) {
+    const error_message = formatError(e);
+    dispatch(addReviewError(error_message));
+  }
+};
+
+const formatError = e => {
+  if (!e.response) {
+    console.log(e);
+    return "Network Error!";
+  }
+  if (e.response.data.errors.text) {
+    return e.response.data.errors.text.message;
+  } else if (e.response.data.errors["comments.4.text"]) {
+    return e.response.data.errors["comments.4.text"].message;
+  }
+  return "Something went wrong!";
 };
 
 const initialState = {
@@ -49,16 +79,16 @@ const initialState = {
   error: ""
 };
 
-const sweetDetail = (state = initialState, action) => {
+const itemDetail = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_SWEET_DETAIL:
+    case FETCHING_ITEM_DETAIL:
       return { ...state, isFetching: true };
-    case FETCHING_SWEET_DETAIL_ERROR:
+    case FETCHING_ITEM_DETAIL_ERROR:
       return { ...state, error: action.error, isFetching: false };
-    case FETCHING_SWEET_DETAIL_SUCCESS:
-    case ADD_COMMENT:
+    case FETCHING_ITEM_DETAIL_SUCCESS:
+    case ADD_REVIEW_SUCCESS:
       return initialState;
-    case ADD_COMMENT_ERROR:
+    case ADD_REVIEW_ERROR:
       return {
         ...state,
         error: action.error
@@ -68,4 +98,4 @@ const sweetDetail = (state = initialState, action) => {
   }
 };
 
-export default sweetDetail;
+export default itemDetail;

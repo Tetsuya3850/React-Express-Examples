@@ -12,10 +12,11 @@ export const deleteItem = (itemid, change) =>
   axios.get(`${SERVER_URL}/users/deleteitem`, { itemid, change });
 export const order = () => axios.post(`${SERVER_URL}/users/order`);
 
+export const getAll = () => axios.get(`${SERVER_URL}/items/all`);
 export const getCategory = key =>
   axios.get(`${SERVER_URL}/items/category/${key}`);
 export const getSearch = query =>
   axios.get(`${SERVER_URL}/items/search/${query}`);
-export const getProduct = itemid => axios.get(`${SERVER_URL}/items/${itemid}`);
+export const getItem = itemid => axios.get(`${SERVER_URL}/items/${itemid}`);
 export const addReview = (itemid, review) =>
   axios.post(`${SERVER_URL}/items/${itemid}/addreview`);

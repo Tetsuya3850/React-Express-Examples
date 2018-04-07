@@ -1,85 +1,98 @@
-import { getFeedSweets } from "../api";
-import { fetchingSweetsSuccess } from "./sweets";
-import { normalizeSweets, selectSweetIds } from "../helper";
+import { getAll, getCategory, getSearch } from "../api";
+import { fetchingItemsSuccess } from "./items";
+import { normalizeItems, selectItemIds } from "../helper";
 
-const FETCHING_FEED = "FETCHING_FEED";
-const FETCHING_FEED_ERROR = "FETCHING_FEED_ERROR";
-const FETCHING_FEED_SUCCESS = "FETCHING_FEED_SUCCESS";
-const ADD_FEEDIDS = "ADD_FEEDIDS";
+const FETCHING_LIST = "FETCHING_LIST";
+const FETCHING_LIST_ERROR = "FETCHING_LIST_ERROR";
+const FETCHING_LIST_SUCCESS = "FETCHING_LIST_SUCCESS";
 
-const fetchingFeed = () => {
+const fetchingList = () => {
   return {
-    type: FETCHING_FEED
+    type: FETCHING_LIST
   };
 };
 
-const fetchingFeedError = error => {
+const fetchingListError = error => {
   return {
-    type: FETCHING_FEED_ERROR,
+    type: FETCHING_LIST_ERROR,
     error
   };
 };
 
-const fetchingFeedSuccess = sweetIds => {
+const fetchingListSuccess = itemIds => {
   return {
-    type: FETCHING_FEED_SUCCESS,
-    sweetIds
+    type: FETCHING_LIST_SUCCESS,
+    itemIds
   };
 };
 
-export const addFeedIds = sweetIds => {
-  return {
-    type: ADD_FEEDIDS,
-    sweetIds
-  };
-};
-
-export const handleFetchFeedSweets = () => async dispatch => {
-  dispatch(fetchingFeed());
+export const handleFetchListItems = () => async dispatch => {
+  dispatch(fetchingList());
   try {
-    const { data } = await getFeedSweets();
-    const normalizedFeedSweets = normalizeSweets(data);
-    const feedSweetIds = selectSweetIds(data);
-    dispatch(fetchingSweetsSuccess(normalizedFeedSweets));
-    dispatch(fetchingFeedSuccess(feedSweetIds));
+    const { data } = await getAll();
+    const normalizedListItems = normalizeItems(data);
+    const listItemIds = selectItemIds(data);
+    dispatch(fetchingItemsSuccess(normalizedListItems));
+    dispatch(fetchingListSuccess(listItemIds));
   } catch (e) {
-    dispatch(fetchingFeedError("Sorry, Please Reload!"));
+    dispatch(fetchingListError("Sorry, Please Reload!"));
+  }
+};
+
+export const handleFetchListCategory = key => async dispatch => {
+  dispatch(fetchingList());
+  try {
+    const { data } = await getCategory(key);
+    const normalizedListItems = normalizeItems(data);
+    const listItemIds = selectItemIds(data);
+    dispatch(fetchingItemsSuccess(normalizedListItems));
+    dispatch(fetchingListSuccess(listItemIds));
+  } catch (e) {
+    dispatch(fetchingListError("Sorry, Please Reload!"));
+  }
+};
+
+export const handleFetchListSearch = query => async dispatch => {
+  dispatch(fetchingList());
+  try {
+    const { data } = await getSearch(query);
+    const normalizedListItems = normalizeItems(data);
+    const listItemIds = selectItemIds(data);
+    dispatch(fetchingItemsSuccess(normalizedListItems));
+    dispatch(fetchingListSuccess(listItemIds));
+  } catch (e) {
+    dispatch(fetchingListError("Sorry, Please Reload!"));
   }
 };
 
 const initialState = {
   isFetching: false,
   error: "",
-  sweetIds: []
+  itemIds: []
 };
 
-const feed = (state = initialState, action) => {
+const list = (state = initialState, action) => {
   switch (action.type) {
-    case FETCHING_FEED:
+    case FETCHING_LIST:
       return {
         ...state,
         isFetching: true
       };
-    case FETCHING_FEED_ERROR:
+    case FETCHING_LIST_ERROR:
       return {
         ...state,
         isFetching: false,
         error: action.error
       };
-    case FETCHING_FEED_SUCCESS:
+    case FETCHING_LIST_SUCCESS:
       return {
         isFetching: false,
         error: "",
-        sweetIds: action.sweetIds
-      };
-    case ADD_FEEDIDS:
-      return {
-        isFetching: false,
-        sweetIds: [...[action.sweetIds], ...state.sweetIds]
+        itemIds: action.itemIds
       };
     default:
       return state;
   }
 };
 
-export default feed;
+export default list;

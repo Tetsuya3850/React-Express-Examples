@@ -3,7 +3,6 @@ import { getHistory, addItem, editNum, deleteItem, order } from "../api";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
-const FETCHING_USER_SUCCESS = "FETCHING_USER_SUCCESS";
 
 const authUser = ownInfo => {
   return { type: AUTH_USER, ownInfo };
@@ -11,10 +10,6 @@ const authUser = ownInfo => {
 
 const unAuthUser = () => {
   return { type: UNAUTH_USER };
-};
-
-const fetchingUserSuccess = userInfo => {
-  return { type: FETCHING_USER_SUCCESS, userInfo };
 };
 
 export const socialAuthUser = (token, redirect) => dispatch => {
@@ -56,11 +51,6 @@ const users = (state = initialState, action) => {
         ...state,
         isAuthed: false,
         ownInfo: {}
-      };
-    case FETCHING_USER_SUCCESS:
-      return {
-        ...state,
-        [action.userInfo._id]: action.userInfo
       };
     default:
       return state;

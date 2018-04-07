@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
-import users from "./reducer/users";
+import appReducer from "./reducer/index";
 
 export default function configureStore(preloadedState) {
   return createStore(
-    users,
+    appReducer,
     preloadedState,
     compose(applyMiddleware(thunkMiddleware), window.devToolsExtension())
   );

@@ -43,7 +43,11 @@ class NavBar extends Component {
             </a>
           )}
 
-          <NavLink exact to="/cart" style={{ flexGrow: 1, color: "black" }}>
+          <NavLink
+            exact
+            to={`/cart/${ownInfo._id}`}
+            style={{ flexGrow: 1, color: "black" }}
+          >
             <i className="fa fa-shopping-cart" aria-hidden="true" />
           </NavLink>
         </div>

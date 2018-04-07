@@ -17,6 +17,7 @@ export const getCategory = key =>
   axios.get(`${SERVER_URL}/items/category/${key}`);
 export const getSearch = query =>
   axios.get(`${SERVER_URL}/items/search/${query}`);
-export const getItem = itemid => axios.get(`${SERVER_URL}/items/${itemid}`);
+export const getItem = itemid =>
+  axios.get(`${SERVER_URL}/items/details/${itemid}`);
 export const addReview = (itemid, review) =>
   axios.post(`${SERVER_URL}/items/${itemid}/addreview`);

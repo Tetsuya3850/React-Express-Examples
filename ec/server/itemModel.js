@@ -34,6 +34,4 @@ const itemSchema = new mongoose.Schema({
   reviews: [reviewSchema]
 });
 
-itemSchema.index({ name: "text", maker: "text", detail: "text" });
-
 mongoose.model("Item", itemSchema);

@@ -2,14 +2,18 @@ const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const Item = mongoose.model("Item");
 
+module.exports.getAll = async (req, res, next) => {
+  try {
+    const items = await Item.find();
+    res.status(200).json(items);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
+
 module.exports.getCategory = async (req, res, next) => {
   try {
-    let items;
-    if (req.params.key !== "") {
-      items = await Item.find({ category: req.params.key });
-    } else {
-      items = await Item.find();
-    }
+    const items = await Item.find({ category: req.params.key });
     res.status(200).json(items);
   } catch (e) {
     res.status(500).json(e);

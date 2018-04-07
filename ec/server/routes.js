@@ -13,15 +13,16 @@ const itemsCtrl = require("./itemsController");
 
 router.get("/auth/google", usersCtrl.goAuth);
 router.get("/auth/google/callback", usersCtrl.goAuthCB);
-router.get("/users/history/:uid", usersCtrl.getHistory);
-router.post("/users/additem", usersCtrl.addItem);
-router.post("/users/editnum", usersCtrl.editNum);
-router.post("/users/deleteitem", usersCtrl.deleteItem);
-router.post("/users/order", usersCtrl.order);
+router.get("/users/history", auth, usersCtrl.getHistory);
+router.post("/users/additem", auth, usersCtrl.addItem);
+router.post("/users/editnum", auth, usersCtrl.editNum);
+router.post("/users/deleteitem", auth, usersCtrl.deleteItem);
+router.post("/users/order", auth, usersCtrl.order);
 
-router.get("/items/category", itemsCtrl.getCategory);
-router.get("/items/search", itemsCtrl.getSearch);
-router.get("/items/:itemid", itemsCtrl.getProduct);
+router.get("/items/all", itemsCtrl.getAll);
+router.get("/items/category/:key", itemsCtrl.getCategory);
+router.get("/items/search/:query", itemsCtrl.getSearch);
+router.get("/items/details/:itemid", itemsCtrl.getProduct);
 router.post("/items/:itemid/addreview", itemsCtrl.addReview);
 
 module.exports = router;

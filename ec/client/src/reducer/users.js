@@ -1,5 +1,5 @@
 import { saveToken, removeToken, getOwnInfo, parseToken } from "../helper";
-import { getUser } from "../api";
+import { getHistory, addItem, editNum, deleteItem, order } from "../api";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
@@ -36,15 +36,6 @@ export const logoutUser = redirect => dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();
-};
-
-export const handleFetchUser = uid => async dispatch => {
-  try {
-    const { data } = await getUser(uid);
-    dispatch(fetchingUserSuccess(data));
-  } catch (e) {
-    console.log(e);
-  }
 };
 
 const initialState = {

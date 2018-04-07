@@ -3,15 +3,19 @@ import { getToken } from "./helper";
 const SERVER_URL = "http://localhost:5150";
 axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
-export const getFeedSweets = () => axios.get(`${SERVER_URL}/sweets/feed`);
-export const getUser = uid => axios.get(`${SERVER_URL}/users/${uid}`);
-export const getUserSweets = uid =>
-  axios.get(`${SERVER_URL}/sweets/users/${uid}`);
-export const getSweetDetail = sweetId =>
-  axios.get(`${SERVER_URL}/sweets/detail/${sweetId}`);
-export const postSweet = new_sweet =>
-  axios.post(`${SERVER_URL}/sweets/add/`, new_sweet);
-export const postToggleSweet = sweetId =>
-  axios.post(`${SERVER_URL}/sweets/togglelike/${sweetId}`);
-export const postComment = (sweetId, comment) =>
-  axios.post(`${SERVER_URL}/sweets/comment/${sweetId}`, comment);
+export const getHistory = () => axios.get(`${SERVER_URL}/users/history`);
+export const addItem = itemid =>
+  axios.post(`${SERVER_URL}/users/additem`, { itemid });
+export const editNum = (itemid, change) =>
+  axios.get(`${SERVER_URL}/users/editnum`, { itemid, change });
+export const deleteItem = (itemid, change) =>
+  axios.get(`${SERVER_URL}/users/deleteitem`, { itemid, change });
+export const order = () => axios.post(`${SERVER_URL}/users/order`);
+
+export const getCategory = key =>
+  axios.get(`${SERVER_URL}/items/category/${key}`);
+export const getSearch = query =>
+  axios.get(`${SERVER_URL}/items/search/${query}`);
+export const getProduct = itemid => axios.get(`${SERVER_URL}/items/${itemid}`);
+export const addReview = (itemid, review) =>
+  axios.post(`${SERVER_URL}/items/${itemid}/addreview`);

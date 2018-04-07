@@ -7,6 +7,7 @@ import { socialAuthUser } from "../reducer/users";
 class SocialAuthRedirect extends Component {
   componentWillMount() {
     const searchParams = new URLSearchParams(window.location.search);
+    console.log(searchParams.get("token"));
     this.props.dispatch(
       socialAuthUser(searchParams.get("token"), () => {
         axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;

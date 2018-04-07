@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Feed from "./Feed";
 import Hello from "./Hello";
 
 class Home extends Component {
   render() {
-    return <div>{this.props.isAuthed ? <Feed /> : <Hello />}</div>;
+    return <div>Hello</div>;
   }
 }
 

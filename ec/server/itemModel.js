@@ -23,7 +23,7 @@ const reviewSchema = new mongoose.Schema({
   }
 });
 
-const productSchema = new mongoose.Schema({
+const itemSchema = new mongoose.Schema({
   name: String,
   maker: String,
   pic: String,
@@ -34,4 +34,6 @@ const productSchema = new mongoose.Schema({
   reviews: [reviewSchema]
 });
 
-mongoose.model("Product", productSchema);
+itemSchema.index({ name: "text", maker: "text", detail: "text" });
+
+mongoose.model("Item", itemSchema);

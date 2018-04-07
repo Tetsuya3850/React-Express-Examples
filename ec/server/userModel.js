@@ -10,41 +10,37 @@ const validateEmail = email => {
 };
 
 const orderSchema = new mongoose.Schema({
-  cart: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Product"
-    }
-  ],
+  cart: mongoose.Schema.Types.mix,
   created: {
     type: Date,
     default: Date.now
   }
 });
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: [true, "Required!"],
-    validate: [validateEmail, "Invalid address!"],
-    maxlength: [50, "Too Long!"],
-    unique: true,
-    trim: true
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: [true, "Required!"],
+      validate: [validateEmail, "Invalid address!"],
+      maxlength: [50, "Too Long!"],
+      unique: true,
+      trim: true
+    },
+    name: {
+      type: String,
+      required: [true, "Required!"],
+      maxlength: [50, "Too Long!"],
+      trim: true
+    },
+    cart: {
+      type: mongoose.Schema.Types.mix,
+      default: {}
+    },
+    orders: [orderSchema]
   },
-  name: {
-    type: String,
-    required: [true, "Required!"],
-    maxlength: [50, "Too Long!"],
-    trim: true
-  },
-  cart: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "Product"
-    }
-  ],
-  orders: [orderSchema]
-});
+  { minimize: false }
+);
 
 userSchema.methods.generateJwt = function() {
   let expiry = new Date();

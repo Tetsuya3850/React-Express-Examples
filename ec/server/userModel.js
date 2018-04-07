@@ -10,7 +10,7 @@ const validateEmail = email => {
 };
 
 const orderSchema = new mongoose.Schema({
-  cart: mongoose.Schema.Types.mix,
+  cart: mongoose.Schema.Types.Mixed,
   created: {
     type: Date,
     default: Date.now
@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema(
       trim: true
     },
     cart: {
-      type: mongoose.Schema.Types.mix,
+      type: mongoose.Schema.Types.Mixed,
       default: {}
     },
     orders: [orderSchema]

@@ -1,8 +1,20 @@
 import { saveToken, removeToken, getOwnInfo, parseToken } from "../helper";
-import { getHistory, addItem, editNum, deleteItem, order } from "../api";
+import {
+  getHistory,
+  getCart,
+  postAddItem,
+  postEditNum,
+  postDeleteItem,
+  postOrder
+} from "../api";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
+const FETCHING_CART_SUCCESS = "FETCHING_CART_SUCCESS";
+const ADD_ITEM = "ADD_ITEM";
+const EDIT_NUM = "EDIT_NUM";
+const DELETE_ITEM = "DELETE_ITEM";
+const ORDER = "ORDER";
 
 const authUser = ownInfo => {
   return { type: AUTH_USER, ownInfo };
@@ -12,16 +24,30 @@ const unAuthUser = () => {
   return { type: UNAUTH_USER };
 };
 
+const fetchingCartSuccess = cart => {
+  return { type: FETCHING_CART_SUCCESS, cart };
+};
+
+const addItem = itemId => {
+  return { type: ADD_ITEM, itemId };
+};
+
 export const socialAuthUser = (token, redirect) => dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
   redirect();
 };
 
-export const reAuthUser = redirect => dispatch => {
+export const reAuthUser = redirect => async dispatch => {
   const ownInfo = getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
+    try {
+      const { data } = await getCart(ownInfo._id);
+      dispatch(fetchingCartSuccess(data));
+    } catch (e) {
+      console.log(e);
+    }
   } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {
     redirect();
   }
@@ -33,9 +59,31 @@ export const logoutUser = redirect => dispatch => {
   redirect();
 };
 
+export const handleAddItem = itemId => async dispatch => {
+  try {
+    await postAddItem(itemId);
+    dispatch(addItem(itemId));
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const handleCart = (state, action) => {
+  switch (action.type) {
+    case ADD_ITEM:
+      return {
+        ...state,
+        [action.itemId]: 1
+      };
+    default:
+      return state;
+  }
+};
+
 const initialState = {
   isAuthed: false,
-  ownInfo: {}
+  ownInfo: {},
+  cart: {}
 };
 
 const users = (state = initialState, action) => {
@@ -51,6 +99,16 @@ const users = (state = initialState, action) => {
         ...state,
         isAuthed: false,
         ownInfo: {}
+      };
+    case FETCHING_CART_SUCCESS:
+      return {
+        ...state,
+        cart: action.cart
+      };
+    case ADD_ITEM:
+      return {
+        ...state,
+        cart: handleCart(state.cart, action)
       };
     default:
       return state;

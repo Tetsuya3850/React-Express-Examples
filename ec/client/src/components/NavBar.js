@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { reAuthUser, logoutUser } from "../reducer/users";
+import { reAuthUser } from "../reducer/users";
 import { NavLink } from "react-router-dom";
 
 class NavBar extends Component {
@@ -12,7 +12,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { isAuthed, ownInfo, logoutUser, history } = this.props;
+    const { isAuthed, ownInfo, cart } = this.props;
     return (
       <div>
         <div style={{ display: "flex", margin: "10px" }}>
@@ -48,7 +48,11 @@ class NavBar extends Component {
             to={`/cart/${ownInfo._id}`}
             style={{ flexGrow: 1, color: "black" }}
           >
-            <i className="fa fa-shopping-cart" aria-hidden="true" />
+            {cart !== {} ? (
+              <i className="fa fa-cart-plus" aria-hidden="true" />
+            ) : (
+              <i className="fa fa-shopping-cart" aria-hidden="true" />
+            )}
           </NavLink>
         </div>
         <hr />

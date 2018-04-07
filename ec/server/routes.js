@@ -13,6 +13,7 @@ const itemsCtrl = require("./itemsController");
 
 router.get("/auth/google", usersCtrl.goAuth);
 router.get("/auth/google/callback", usersCtrl.goAuthCB);
+router.get("/users/:uid/cart", usersCtrl.getCart);
 router.get("/users/history", auth, usersCtrl.getHistory);
 router.post("/users/additem", auth, usersCtrl.addItem);
 router.post("/users/editnum", auth, usersCtrl.editNum);

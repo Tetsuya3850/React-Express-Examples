@@ -1,6 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
-import { addTodo } from "../reducer";
 
 let Search = ({ handleFetchListItems, handleFetchListSearch }) => (
   <form

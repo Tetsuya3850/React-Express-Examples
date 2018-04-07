@@ -4,13 +4,14 @@ const SERVER_URL = "http://localhost:5150";
 axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
 export const getHistory = () => axios.get(`${SERVER_URL}/users/history`);
-export const addItem = itemid =>
+export const getCart = uid => axios.get(`${SERVER_URL}/users/${uid}/cart`);
+export const postAddItem = itemid =>
   axios.post(`${SERVER_URL}/users/additem`, { itemid });
-export const editNum = (itemid, change) =>
+export const postEditNum = (itemid, change) =>
   axios.get(`${SERVER_URL}/users/editnum`, { itemid, change });
-export const deleteItem = (itemid, change) =>
+export const postDeleteItem = (itemid, change) =>
   axios.get(`${SERVER_URL}/users/deleteitem`, { itemid, change });
-export const order = () => axios.post(`${SERVER_URL}/users/order`);
+export const postOrder = () => axios.post(`${SERVER_URL}/users/order`);
 
 export const getAll = () => axios.get(`${SERVER_URL}/items/all`);
 export const getCategory = key =>

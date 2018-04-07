@@ -4,7 +4,7 @@ const SERVER_URL = "http://localhost:5150";
 axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
 export const getHistory = () => axios.get(`${SERVER_URL}/users/history`);
-export const getCart = uid => axios.get(`${SERVER_URL}/users/${uid}/cart`);
+export const getCart = uid => axios.get(`${SERVER_URL}/users/cart`);
 export const postAddItem = itemid =>
   axios.post(`${SERVER_URL}/users/additem`, { itemid });
 export const postEditNum = (itemid, change) =>

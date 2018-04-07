@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 import Home from "./Home";
 import SocialAuthRedirect from "./SocialAuthRedirect";
 import ItemDetail from "./ItemDetail";
+import Cart from "./Cart";
 
 class AppContainer extends Component {
   render() {
@@ -15,6 +16,7 @@ class AppContainer extends Component {
           <Route exact path="/" component={Home} />
           <Route path="/socialauthredirect/" component={SocialAuthRedirect} />
           <Route path="/detail/:itemId" component={ItemDetail} />
+          <Route path="/cart/:uid" component={Cart} />
         </div>
       </Router>
     );

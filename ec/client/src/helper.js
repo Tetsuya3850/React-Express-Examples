@@ -39,14 +39,14 @@ export const latencyConverter = timestamp => {
   }
 };
 
-export const normalizeItems = sweets => {
-  const normalizedSweets = {};
-  sweets.forEach(sweet => {
-    normalizedSweets[sweet._id] = sweet;
+export const normalizeItems = items => {
+  const normalizedItems = {};
+  items.forEach(item => {
+    normalizedItems[item._id] = item;
   });
-  return normalizedSweets;
+  return normalizedItems;
 };
 
-export const selectItemIds = sweets => {
-  return sweets.map(sweet => sweet._id);
+export const selectItemIds = items => {
+  return items.map(item => item._id);
 };

@@ -7,6 +7,8 @@ import {
   postDeleteItem,
   postOrder
 } from "../api";
+import { normalizeItems, selectItemIds } from "../helper";
+import { fetchingItemsSuccess } from "./items";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
@@ -42,12 +44,7 @@ export const reAuthUser = redirect => async dispatch => {
   const ownInfo = getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
-    try {
-      const { data } = await getCart(ownInfo._id);
-      dispatch(fetchingCartSuccess(data));
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(handleGetCart());
   } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {
     redirect();
   }
@@ -57,6 +54,17 @@ export const logoutUser = redirect => dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();
+};
+
+export const handleGetCart = () => async dispatch => {
+  try {
+    const { data } = await getCart();
+    const normalizedCartItems = normalizeItems(data.details);
+    dispatch(fetchingItemsSuccess(normalizedCartItems));
+    dispatch(fetchingCartSuccess(data.cart));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleAddItem = itemId => async dispatch => {

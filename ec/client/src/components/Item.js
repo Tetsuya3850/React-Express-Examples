@@ -35,8 +35,6 @@ const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
 
 const styles = {
   container: {
-    borderBottomStyle: "solid",
-    borderBottomWidth: "0.3px",
     margin: "10px"
   },
   item: {

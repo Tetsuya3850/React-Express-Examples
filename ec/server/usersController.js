@@ -33,8 +33,18 @@ const generateTokenAndRedirect = (req, res, next, err, user, info) => {
 
 module.exports.getCart = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.params.uid });
-    res.status(200).json(user.cart);
+    const user = await User.findOne({ _id: req.me._id });
+    const cartIds = Object.keys(user.cart);
+    const itemDetails = await Item.find({
+      _id: {
+        $in: cartIds
+      }
+    });
+    const response = {
+      cart: user.cart,
+      details: itemDetails
+    };
+    res.status(200).json(response);
   } catch (e) {
     res.status(500).json(e);
   }

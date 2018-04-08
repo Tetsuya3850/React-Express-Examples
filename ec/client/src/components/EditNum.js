@@ -1,29 +1,29 @@
 import React, { Component } from "react";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { handleEditNum } from "../reducer/users";
 
 class EditNum extends Component {
   state = {
-    choice: ""
+    choice: this.props.num
   };
 
   onChangeCategory = e => {
-    this.setState({ choice: e.target.value });
-    if (e.target.value === "") {
-      this.props.handleFetchListItems();
-      return;
-    }
-    this.props.handleFetchListCategory(e.target.value);
+    this.props.handleEditNum(this.props.itemId, e.target.value, () => {});
   };
 
-  render() {
-    const category_chocies = [
-      "Books",
-      "Fashion",
-      "Electronics",
-      "CDs & DVDs",
-      "Foods & Beverages"
-    ];
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.num !== this.state.choice) {
+      this.setState({ choice: nextProps.num });
+    }
+  }
 
-    const allCategoryChoices = category_chocies.map(choice => (
+  render() {
+    const limit = parseInt(this.props.num) + this.props.stock;
+    const choice_limit = Math.min(limit, 10);
+    const stock_chocies = [...Array(choice_limit).keys()].map(x => (x += 1));
+
+    const allStockChoices = stock_chocies.map(choice => (
       <option key={choice} value={choice}>
         {choice}
       </option>
@@ -32,13 +32,30 @@ class EditNum extends Component {
     return (
       <div style={{ margin: "10px" }}>
         <select onChange={this.onChangeCategory} value={this.state.choice}>
-          <option value="">All</option>
-          {allCategoryChoices}
+          {allStockChoices}
         </select>
         <br />
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ items, users }, ownProps) => {
+  return {
+    num: users.cart[ownProps.itemId],
+    stock: items[ownProps.itemId].stock
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleEditNum
+    },
+    dispatch
+  );
+};
+
+EditNum = connect(mapStateToProps, mapDispatchToProps)(EditNum);
 
 export default EditNum;

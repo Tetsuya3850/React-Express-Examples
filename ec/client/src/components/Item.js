@@ -1,5 +1,4 @@
 import React from "react";
-import { latencyConverter } from "../helper";
 import { Link } from "react-router-dom";
 
 const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {

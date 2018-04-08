@@ -3,17 +3,19 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ItemContainer from "./ItemContainer";
 import EditNum from "./EditNum";
+import { handleDeleteItem } from "../reducer/users";
 
 class Cart extends Component {
   render() {
+    const { cart, handleDeleteItem } = this.props;
     return (
       <div>
-        {Object.keys(this.props.cart).map(key => (
-          <div>
-            <ItemContainer itemId={key} />
-            <div>
-              <EditNum />
-              <button>DELETE</button>
+        {Object.keys(cart).map(itemId => (
+          <div key={itemId}>
+            <ItemContainer itemId={itemId} />
+            <div style={{ display: "flex" }}>
+              <EditNum itemId={itemId} />
+              <button onClick={() => handleDeleteItem(itemId)}>DELETE</button>
             </div>
           </div>
         ))}
@@ -23,9 +25,20 @@ class Cart extends Component {
 }
 
 const mapStateToProps = ({ users }) => {
-  return users;
+  return {
+    cart: users.cart
+  };
 };
 
-Cart = connect(mapStateToProps, null)(Cart);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      handleDeleteItem
+    },
+    dispatch
+  );
+};
+
+Cart = connect(mapStateToProps, mapDispatchToProps)(Cart);
 
 export default Cart;

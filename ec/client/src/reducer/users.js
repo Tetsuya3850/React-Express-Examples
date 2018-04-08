@@ -8,14 +8,11 @@ import {
   postOrder
 } from "../api";
 import { normalizeItems, selectItemIds } from "../helper";
-import { fetchingItemsSuccess } from "./items";
+import { fetchingItemsSuccess, updateItemStock } from "./items";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
 const FETCHING_CART_SUCCESS = "FETCHING_CART_SUCCESS";
-const ADD_ITEM = "ADD_ITEM";
-const EDIT_NUM = "EDIT_NUM";
-const DELETE_ITEM = "DELETE_ITEM";
 const ORDER = "ORDER";
 
 const authUser = ownInfo => {
@@ -28,10 +25,6 @@ const unAuthUser = () => {
 
 const fetchingCartSuccess = cart => {
   return { type: FETCHING_CART_SUCCESS, cart };
-};
-
-const addItem = itemId => {
-  return { type: ADD_ITEM, itemId };
 };
 
 export const socialAuthUser = (token, redirect) => dispatch => {
@@ -69,22 +62,31 @@ export const handleGetCart = () => async dispatch => {
 
 export const handleAddItem = itemId => async dispatch => {
   try {
-    await postAddItem(itemId);
-    dispatch(addItem(itemId));
+    const { data } = await postAddItem(itemId);
+    dispatch(fetchingCartSuccess(data.cart));
+    dispatch(updateItemStock(itemId, data.stock));
   } catch (e) {
-    console.log(e);
+    console.log(e.response.data);
   }
 };
 
-const handleCart = (state, action) => {
-  switch (action.type) {
-    case ADD_ITEM:
-      return {
-        ...state,
-        [action.itemId]: 1
-      };
-    default:
-      return state;
+export const handleEditNum = (itemId, num) => async dispatch => {
+  try {
+    const { data } = await postEditNum(itemId, num);
+    dispatch(fetchingCartSuccess(data.cart));
+    dispatch(updateItemStock(itemId, data.stock));
+  } catch (e) {
+    console.log(e.response.data);
+  }
+};
+
+export const handleDeleteItem = itemId => async dispatch => {
+  try {
+    const { data } = await postDeleteItem(itemId);
+    dispatch(fetchingCartSuccess(data.cart));
+    dispatch(updateItemStock(itemId, data.stock));
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -112,11 +114,6 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         cart: action.cart
-      };
-    case ADD_ITEM:
-      return {
-        ...state,
-        cart: handleCart(state.cart, action)
       };
     default:
       return state;

@@ -71,13 +71,23 @@ module.exports.getHistory = async (req, res, next) => {
 
 module.exports.addItem = async (req, res, next) => {
   try {
+    const { itemId } = req.body;
+    const item = await Item.findOne({ _id: itemId });
+    if (item.stock === 0) {
+      res.status(500).json("Sorry, out of Stock.");
+      return;
+    }
     const user = await User.findOne({ _id: req.me._id });
-    const { itemid } = req.body;
-    user.cart[itemid] = 1;
+    user.cart[itemId] = 1;
     user.markModified("cart");
     await user.save();
-    await Item.findOneAndUpdate({ _id: itemid }, { $inc: { stock: -1 } });
-    res.status(200).json("Added!");
+    item.stock -= 1;
+    await item.save();
+    const response = {
+      cart: user.cart,
+      stock: item.stock
+    };
+    res.status(200).json(response);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -85,13 +95,24 @@ module.exports.addItem = async (req, res, next) => {
 
 module.exports.editNum = async (req, res, next) => {
   try {
+    const { itemId, num } = req.body;
+    const item = await Item.findOne({ _id: itemId });
     const user = await User.findOne({ _id: req.me._id });
-    const { itemid, change } = req.body;
-    user.cart[itemid] = parseInt(user.cart[itemid]) + change;
+    const change = num - parseInt(user.cart[itemId]);
+    if (item.stock < change) {
+      res.status(500).json("Sorry, out of Stock");
+      return;
+    }
+    user.cart[itemId] = num;
     user.markModified("cart");
     await user.save();
-    await Item.findOneAndUpdate({ _id: itemid }, { $inc: { stock: -change } });
-    res.status(200).json("Edited!");
+    item.stock -= change;
+    await item.save();
+    const response = {
+      cart: user.cart,
+      stock: item.stock
+    };
+    res.status(200).json(response);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -99,13 +120,20 @@ module.exports.editNum = async (req, res, next) => {
 
 module.exports.deleteItem = async (req, res, next) => {
   try {
+    const { itemId } = req.body;
     const user = await User.findOne({ _id: req.me._id });
-    const { itemid, change } = req.body;
-    delete user.cart[itemid];
+    const item = await Item.findOne({ _id: itemId });
+    const change = user.cart[itemId];
+    delete user.cart[itemId];
     user.markModified("cart");
     await user.save();
-    await Item.findOneAndUpdate({ _id: itemid }, { $inc: { stock: -change } });
-    res.status(200).json("Deleted!");
+    item.stock += parseInt(change);
+    await item.save();
+    const response = {
+      cart: user.cart,
+      stock: item.stock
+    };
+    res.status(200).json(response);
   } catch (e) {
     res.status(500).json(e);
   }
@@ -116,6 +144,7 @@ module.exports.order = async (req, res, next) => {
     const user = await User.findOne({ _id: req.me._id });
     user.orders.push({ cart: user.cart, create: Date.now() });
     user.cart = {};
+    user.markModified("cart");
     await user.save();
     res.status(200).json("Ordered!");
   } catch (e) {

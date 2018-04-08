@@ -27,6 +27,10 @@ const fetchingCartSuccess = cart => {
   return { type: FETCHING_CART_SUCCESS, cart };
 };
 
+const order = () => {
+  return { type: ORDER };
+};
+
 export const socialAuthUser = (token, redirect) => dispatch => {
   saveToken(token);
   dispatch(authUser(parseToken(token)));
@@ -90,6 +94,16 @@ export const handleDeleteItem = itemId => async dispatch => {
   }
 };
 
+export const handleOrder = redirect => async dispatch => {
+  try {
+    await postOrder();
+    dispatch(order());
+    redirect();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 const initialState = {
   isAuthed: false,
   ownInfo: {},
@@ -114,6 +128,11 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         cart: action.cart
+      };
+    case ORDER:
+      return {
+        ...state,
+        cart: {}
       };
     default:
       return state;

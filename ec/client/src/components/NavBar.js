@@ -48,10 +48,10 @@ class NavBar extends Component {
             to={`/cart/${ownInfo._id}`}
             style={{ flexGrow: 1, color: "black" }}
           >
-            {cart !== {} ? (
-              <i className="fa fa-cart-plus" aria-hidden="true" />
-            ) : (
+            {Object.keys(cart).length === 0 ? (
               <i className="fa fa-shopping-cart" aria-hidden="true" />
+            ) : (
+              <i className="fa fa-cart-plus" aria-hidden="true" />
             )}
           </NavLink>
         </div>

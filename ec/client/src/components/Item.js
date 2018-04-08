@@ -16,7 +16,7 @@ const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
         <Link to={`/detail/${_id}`}>
           <img src={pic} style={styles.pic} />
         </Link>
-        <div>
+        <div style={styles.content}>
           <Link to={`/detail/${_id}`}>
             <p style={styles.name}>{name}</p>
           </Link>
@@ -43,6 +43,9 @@ const styles = {
   },
   pic: {
     width: "80px"
+  },
+  content: {
+    margin: "5px"
   },
   name: {
     margin: "3px",

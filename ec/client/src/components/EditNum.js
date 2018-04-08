@@ -19,7 +19,7 @@ class EditNum extends Component {
   }
 
   render() {
-    const limit = parseInt(this.props.num) + this.props.stock;
+    const limit = parseInt(this.props.num, 10) + this.props.stock;
     const choice_limit = Math.min(limit, 10);
     const stock_chocies = [...Array(choice_limit).keys()].map(x => (x += 1));
 
@@ -30,8 +30,16 @@ class EditNum extends Component {
     ));
 
     return (
-      <div style={{ margin: "10px" }}>
-        <select onChange={this.onChangeCategory} value={this.state.choice}>
+      <div>
+        <select
+          onChange={this.onChangeCategory}
+          value={this.state.choice}
+          style={{
+            borderRadius: "4px",
+            backgroundColor: "#f1f1f1",
+            cursor: "pointer"
+          }}
+        >
           {allStockChoices}
         </select>
         <br />

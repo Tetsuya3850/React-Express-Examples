@@ -19,8 +19,13 @@ class ItemDetail extends Component {
     history.push(`/cart/${uid}`);
   };
 
+  editCart = () => {
+    const { history, uid } = this.props;
+    history.push(`/cart/${uid}`);
+  };
+
   render() {
-    const { isFetching, item, error } = this.props;
+    const { isFetching, item, error, inCart } = this.props;
     return (
       <div>
         {isFetching ? (
@@ -30,9 +35,16 @@ class ItemDetail extends Component {
             {item.map(item => (
               <div key={`div${item._id}`}>
                 <ItemContainer itemId={item._id} />
-                <button style={styles.cart} onClick={this.addCart}>
-                  Add to Cart
-                </button>
+                {inCart ? (
+                  <button style={styles.cart} onClick={this.editCart}>
+                    Edit Cart
+                  </button>
+                ) : (
+                  <button style={styles.cart} onClick={this.addCart}>
+                    Add to Cart
+                  </button>
+                )}
+
                 <h3 style={styles.detailTitle}>DETAILS</h3>
                 <p style={styles.details}>{item.detail}</p>
                 <h3 style={styles.reviewTitle}>REVIEWS</h3>
@@ -62,7 +74,8 @@ const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
     itemId,
     isFetching: itemDetail.isFetching,
     error: itemDetail.error,
-    item: items[itemId] ? [items[itemId]] : []
+    item: items[itemId] ? [items[itemId]] : [],
+    inCart: users.cart[itemId] ? true : false
   };
 };
 

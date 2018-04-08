@@ -224,6 +224,7 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
+        error: "",
         orders: action.orders
       };
     default:

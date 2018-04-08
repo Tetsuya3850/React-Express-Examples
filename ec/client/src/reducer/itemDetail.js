@@ -1,5 +1,5 @@
 import { fetchingItemsSuccess, updateItemReviews } from "./items";
-import { getItem, postReview, editReview } from "../api";
+import { getItem, addReview, editReview } from "../api";
 
 const FETCHING_ITEM_DETAIL = "FETCHING_SWEET_DETAIL";
 const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
@@ -53,7 +53,7 @@ export const handleFetchItemDetail = itemId => async dispatch => {
 
 export const handleAddReview = (itemId, review, redirect) => async dispatch => {
   try {
-    let { data } = await postReview(itemId, review);
+    let { data } = await addReview(itemId, review);
     dispatch(updateItemReviews(data));
     dispatch(addReviewSuccess());
     redirect();

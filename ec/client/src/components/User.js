@@ -10,7 +10,13 @@ class User extends Component {
   }
 
   render() {
-    return this.props.orders.map(order => <Order key={order._id} {...order} />);
+    return (
+      <div>
+        <p style={{ textAlign: "center" }}>Order History</p>
+        <hr />
+        {this.props.orders.map(order => <Order key={order._id} {...order} />)}
+      </div>
+    );
   }
 }
 

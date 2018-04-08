@@ -1,5 +1,6 @@
 const FETCHING_ITEMS_SUCCESS = "FETCHING_ITEMS_SUCCESS";
 const UPDATE_ITEM_STOCK = "UPDATE_ITEM_STOCK";
+const UPDATE_ITEM_REVIEWS = "UPDATE_ITEM_REVIEWS";
 
 export const fetchingItemsSuccess = items => {
   return {
@@ -16,6 +17,14 @@ export const updateItemStock = (itemId, stock) => {
   };
 };
 
+export const updateItemReviews = (itemId, reviews) => {
+  return {
+    type: UPDATE_ITEM_REVIEWS,
+    itemId,
+    reviews
+  };
+};
+
 const initialState = {};
 
 const items = (state = initialState, action) => {
@@ -26,6 +35,11 @@ const items = (state = initialState, action) => {
       return {
         ...state,
         [action.itemId]: { ...state[action.itemId], stock: action.stock }
+      };
+    case UPDATE_ITEM_REVIEWS:
+      return {
+        ...state,
+        [action.itemId]: { ...state[action.itemId], reviews: action.reviews }
       };
     default:
       return state;

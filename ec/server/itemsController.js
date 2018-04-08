@@ -40,10 +40,10 @@ module.exports.getItem = async (req, res, next) => {
 
 module.exports.addReview = async (req, res, next) => {
   try {
-    const item = await Item.findOne({ _id: req.params.itemid });
+    const item = await Item.findOne({ _id: req.params.itemId });
     item.reviews.push(req.body);
     await item.save();
-    await res.status(200).json("Added!");
+    res.status(200).json("Added!");
   } catch (e) {
     res.status(500).json(e);
   }

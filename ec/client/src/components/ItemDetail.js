@@ -25,7 +25,31 @@ class ItemDetail extends Component {
   };
 
   render() {
-    const { isFetching, item, error, inCart } = this.props;
+    const { isFetching, item, error, inCart, inStock } = this.props;
+
+    let cartButton;
+    if (inCart) {
+      cartButton = (
+        <button style={styles.cart} onClick={this.editCart}>
+          Edit Cart
+        </button>
+      );
+    } else {
+      if (inStock) {
+        cartButton = (
+          <button style={styles.cart} onClick={this.addCart}>
+            Add to Cart
+          </button>
+        );
+      } else {
+        cartButton = (
+          <button style={styles.cart} disabled>
+            Out of Stock
+          </button>
+        );
+      }
+    }
+
     return (
       <div>
         {isFetching ? (
@@ -35,16 +59,7 @@ class ItemDetail extends Component {
             {item.map(item => (
               <div key={`div${item._id}`}>
                 <ItemContainer itemId={item._id} />
-                {inCart ? (
-                  <button style={styles.cart} onClick={this.editCart}>
-                    Edit Cart
-                  </button>
-                ) : (
-                  <button style={styles.cart} onClick={this.addCart}>
-                    Add to Cart
-                  </button>
-                )}
-
+                {cartButton}
                 <h3 style={styles.detailTitle}>DETAILS</h3>
                 <p style={styles.details}>{item.detail}</p>
                 <h3 style={styles.reviewTitle}>REVIEWS</h3>
@@ -75,7 +90,8 @@ const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
     isFetching: itemDetail.isFetching,
     error: itemDetail.error,
     item: items[itemId] ? [items[itemId]] : [],
-    inCart: users.cart[itemId] ? true : false
+    inCart: users.cart[itemId] ? true : false,
+    inStock: items[itemId] ? items[itemId].stock > 0 : false
   };
 };
 

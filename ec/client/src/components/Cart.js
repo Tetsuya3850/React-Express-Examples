@@ -38,7 +38,11 @@ class Cart extends Component {
         ))}
         <button
           style={styles.order}
-          onClick={() => handleOrder(() => history.push(`/users/${uid}`))}
+          onClick={() => {
+            if (Object.keys(cart).length !== 0) {
+              handleOrder(() => history.push(`/users/${uid}`));
+            }
+          }}
         >
           Place Order
         </button>

@@ -31,7 +31,9 @@ module.exports.getSearch = async (req, res, next) => {
 
 module.exports.getItem = async (req, res, next) => {
   try {
-    const item = await Item.findOne({ _id: req.params.itemid });
+    const item = await Item.findOne({ _id: req.params.itemid }).populate(
+      "reviews.author"
+    );
     res.status(200).json(item);
   } catch (e) {
     res.status(500).json(e);
@@ -43,7 +45,10 @@ module.exports.addReview = async (req, res, next) => {
     const item = await Item.findOne({ _id: req.params.itemId });
     item.reviews.push(req.body);
     await item.save();
-    res.status(200).json("Added!");
+    const user = await User.findOne({ _id: req.me._id });
+    user.reviewedItems.push(req.params.itemId);
+    await user.save();
+    res.status(200).json(item.reviews);
   } catch (e) {
     res.status(500).json(e);
   }

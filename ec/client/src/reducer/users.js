@@ -1,5 +1,6 @@
 import { saveToken, removeToken, getOwnInfo, parseToken } from "../helper";
 import {
+  getReviewed,
   getHistory,
   getCart,
   postAddItem,
@@ -12,6 +13,7 @@ import { fetchingItemsSuccess, updateItemStock } from "./items";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
+const FETCHING_REVIEWED_SUCCESS = "FETCHING_REVIEWED_SUCCESS";
 const FETCHING_CART_SUCCESS = "FETCHING_CART_SUCCESS";
 const ORDER = "ORDER";
 const FETCHING_ORDERS_SUCCESS = "FETCHING_ORDERS_SUCCESS";
@@ -22,6 +24,10 @@ const authUser = ownInfo => {
 
 const unAuthUser = () => {
   return { type: UNAUTH_USER };
+};
+
+const fetchingReviewedSuccess = reviewed => {
+  return { type: FETCHING_REVIEWED_SUCCESS, reviewed };
 };
 
 const fetchingCartSuccess = cart => {
@@ -56,6 +62,15 @@ export const logoutUser = redirect => dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();
+};
+
+export const handleGetReviewed = () => async dispatch => {
+  try {
+    const { data } = await getReviewed();
+    dispatch(fetchingReviewedSuccess(data));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleGetHistory = () => async dispatch => {
@@ -123,6 +138,7 @@ export const handleOrder = redirect => async dispatch => {
 const initialState = {
   isAuthed: false,
   ownInfo: {},
+  reviewedItems: [],
   cart: {},
   orders: []
 };
@@ -140,6 +156,11 @@ const users = (state = initialState, action) => {
         ...state,
         isAuthed: false,
         ownInfo: {}
+      };
+    case FETCHING_REVIEWED_SUCCESS:
+      return {
+        ...state,
+        reviewedItems: action.reviewed
       };
     case FETCHING_CART_SUCCESS:
       return {

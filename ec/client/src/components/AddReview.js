@@ -16,7 +16,7 @@ class AddReview extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault();
-    const { uid, itemId, handleAddReview } = this.props;
+    const { uid, itemId, handleAddReview, history } = this.props;
     const payload = {
       star: this.state.star,
       title: this.title.value,
@@ -24,7 +24,7 @@ class AddReview extends Component {
       created: Date.now(),
       author: uid
     };
-    handleAddReview(itemId, payload);
+    handleAddReview(itemId, payload, () => history.push(`/detail/${itemId}`));
   };
 
   render() {

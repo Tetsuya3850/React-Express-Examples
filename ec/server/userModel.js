@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
       maxlength: [50, "Too Long!"],
       trim: true
     },
+    reviewedItems: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "Item"
+      }
+    ],
     cart: {
       type: mongoose.Schema.Types.Mixed,
       default: {}

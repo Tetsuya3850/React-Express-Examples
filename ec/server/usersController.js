@@ -31,6 +31,15 @@ const generateTokenAndRedirect = (req, res, next, err, user, info) => {
   }
 };
 
+module.exports.getReviewed = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.me._id });
+    res.status(200).json(user.reviewedItems);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};
+
 module.exports.getCart = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.me._id });

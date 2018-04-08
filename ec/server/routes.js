@@ -13,6 +13,7 @@ const itemsCtrl = require("./itemsController");
 
 router.get("/auth/google", usersCtrl.goAuth);
 router.get("/auth/google/callback", usersCtrl.goAuthCB);
+router.get("/users/reviewed", auth, usersCtrl.getReviewed);
 router.get("/users/cart", auth, usersCtrl.getCart);
 router.get("/users/history", auth, usersCtrl.getHistory);
 router.post("/users/additem", auth, usersCtrl.addItem);
@@ -24,6 +25,6 @@ router.get("/items/all", itemsCtrl.getAll);
 router.get("/items/category/:key", itemsCtrl.getCategory);
 router.get("/items/search/:query", itemsCtrl.getSearch);
 router.get("/items/details/:itemid", itemsCtrl.getItem);
-router.post("/items/:itemId/addreview", itemsCtrl.addReview);
+router.post("/items/:itemId/addreview", auth, itemsCtrl.addReview);
 
 module.exports = router;

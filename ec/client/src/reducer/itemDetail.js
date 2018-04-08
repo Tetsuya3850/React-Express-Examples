@@ -43,7 +43,7 @@ export const handleFetchItemDetail = itemId => async dispatch => {
   dispatch(fetchingItemDetail());
   try {
     let { data } = await getItem(itemId);
-    const normalizedItem = { [itemId]: data };
+    const normalizedItem = { [data._id]: data };
     dispatch(fetchingItemsSuccess(normalizedItem));
     dispatch(fetchingItemDetailSuccess());
   } catch (e) {
@@ -51,13 +51,13 @@ export const handleFetchItemDetail = itemId => async dispatch => {
   }
 };
 
-export const handleAddReview = (itemId, review) => async dispatch => {
+export const handleAddReview = (itemId, review, redirect) => async dispatch => {
   try {
     let { data } = await postReview(itemId, review);
     dispatch(updateItemReviews(data));
     dispatch(addReviewSuccess());
+    redirect();
   } catch (e) {
-    console.log(e.response);
     const error_message = formatError(e);
     dispatch(addReviewError(error_message));
   }

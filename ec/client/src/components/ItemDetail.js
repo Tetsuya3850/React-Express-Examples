@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 import ItemContainer from "./ItemContainer";
 import Review from "./Review";
 import { handleFetchItemDetail, handleAddReview } from "../reducer/itemDetail";
-import { handleAddItem } from "../reducer/users";
+import { handleAddItem, handleGetReviewed } from "../reducer/users";
 import { Link } from "react-router-dom";
 
 class ItemDetail extends Component {
   componentDidMount() {
-    const { itemId, handleFetchItemDetail } = this.props;
+    const { itemId, handleFetchItemDetail, handleGetReviewed } = this.props;
     handleFetchItemDetail(itemId);
+    handleGetReviewed();
   }
 
   addCart = () => {
@@ -25,7 +26,14 @@ class ItemDetail extends Component {
   };
 
   render() {
-    const { isFetching, item, error, inCart, inStock } = this.props;
+    const {
+      isFetching,
+      item,
+      error,
+      inCart,
+      inStock,
+      hasReviewed
+    } = this.props;
 
     let cartButton;
     if (inCart) {
@@ -63,13 +71,24 @@ class ItemDetail extends Component {
                 <h3 style={styles.detailTitle}>DETAILS</h3>
                 <p style={styles.details}>{item.detail}</p>
                 <h3 style={styles.reviewTitle}>REVIEWS</h3>
-                {item.reviews.map(review => <Review {...review} />)}
-                <Link
-                  to={`/addreview/${item._id}`}
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <button style={styles.review}>Write a Review</button>
-                </Link>
+                {item.reviews.map(review => (
+                  <Review key={review._id} {...review} />
+                ))}
+                {hasReviewed ? (
+                  <Link
+                    to={`/editreview/${item._id}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <button style={styles.review}>Edit Review</button>
+                  </Link>
+                ) : (
+                  <Link
+                    to={`/addreview/${item._id}`}
+                    style={{ textDecoration: "none", color: "black" }}
+                  >
+                    <button style={styles.review}>Write a Review</button>
+                  </Link>
+                )}
               </div>
             ))}
             <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
@@ -84,6 +103,7 @@ class ItemDetail extends Component {
 
 const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
   const itemId = ownProps.match.params.itemId;
+  console.log(users.reviewedItems.indexOf(itemId));
   return {
     uid: users.ownInfo._id,
     itemId,
@@ -91,7 +111,8 @@ const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
     error: itemDetail.error,
     item: items[itemId] ? [items[itemId]] : [],
     inCart: users.cart[itemId] ? true : false,
-    inStock: items[itemId] ? items[itemId].stock > 0 : false
+    inStock: items[itemId] ? items[itemId].stock > 0 : false,
+    hasReviewed: users.reviewedItems.indexOf(itemId) > -1 ? true : false
   };
 };
 
@@ -100,7 +121,8 @@ const mapDispatchToProps = dispatch => {
     {
       handleFetchItemDetail,
       handleAddReview,
-      handleAddItem
+      handleAddItem,
+      handleGetReviewed
     },
     dispatch
   );

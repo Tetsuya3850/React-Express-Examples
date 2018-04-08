@@ -8,6 +8,7 @@ import ItemDetail from "./ItemDetail";
 import Cart from "./Cart";
 import User from "./User";
 import AddReview from "./AddReview";
+import EditReview from "./EditReview";
 
 class AppContainer extends Component {
   render() {
@@ -21,6 +22,7 @@ class AppContainer extends Component {
           <Route path="/cart/:uid" component={Cart} />
           <Route path="/users/:uid" component={User} />
           <Route path="/addreview/:itemId" component={AddReview} />
+          <Route path="/editreview/:itemId" component={EditReview} />
         </div>
       </Router>
     );

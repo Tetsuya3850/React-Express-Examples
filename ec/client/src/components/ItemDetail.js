@@ -103,7 +103,6 @@ class ItemDetail extends Component {
 
 const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
   const itemId = ownProps.match.params.itemId;
-  console.log(users.reviewedItems.indexOf(itemId));
   return {
     uid: users.ownInfo._id,
     itemId,

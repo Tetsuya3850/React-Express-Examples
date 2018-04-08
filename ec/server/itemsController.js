@@ -53,3 +53,24 @@ module.exports.addReview = async (req, res, next) => {
     res.status(500).json(e);
   }
 };
+
+module.exports.editReview = async (req, res, next) => {
+  try {
+    await Item.update(
+      { _id: req.params.itemId },
+      {
+        $pull: { reviews: { _id: req.body._id } }
+      }
+    );
+    const item = await Item.findByIdAndUpdate(
+      req.params.itemId,
+      {
+        $push: { reviews: req.body }
+      },
+      { new: true }
+    );
+    res.status(200).json(item.reviews);
+  } catch (e) {
+    res.status(500).json(e);
+  }
+};

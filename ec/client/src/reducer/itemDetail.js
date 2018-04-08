@@ -1,11 +1,12 @@
 import { fetchingItemsSuccess, updateItemReviews } from "./items";
-import { getItem, postReview } from "../api";
+import { getItem, postReview, getReview, editReview } from "../api";
 
 const FETCHING_ITEM_DETAIL = "FETCHING_SWEET_DETAIL";
 const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
 const FETCHING_ITEM_DETAIL_SUCCESS = "FETCHING_SWEET_DETAIL_SUCCESS";
 const ADD_REVIEW_ERROR = "ADD_REVIEW_ERROR";
 const ADD_REVIEW_SUCCESS = "ADD_REVIEW_SUCCESS";
+const EDIT_REVIEW_SUCCESS = "EDIT_REVIEW_SUCCESS";
 
 const fetchingItemDetail = () => {
   return {
@@ -39,6 +40,12 @@ const addReviewSuccess = () => {
   };
 };
 
+const editReviewSuccess = () => {
+  return {
+    type: EDIT_REVIEW_SUCCESS
+  };
+};
+
 export const handleFetchItemDetail = itemId => async dispatch => {
   dispatch(fetchingItemDetail());
   try {
@@ -54,6 +61,22 @@ export const handleFetchItemDetail = itemId => async dispatch => {
 export const handleAddReview = (itemId, review, redirect) => async dispatch => {
   try {
     let { data } = await postReview(itemId, review);
+    dispatch(updateItemReviews(data));
+    dispatch(addReviewSuccess());
+    redirect();
+  } catch (e) {
+    const error_message = formatError(e);
+    dispatch(addReviewError(error_message));
+  }
+};
+
+export const handleEditReview = (
+  itemId,
+  review,
+  redirect
+) => async dispatch => {
+  try {
+    let { data } = await editReview(itemId, review);
     dispatch(updateItemReviews(data));
     dispatch(addReviewSuccess());
     redirect();

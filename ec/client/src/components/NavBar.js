@@ -33,14 +33,9 @@ class NavBar extends Component {
               <i className="fa fa-user-circle" aria-hidden="true" />
             </NavLink>
           ) : (
-            <a
-              href={`http://localhost:5150/auth/google?linkinguri=${
-                window.location.origin
-              }/socialauthredirect`}
-              style={{ flexGrow: 1, color: "black" }}
-            >
+            <NavLink to={`/auth`} style={{ flexGrow: 1, color: "black" }}>
               <i className="fa fa-user-circle" aria-hidden="true" />
-            </a>
+            </NavLink>
           )}
 
           <NavLink

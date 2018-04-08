@@ -1,12 +1,11 @@
 import { fetchingItemsSuccess, updateItemReviews } from "./items";
-import { getItem, postReview, getReview, editReview } from "../api";
+import { getItem, postReview, editReview } from "../api";
 
 const FETCHING_ITEM_DETAIL = "FETCHING_SWEET_DETAIL";
 const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
 const FETCHING_ITEM_DETAIL_SUCCESS = "FETCHING_SWEET_DETAIL_SUCCESS";
 const ADD_REVIEW_ERROR = "ADD_REVIEW_ERROR";
 const ADD_REVIEW_SUCCESS = "ADD_REVIEW_SUCCESS";
-const EDIT_REVIEW_SUCCESS = "EDIT_REVIEW_SUCCESS";
 
 const fetchingItemDetail = () => {
   return {
@@ -37,12 +36,6 @@ const addReviewError = error => {
 const addReviewSuccess = () => {
   return {
     type: ADD_REVIEW_SUCCESS
-  };
-};
-
-const editReviewSuccess = () => {
-  return {
-    type: EDIT_REVIEW_SUCCESS
   };
 };
 

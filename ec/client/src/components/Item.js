@@ -14,7 +14,7 @@ const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
     <div style={styles.container}>
       <div style={styles.item}>
         <Link to={`/detail/${_id}`}>
-          <img src={pic} style={styles.pic} />
+          <img src={pic} style={styles.pic} alt="item" />
         </Link>
         <div style={styles.content}>
           <Link to={`/detail/${_id}`}>

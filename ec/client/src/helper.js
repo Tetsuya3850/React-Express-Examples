@@ -29,16 +29,6 @@ export const parseToken = token => {
   }
 };
 
-export const latencyConverter = timestamp => {
-  if (timestamp > 86400000) {
-    return "";
-  } else if (timestamp > 3600000) {
-    return ` ${Math.ceil(timestamp / 3600000)} hr ago`;
-  } else {
-    return ` ${Math.ceil(timestamp / 60000)} min ago`;
-  }
-};
-
 export const normalizeItems = items => {
   const normalizedItems = {};
   items.forEach(item => {

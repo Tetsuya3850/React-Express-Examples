@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import NavBar from "./NavBar";
 import Home from "./Home";
+import Auth from "./Auth";
 import SocialAuthRedirect from "./SocialAuthRedirect";
 import ItemDetail from "./ItemDetail";
 import Cart from "./Cart";
@@ -17,12 +18,13 @@ class AppContainer extends Component {
         <div style={{ margin: "auto", width: 320 }}>
           <NavBar />
           <Route exact path="/" component={Home} />
+          <Route path="/auth" component={Auth} />
           <Route path="/socialauthredirect/" component={SocialAuthRedirect} />
           <Route path="/detail/:itemId" component={ItemDetail} />
-          <Route path="/cart/:uid" component={Cart} />
-          <Route path="/users/:uid" component={User} />
-          <Route path="/addreview/:itemId" component={AddReview} />
-          <Route path="/editreview/:itemId" component={EditReview} />
+          <PrivateRoute path="/cart/:uid" component={Cart} />
+          <PrivateRoute path="/users/:uid" component={User} />
+          <PrivateRoute path="/addreview/:itemId" component={AddReview} />
+          <PrivateRoute path="/editreview/:itemId" component={EditReview} />
         </div>
       </Router>
     );

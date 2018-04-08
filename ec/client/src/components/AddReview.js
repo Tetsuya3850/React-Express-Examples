@@ -28,7 +28,7 @@ class AddReview extends Component {
   };
 
   render() {
-    const { item, match } = this.props;
+    const { item } = this.props;
 
     const stars = [];
     for (var i = 1; i <= 5; i++) {

@@ -8,7 +8,7 @@ import {
   postDeleteItem,
   postOrder
 } from "../api";
-import { normalizeItems, selectItemIds } from "../helper";
+import { normalizeItems } from "../helper";
 import { fetchingItemsSuccess, updateItemStock } from "./items";
 
 const AUTH_USER = "AUTH_USER";

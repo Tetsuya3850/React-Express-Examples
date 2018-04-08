@@ -6,6 +6,7 @@ import Home from "./Home";
 import SocialAuthRedirect from "./SocialAuthRedirect";
 import ItemDetail from "./ItemDetail";
 import Cart from "./Cart";
+import User from "./User";
 
 class AppContainer extends Component {
   render() {
@@ -17,6 +18,7 @@ class AppContainer extends Component {
           <Route path="/socialauthredirect/" component={SocialAuthRedirect} />
           <Route path="/detail/:itemId" component={ItemDetail} />
           <Route path="/cart/:uid" component={Cart} />
+          <Route path="/users/:uid" component={User} />
         </div>
       </Router>
     );

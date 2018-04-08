@@ -53,14 +53,19 @@ module.exports.getCart = async (req, res, next) => {
 module.exports.getHistory = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.me._id });
-    const orderIds = user.orders.map(order => Object.keys(order.cart));
+    let orderIds = [];
+    user.orders.forEach(order => {
+      for (const key in order.cart) {
+        orderIds.push(key);
+      }
+    });
     const itemDetails = await Item.find({
       _id: {
         $in: orderIds
       }
     });
     const response = {
-      orders: user.orders,
+      orders: user.orders.slice().reverse(),
       details: itemDetails
     };
     res.status(200).json(response);

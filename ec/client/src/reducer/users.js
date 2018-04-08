@@ -14,6 +14,7 @@ const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
 const FETCHING_CART_SUCCESS = "FETCHING_CART_SUCCESS";
 const ORDER = "ORDER";
+const FETCHING_ORDERS_SUCCESS = "FETCHING_ORDERS_SUCCESS";
 
 const authUser = ownInfo => {
   return { type: AUTH_USER, ownInfo };
@@ -29,6 +30,10 @@ const fetchingCartSuccess = cart => {
 
 const order = () => {
   return { type: ORDER };
+};
+
+const fetchingOrdersSuccess = orders => {
+  return { type: FETCHING_ORDERS_SUCCESS, orders };
 };
 
 export const socialAuthUser = (token, redirect) => dispatch => {
@@ -51,6 +56,17 @@ export const logoutUser = redirect => dispatch => {
   removeToken();
   dispatch(unAuthUser());
   redirect();
+};
+
+export const handleGetHistory = () => async dispatch => {
+  try {
+    const { data } = await getHistory();
+    const normalizedCartItems = normalizeItems(data.details);
+    dispatch(fetchingItemsSuccess(normalizedCartItems));
+    dispatch(fetchingOrdersSuccess(data.orders));
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const handleGetCart = () => async dispatch => {
@@ -107,7 +123,8 @@ export const handleOrder = redirect => async dispatch => {
 const initialState = {
   isAuthed: false,
   ownInfo: {},
-  cart: {}
+  cart: {},
+  orders: []
 };
 
 const users = (state = initialState, action) => {
@@ -133,6 +150,11 @@ const users = (state = initialState, action) => {
       return {
         ...state,
         cart: {}
+      };
+    case FETCHING_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.orders
       };
     default:
       return state;

@@ -28,7 +28,7 @@ class AddReview extends Component {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, isFetching, error, reviewError } = this.props;
 
     const stars = [];
     for (var i = 1; i <= 5; i++) {
@@ -57,50 +57,76 @@ class AddReview extends Component {
 
     return (
       <div>
-        {item.map(item => <ItemContainer key={item._id} itemId={item._id} />)}
-        <form onSubmit={this.handleFormSubmit}>
+        {isFetching ? (
+          <p style={{ textAlign: "center" }}>LOADING</p>
+        ) : (
           <div>
-            <span>STARS</span>
-            <div style={{ margin: "10px" }}>{stars}</div>
+            {item.map(item => (
+              <ItemContainer key={item._id} itemId={item._id} />
+            ))}
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {error}
+            </p>
+            <form onSubmit={this.handleFormSubmit}>
+              <div style={{ marginTop: 10 }}>
+                <span>STARS</span>
+                <div>{stars}</div>
+              </div>
+              <div style={{ marginTop: 10 }}>
+                <label>
+                  TITLE <span style={{ color: "red" }}>*</span>
+                  <span style={{ color: "red", marginLeft: "3px" }}>
+                    {reviewError["reviews.0.title"]}
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  style={{ width: "100%", padding: 0 }}
+                  ref={node => {
+                    this.title = node;
+                  }}
+                  required
+                  maxLength="100"
+                  autoFocus
+                />
+              </div>
+              <div style={{ marginTop: 10 }}>
+                <label style={{ marginTop: 10 }}>
+                  REVIEW <span style={{ color: "red" }}>*</span>
+                  <span style={{ color: "red", marginLeft: "3px" }}>
+                    {reviewError["reviews.0.content"]}
+                  </span>
+                </label>
+                <textarea
+                  style={{
+                    width: "100%",
+                    marginBottom: 10,
+                    padding: 0
+                  }}
+                  rows="4"
+                  ref={node => {
+                    this.content = node;
+                  }}
+                  maxLength="1000"
+                />
+              </div>
+              <button style={styles.submit}>Submit Review</button>
+            </form>
           </div>
-
-          <label>
-            TITLE <span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            style={{ width: "100%" }}
-            ref={node => {
-              this.title = node;
-            }}
-            required
-            maxLength="100"
-            autoFocus
-          />
-          <label style={{ marginTop: 10 }}>
-            REVIEW <span style={{ color: "red" }}>*</span>
-          </label>
-          <textarea
-            style={{ width: "100%", marginBottom: 10 }}
-            rows="4"
-            ref={node => {
-              this.content = node;
-            }}
-            maxLength="1000"
-          />
-
-          <button style={styles.submit}>Submit Review</button>
-        </form>
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ items, users }, ownProps) => {
+const mapStateToProps = ({ items, users, itemDetail }, ownProps) => {
   const itemId = ownProps.match.params.itemId;
   return {
     uid: users.ownInfo._id,
     itemId,
+    isFetching: itemDetail.isFetching,
+    error: itemDetail.error,
+    reviewError: itemDetail.reviewError,
     item: items[itemId] ? [items[itemId]] : []
   };
 };

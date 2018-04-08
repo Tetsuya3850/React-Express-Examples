@@ -39,7 +39,7 @@ class EditReview extends Component {
   };
 
   render() {
-    const { item } = this.props;
+    const { item, isFetching, error, reviewError } = this.props;
 
     const stars = [];
     for (var i = 1; i <= 5; i++) {
@@ -66,53 +66,74 @@ class EditReview extends Component {
       }
     }
 
+    if (isFetching) {
+      return <p style={{ textAlign: "center" }}>LOADING</p>;
+    }
+
     return (
       <div>
         {item.map(item => <ItemContainer key={item._id} itemId={item._id} />)}
+        <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+          {error}
+        </p>
         <form onSubmit={this.handleFormSubmit}>
-          <div>
+          <div style={{ marginTop: 10 }}>
             <span>STARS</span>
-            <div style={{ margin: "10px" }}>{stars}</div>
+            <div>{stars}</div>
           </div>
-          <label>
-            TITLE <span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            style={{ width: "100%" }}
-            value={this.state.title}
-            onChange={e => {
-              this.setState({ title: e.target.value });
-            }}
-            required
-            maxLength="100"
-            autoFocus
-          />
-          <label style={{ marginTop: 10 }}>
-            REVIEW <span style={{ color: "red" }}>*</span>
-          </label>
-          <textarea
-            style={{ width: "100%", marginBottom: 10 }}
-            rows="4"
-            value={this.state.content}
-            onChange={e => {
-              this.setState({ content: e.target.value });
-            }}
-            maxLength="1000"
-          />
-          <button style={styles.submit}>Update Review</button>
+          <div style={{ marginTop: 10 }}>
+            <label>
+              TITLE <span style={{ color: "red" }}>*</span>{" "}
+              <span>{reviewError["reviews.0.title"]}</span>
+            </label>
+            <input
+              type="text"
+              style={{ width: "100%", padding: 0 }}
+              value={this.state.title}
+              onChange={e => {
+                this.setState({ title: e.target.value });
+              }}
+              required
+              maxLength="100"
+              autoFocus
+            />
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <label>
+              REVIEW <span style={{ color: "red" }}>*</span>
+              <span style={{ color: "red", marginLeft: "3px" }}>
+                {reviewError["reviews.0.content"]}
+              </span>
+            </label>
+            <textarea
+              style={{ width: "100%", marginBottom: 10, padding: 0 }}
+              rows="4"
+              required
+              value={this.state.content}
+              onChange={e => {
+                this.setState({ content: e.target.value });
+              }}
+              maxLength="1000"
+            />
+          </div>
+          <div>
+            <button style={styles.submit}>Update Review</button>
+          </div>
         </form>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ items, users }, ownProps) => {
+const mapStateToProps = ({ items, users, itemDetail }, ownProps) => {
   const itemId = ownProps.match.params.itemId;
   const uid = users.ownInfo._id;
   return {
     uid,
     itemId,
+    isFetching: itemDetail.isFetching,
+    error: itemDetail.error,
+    reviewError: itemDetail.reviewError,
     item: items[itemId] ? [items[itemId]] : [],
     review: items[itemId]
       ? items[itemId].reviews.find(review => review.author._id === uid)

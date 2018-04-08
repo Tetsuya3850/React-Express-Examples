@@ -7,55 +7,78 @@ import { handleDeleteItem, handleOrder } from "../reducer/users";
 
 class Cart extends Component {
   render() {
-    const { uid, cart, handleDeleteItem, handleOrder, history } = this.props;
+    const {
+      ownInfo,
+      isFetching,
+      error,
+      cart,
+      cartError,
+      handleDeleteItem,
+      handleOrder,
+      history
+    } = this.props;
+
+    if (isFetching) {
+      return <p style={{ textAlign: "center" }}>LOADING</p>;
+    }
+
     return (
       <div>
-        {Object.keys(cart).map(itemId => (
-          <div key={itemId}>
-            <ItemContainer itemId={itemId} />
-            <div
-              style={{
-                display: "flex",
-                width: "50%",
-                margin: "auto",
-                justifyContent: "space-around"
+        {Object.keys(cart).length !== 0 ? (
+          <div>
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {error}
+            </p>
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {cartError}
+            </p>
+            {Object.keys(cart).map(itemId => (
+              <div key={itemId}>
+                <ItemContainer itemId={itemId} />
+                <div
+                  style={{
+                    display: "flex",
+                    width: "50%",
+                    margin: "auto",
+                    justifyContent: "space-around"
+                  }}
+                >
+                  <EditNum itemId={itemId} />
+                  <button
+                    onClick={() => handleDeleteItem(itemId)}
+                    style={{
+                      backgroundColor: "#f1f1f1",
+                      borderRadius: "4px",
+                      cursor: "pointer"
+                    }}
+                  >
+                    Delete
+                  </button>
+                </div>
+                <hr />
+              </div>
+            ))}
+            <button
+              style={styles.order}
+              onClick={() => {
+                if (Object.keys(cart).length !== 0) {
+                  handleOrder(() => history.push(`/users/${ownInfo._id}`));
+                }
               }}
             >
-              <EditNum itemId={itemId} />
-              <button
-                onClick={() => handleDeleteItem(itemId)}
-                style={{
-                  backgroundColor: "#f1f1f1",
-                  borderRadius: "4px",
-                  cursor: "pointer"
-                }}
-              >
-                Delete
-              </button>
-            </div>
-            <hr />
+              Place Order
+            </button>
           </div>
-        ))}
-        <button
-          style={styles.order}
-          onClick={() => {
-            if (Object.keys(cart).length !== 0) {
-              handleOrder(() => history.push(`/users/${uid}`));
-            }
-          }}
-        >
-          Place Order
-        </button>
+        ) : (
+          <p style={{ textAlign: "center" }}>Cart is Empty</p>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ users }) => {
-  return {
-    uid: users.ownInfo._id,
-    cart: users.cart
-  };
+  return users;
 };
 
 const mapDispatchToProps = dispatch => {

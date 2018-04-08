@@ -14,6 +14,7 @@ class Home extends Component {
   componentDidMount() {
     this.props.handleFetchListItems();
   }
+
   render() {
     const {
       isFetching,

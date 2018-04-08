@@ -9,7 +9,7 @@ class EditNum extends Component {
   };
 
   onChangeCategory = e => {
-    this.props.handleEditNum(this.props.itemId, e.target.value, () => {});
+    this.props.handleEditNum(this.props.itemId, e.target.value);
   };
 
   componentWillReceiveProps(nextProps) {

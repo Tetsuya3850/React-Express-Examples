@@ -10,11 +10,19 @@ class User extends Component {
   }
 
   render() {
+    const { error, isFetching, orders } = this.props;
     return (
       <div>
         <p style={{ textAlign: "center" }}>Order History</p>
         <hr />
-        {this.props.orders.map(order => <Order key={order._id} {...order} />)}
+        <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+          {error}
+        </p>
+        {isFetching ? (
+          <p style={{ textAlign: "center" }}>LOADING</p>
+        ) : (
+          <div>{orders.map(order => <Order key={order._id} {...order} />)}</div>
+        )}
       </div>
     );
   }

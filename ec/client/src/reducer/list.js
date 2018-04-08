@@ -35,7 +35,7 @@ export const handleFetchListItems = () => async dispatch => {
     dispatch(fetchingItemsSuccess(normalizedListItems));
     dispatch(fetchingListSuccess(listItemIds));
   } catch (e) {
-    dispatch(fetchingListError("Sorry, Please Reload!"));
+    dispatch(fetchingListError("Hmm, Something's Wrong.."));
   }
 };
 
@@ -48,7 +48,7 @@ export const handleFetchListCategory = key => async dispatch => {
     dispatch(fetchingItemsSuccess(normalizedListItems));
     dispatch(fetchingListSuccess(listItemIds));
   } catch (e) {
-    dispatch(fetchingListError("Sorry, Please Reload!"));
+    dispatch(fetchingListError("Hmm, Something's Wrong.."));
   }
 };
 
@@ -61,7 +61,7 @@ export const handleFetchListSearch = query => async dispatch => {
     dispatch(fetchingItemsSuccess(normalizedListItems));
     dispatch(fetchingListSuccess(listItemIds));
   } catch (e) {
-    dispatch(fetchingListError("Sorry, Please Reload!"));
+    dispatch(fetchingListError("Hmm, Something's Wrong.."));
   }
 };
 
@@ -80,9 +80,9 @@ const list = (state = initialState, action) => {
       };
     case FETCHING_LIST_ERROR:
       return {
-        ...state,
         isFetching: false,
-        error: action.error
+        error: action.error,
+        itemIds: []
       };
     case FETCHING_LIST_SUCCESS:
       return {

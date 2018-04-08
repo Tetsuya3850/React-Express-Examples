@@ -14,6 +14,9 @@ import { fetchingItemsSuccess, updateItemStock } from "./items";
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
 const FETCHING_REVIEWED_SUCCESS = "FETCHING_REVIEWED_SUCCESS";
+const FETCHING_CART_ORDERS = "FETCHING_CART_ORDERS";
+const FETCHING_CART_ORDERS_ERROR = "FETCHING_CART_ORDERS_ERROR";
+const CART_ERROR = "CART_ERROR";
 const FETCHING_CART_SUCCESS = "FETCHING_CART_SUCCESS";
 const ORDER = "ORDER";
 const FETCHING_ORDERS_SUCCESS = "FETCHING_ORDERS_SUCCESS";
@@ -28,6 +31,18 @@ const unAuthUser = () => {
 
 const fetchingReviewedSuccess = reviewed => {
   return { type: FETCHING_REVIEWED_SUCCESS, reviewed };
+};
+
+const fethingCartOrders = () => {
+  return { type: FETCHING_CART_ORDERS };
+};
+
+const fethingCartOrdersError = error => {
+  return { type: FETCHING_CART_ORDERS_ERROR, error };
+};
+
+const cartError = error => {
+  return { type: CART_ERROR, error };
 };
 
 const fetchingCartSuccess = cart => {
@@ -74,34 +89,41 @@ export const handleGetReviewed = () => async dispatch => {
 };
 
 export const handleGetHistory = () => async dispatch => {
+  dispatch(fethingCartOrders());
   try {
     const { data } = await getHistory();
-    const normalizedCartItems = normalizeItems(data.details);
-    dispatch(fetchingItemsSuccess(normalizedCartItems));
+    const normalizedHistoryItems = normalizeItems(data.details);
+    dispatch(fetchingItemsSuccess(normalizedHistoryItems));
     dispatch(fetchingOrdersSuccess(data.orders));
   } catch (e) {
-    console.log(e);
+    dispatch(fethingCartOrdersError("Hmm, Something's Wrong.."));
   }
 };
 
 export const handleGetCart = () => async dispatch => {
+  dispatch(fethingCartOrders());
   try {
     const { data } = await getCart();
     const normalizedCartItems = normalizeItems(data.details);
     dispatch(fetchingItemsSuccess(normalizedCartItems));
     dispatch(fetchingCartSuccess(data.cart));
   } catch (e) {
-    console.log(e);
+    dispatch(fethingCartOrdersError("Hmm, Something's Wrong.."));
   }
 };
 
-export const handleAddItem = itemId => async dispatch => {
+export const handleAddItem = (itemId, redirect) => async dispatch => {
   try {
     const { data } = await postAddItem(itemId);
     dispatch(fetchingCartSuccess(data.cart));
     dispatch(updateItemStock(itemId, data.stock));
+    redirect();
   } catch (e) {
-    console.log(e.response.data);
+    if (!e.response) {
+      console.log(e);
+      return;
+    }
+    dispatch(cartError(e.response.data));
   }
 };
 
@@ -111,7 +133,11 @@ export const handleEditNum = (itemId, num) => async dispatch => {
     dispatch(fetchingCartSuccess(data.cart));
     dispatch(updateItemStock(itemId, data.stock));
   } catch (e) {
-    console.log(e.response.data);
+    if (!e.response) {
+      console.log(e);
+      return;
+    }
+    dispatch(cartError(e.response.data));
   }
 };
 
@@ -121,7 +147,7 @@ export const handleDeleteItem = itemId => async dispatch => {
     dispatch(fetchingCartSuccess(data.cart));
     dispatch(updateItemStock(itemId, data.stock));
   } catch (e) {
-    console.log(e);
+    dispatch(cartError("Hmm, Something's Wrong.."));
   }
 };
 
@@ -131,12 +157,15 @@ export const handleOrder = redirect => async dispatch => {
     dispatch(order());
     redirect();
   } catch (e) {
-    console.log(e);
+    dispatch(cartError("Hmm, Something's Wrong.."));
   }
 };
 
 const initialState = {
   isAuthed: false,
+  isFetching: false,
+  error: "",
+  cartError: "",
   ownInfo: {},
   reviewedItems: [],
   cart: {},
@@ -162,9 +191,28 @@ const users = (state = initialState, action) => {
         ...state,
         reviewedItems: action.reviewed
       };
+    case FETCHING_CART_ORDERS:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case FETCHING_CART_ORDERS_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error
+      };
+    case CART_ERROR:
+      return {
+        ...state,
+        cartError: action.error
+      };
     case FETCHING_CART_SUCCESS:
       return {
         ...state,
+        isFetching: false,
+        error: "",
+        cartError: "",
         cart: action.cart
       };
     case ORDER:
@@ -175,6 +223,7 @@ const users = (state = initialState, action) => {
     case FETCHING_ORDERS_SUCCESS:
       return {
         ...state,
+        isFetching: false,
         orders: action.orders
       };
     default:

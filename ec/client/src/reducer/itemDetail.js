@@ -1,9 +1,9 @@
 import { fetchingItemsSuccess, updateItemReviews } from "./items";
 import { getItem, addReview, editReview } from "../api";
 
-const FETCHING_ITEM_DETAIL = "FETCHING_SWEET_DETAIL";
-const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_SWEET_DETAIL_ERROR";
-const FETCHING_ITEM_DETAIL_SUCCESS = "FETCHING_SWEET_DETAIL_SUCCESS";
+const FETCHING_ITEM_DETAIL = "FETCHING_ITEM_DETAIL";
+const FETCHING_ITEM_DETAIL_ERROR = "FETCHING_ITEM_DETAIL_ERROR";
+const FETCHING_ITEM_DETAIL_SUCCESS = "FETCHING_ITEM_DETAIL_SUCCESS";
 const ADD_REVIEW_ERROR = "ADD_REVIEW_ERROR";
 const ADD_REVIEW_SUCCESS = "ADD_REVIEW_SUCCESS";
 
@@ -47,7 +47,7 @@ export const handleFetchItemDetail = itemId => async dispatch => {
     dispatch(fetchingItemsSuccess(normalizedItem));
     dispatch(fetchingItemDetailSuccess());
   } catch (e) {
-    dispatch(fetchingItemDetailError("Sorry, Please Reload!"));
+    dispatch(fetchingItemDetailError("Hmm, Something's Wrong.."));
   }
 };
 
@@ -84,17 +84,21 @@ const formatError = e => {
     console.log(e);
     return "Network Error!";
   }
-  if (e.response.data.errors.text) {
-    return e.response.data.errors.text.message;
-  } else if (e.response.data.errors["comments.4.text"]) {
-    return e.response.data.errors["comments.4.text"].message;
+  let err = {};
+  const { errors } = e.response.data;
+  if (errors) {
+    Object.keys(errors).forEach(key => {
+      err[key] = errors[key].message;
+    });
+    return err;
   }
-  return "Something went wrong!";
+  return "Hmm, Something's Wrong..";
 };
 
 const initialState = {
   isFetching: false,
-  error: ""
+  error: "",
+  reviewError: ""
 };
 
 const itemDetail = (state = initialState, action) => {
@@ -109,7 +113,7 @@ const itemDetail = (state = initialState, action) => {
     case ADD_REVIEW_ERROR:
       return {
         ...state,
-        error: action.error
+        reviewError: action.error
       };
     default:
       return state;

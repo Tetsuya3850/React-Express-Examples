@@ -3,7 +3,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import ItemContainer from "./ItemContainer";
 import Review from "./Review";
-import { handleFetchItemDetail, handleAddReview } from "../reducer/itemDetail";
+import { handleFetchItemDetail } from "../reducer/itemDetail";
 import { handleAddItem, handleGetReviewed } from "../reducer/users";
 import { Link } from "react-router-dom";
 
@@ -16,8 +16,9 @@ class ItemDetail extends Component {
 
   addCart = () => {
     const { itemId, handleAddItem, history, uid } = this.props;
-    handleAddItem(itemId);
-    history.push(`/cart/${uid}`);
+    handleAddItem(itemId, () => {
+      history.push(`/cart/${uid}`);
+    });
   };
 
   editCart = () => {
@@ -30,6 +31,7 @@ class ItemDetail extends Component {
       isFetching,
       item,
       error,
+      cartError,
       inCart,
       inStock,
       hasReviewed
@@ -45,9 +47,14 @@ class ItemDetail extends Component {
     } else {
       if (inStock) {
         cartButton = (
-          <button style={styles.cart} onClick={this.addCart}>
-            Add to Cart
-          </button>
+          <div>
+            <button style={styles.cart} onClick={this.addCart}>
+              Add to Cart
+            </button>
+            <p style={{ textAlign: "center", color: "red", marginTop: 10 }}>
+              {cartError}
+            </p>
+          </div>
         );
       } else {
         cartButton = (
@@ -109,6 +116,7 @@ const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
     isFetching: itemDetail.isFetching,
     error: itemDetail.error,
     item: items[itemId] ? [items[itemId]] : [],
+    cartError: users.cartError,
     inCart: users.cart[itemId] ? true : false,
     inStock: items[itemId] ? items[itemId].stock > 0 : false,
     hasReviewed: users.reviewedItems.indexOf(itemId) > -1 ? true : false
@@ -119,7 +127,6 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       handleFetchItemDetail,
-      handleAddReview,
       handleAddItem,
       handleGetReviewed
     },

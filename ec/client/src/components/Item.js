@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
   const stars = [];
-  for (var i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 5; i++) {
     if (i <= starAverage) {
       stars.push(<i key={i} className="fa fa-star" aria-hidden="true" />);
     } else {

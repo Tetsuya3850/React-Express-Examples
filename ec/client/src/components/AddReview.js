@@ -31,7 +31,7 @@ class AddReview extends Component {
     const { item, isFetching, error, reviewError } = this.props;
 
     const stars = [];
-    for (var i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       if (i <= this.state.star) {
         stars.push(
           <i

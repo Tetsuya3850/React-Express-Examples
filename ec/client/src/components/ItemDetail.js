@@ -119,7 +119,7 @@ const mapStateToProps = ({ users, items, itemDetail }, ownProps) => {
     cartError: users.cartError,
     inCart: users.cart[itemId] ? true : false,
     inStock: items[itemId] ? items[itemId].stock > 0 : false,
-    hasReviewed: users.reviewedItems.indexOf(itemId) > -1 ? true : false
+    hasReviewed: users.reviewedItems.includes(itemId)
   };
 };
 

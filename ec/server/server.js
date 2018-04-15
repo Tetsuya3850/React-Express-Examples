@@ -29,6 +29,12 @@ app.use(passport.initialize());
 
 app.use("/", routes);
 
+app.use(function(err, req, res, next) {
+  if (err.name === "UnauthorizedError") {
+    res.status(401).send("invalid token...");
+  }
+});
+
 app.use((err, req, res, next) => {
   console.log(err);
   res.json(err);

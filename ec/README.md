@@ -6,3 +6,7 @@ An E-Commerce app example written by React.js and Node.js
 * Goods can be sorted by genre.
 * Reviews can be added to Goods.
 * Add goods to the cart and place order!
+
+## Try it
+
+* Web (https://ec-client-3850.herokuapp.com/)

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getToken } from "./helper";
-const SERVER_URL = "http://localhost:5150";
+const SERVER_URL = "https://ec-server-3850.herokuapp.com";
 axios.defaults.headers.common["authorization"] = `Bearer ${getToken()}`;
 
 export const getReviewed = () => axios.get(`${SERVER_URL}/users/reviewed`);

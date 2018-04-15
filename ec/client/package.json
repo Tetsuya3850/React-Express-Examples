@@ -13,6 +13,7 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
+    "prettier": "^1.12.0",
     "react-scripts": "1.1.4"
   },
   "scripts": {

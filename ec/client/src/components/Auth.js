@@ -6,7 +6,7 @@ class Auth extends Component {
     return (
       <div>
         <a
-          href={`http://localhost:5150/auth/google?linkinguri=${
+          href={`https://ec-server-3850.herokuapp.com/auth/google?linkinguri=${
             window.location.origin
           }/socialauthredirect`}
           style={{ textAlign: "center", display: "block" }}

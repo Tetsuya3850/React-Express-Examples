@@ -1,8 +1,9 @@
 import React from "react";
 import ItemContainer from "./ItemContainer";
+import moment from "moment";
 
 const formatTime = ISOString => {
-  return ISOString.replace(/T/, " ").replace(/\..+/, "");
+  return moment(ISOString).format("MMMM Do YYYY, h:mm:ss a");
 };
 
 const Order = ({ cart, created }) => (

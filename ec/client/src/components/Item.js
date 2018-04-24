@@ -13,20 +13,18 @@ const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.item}>
+      <Link to={`/detail/${_id}`}>
+        <img src={pic} style={styles.pic} alt="item" />
+      </Link>
+      <div style={styles.content}>
         <Link to={`/detail/${_id}`}>
-          <img src={pic} style={styles.pic} alt="item" />
+          <p style={styles.name}>{name}</p>
         </Link>
-        <div style={styles.content}>
-          <Link to={`/detail/${_id}`}>
-            <p style={styles.name}>{name}</p>
-          </Link>
-          <p style={styles.maker}>by {maker}</p>
-          <p style={styles.cost}>${cost}</p>
-          <div>
-            <span>{stars}</span>
-            <span style={styles.numReviews}>{numReviews}</span>
-          </div>
+        <p style={styles.maker}>by {maker}</p>
+        <p style={styles.cost}>${cost}</p>
+        <div>
+          <span>{stars}</span>
+          <span style={styles.numReviews}>{numReviews}</span>
         </div>
       </div>
     </div>
@@ -35,11 +33,8 @@ const Item = ({ _id, name, maker, pic, cost, starAverage, numReviews }) => {
 
 const styles = {
   container: {
-    margin: "10px"
-  },
-  item: {
     display: "flex",
-    margin: "15px",
+    margin: "25px",
     width: "100%"
   },
   pic: {

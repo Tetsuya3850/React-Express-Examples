@@ -1,16 +1,9 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { reAuthUser } from "../reducer/users";
 import { NavLink } from "react-router-dom";
 
 class NavBar extends Component {
-  componentWillMount() {
-    const { reAuthUser, history } = this.props;
-    reAuthUser(() => history.push("/auth"));
-  }
-
   render() {
     const { isAuthed, ownInfo, cart } = this.props;
     return (
@@ -60,15 +53,6 @@ const mapStateToProps = ({ users }) => {
   return users;
 };
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    {
-      reAuthUser
-    },
-    dispatch
-  );
-};
-
-NavBar = connect(mapStateToProps, mapDispatchToProps)(NavBar);
+NavBar = connect(mapStateToProps, null)(NavBar);
 
 export default withRouter(NavBar);

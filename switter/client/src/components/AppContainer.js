@@ -7,8 +7,14 @@ import Auth from "./Auth";
 import SocialAuthRedirect from "./SocialAuthRedirect";
 import Profile from "./Profile";
 import SweetDetail from "./SweetDetail";
+import { reAuthUser } from "../reducer/users";
+import { connect } from "react-redux";
 
 class AppContainer extends Component {
+  componentWillMount() {
+    this.props.dispatch(reAuthUser(() => this.props.history.push("/auth")));
+  }
+
   render() {
     return (
       <Router>
@@ -24,5 +30,7 @@ class AppContainer extends Component {
     );
   }
 }
+
+AppContainer = connect()(AppContainer);
 
 export default AppContainer;

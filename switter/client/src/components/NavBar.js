@@ -2,16 +2,11 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { reAuthUser, logoutUser } from "../reducer/users";
+import { logoutUser } from "../reducer/users";
 import AuthNavBar from "./AuthNavBar";
 import UnAuthNavBar from "./UnAuthNavBar";
 
 class NavBar extends Component {
-  componentWillMount() {
-    const { reAuthUser, history } = this.props;
-    reAuthUser(() => history.push("/auth"));
-  }
-
   render() {
     const { isAuthed, ownInfo, logoutUser, history } = this.props;
     return (
@@ -36,13 +31,15 @@ const mapStateToProps = ({ users }) => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      reAuthUser,
       logoutUser
     },
     dispatch
   );
 };
 
-NavBar = connect(mapStateToProps, mapDispatchToProps)(NavBar);
+NavBar = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavBar);
 
 export default withRouter(NavBar);

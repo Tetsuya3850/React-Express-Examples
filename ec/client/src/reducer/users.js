@@ -63,13 +63,11 @@ export const socialAuthUser = (token, redirect) => dispatch => {
   redirect();
 };
 
-export const reAuthUser = redirect => async dispatch => {
+export const reAuthUser = () => async dispatch => {
   const ownInfo = getOwnInfo();
   if (ownInfo && ownInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(ownInfo));
     dispatch(handleGetCart());
-  } else if (ownInfo && ownInfo.exp < Date.now() / 1000) {
-    redirect();
   }
 };
 

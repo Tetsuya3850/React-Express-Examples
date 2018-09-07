@@ -76,7 +76,7 @@ export const socialAuthUser = (token, redirect) => async dispatch => {
   redirect();
 };
 
-export const reAuthUser = redirect => async dispatch => {
+export const reAuthUser = () => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));

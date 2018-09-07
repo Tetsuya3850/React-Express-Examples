@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 
 class AppContainer extends Component {
   componentWillMount() {
-    this.props.dispatch(reAuthUser(() => this.props.history.push("/auth")));
+    this.props.dispatch(reAuthUser());
   }
 
   render() {

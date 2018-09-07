@@ -12,7 +12,7 @@ import PrivateRoute from "./PrivateRoute";
 
 class AppContainer extends Component {
   componentWillMount() {
-    this.props.dispatch(reAuthUser(() => this.props.history.push("/login")));
+    this.props.dispatch(reAuthUser());
   }
 
   render() {

@@ -80,8 +80,6 @@ export const reAuthUser = redirect => async dispatch => {
   const userInfo = getUserInfo();
   if (userInfo && userInfo.exp >= Date.now() / 1000) {
     dispatch(authUser(userInfo));
-  } else if (userInfo && userInfo.exp < Date.now() / 1000) {
-    redirect();
   }
 };
 

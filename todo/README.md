@@ -1,5 +1,9 @@
 A todo app example written by React.js, React Native, and Node.js
 
+## How to Use
+
+Create MongoDB Deployment
+
 ## Features
 
 - Todos can be added, if not blank and is shorter than 25 letters.

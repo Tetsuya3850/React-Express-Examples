@@ -1,24 +1,24 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "A one and only... todo app.",
-  "main": "server.js",
+  "description": "todo",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Tetsuya Hasegawa",
+  "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "dotenv": "^5.0.0",
-    "express": "^4.16.2",
-    "helmet": "^3.11.0",
-    "mongoose": "^5.0.6"
+    "dotenv": "^6.1.0",
+    "express": "^4.16.3",
+    "helmet": "^3.14.0",
+    "mongoose": "^5.3.2"
   },
   "devDependencies": {
-    "nodemon": "^1.14.11"
+    "nodemon": "^1.18.4"
   }
 }

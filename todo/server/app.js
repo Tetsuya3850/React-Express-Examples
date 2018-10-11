@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
-const port = process.env.PORT;
+const port = 5150;
 const mongoDB = process.env.MONGODB;
 
 mongoose.connect(mongoDB);
@@ -20,7 +20,6 @@ const todoSchema = mongoose.Schema({
     required: [true, "Input required!"],
     maxlength: [25, "Input too long!"]
   },
-  done: Boolean,
   created: Date
 });
 const Todo = mongoose.model("Todo", todoSchema);

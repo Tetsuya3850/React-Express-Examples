@@ -1,7 +1,6 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
@@ -28,53 +27,36 @@ const app = express();
 
 app.use(helmet());
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.get("/todo", async (req, res, next) => {
-  try {
+const catchErrWrap = fn => (...args) => fn(...args).catch(args[2]);
+
+app.get(
+  "/todos",
+  catchErrWrap(async function(req, res, next) {
     const todos = await Todo.find().sort({ created: -1 });
     res.status(200).json(todos);
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
+  })
+);
 
-app.post("/add", async (req, res, next) => {
-  try {
+app.post(
+  "/todos",
+  catchErrWrap(async function(req, res, next) {
     const newTodo = new Todo(req.body);
     await newTodo.save();
-    res.status(200).json("saved!");
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
+    res.sendStatus(200);
+  })
+);
 
-app.post("/toggle", async (req, res, next) => {
-  try {
-    const todo = await Todo.findById(req.body._id);
-    todo.done = !todo.done;
-    await todo.save();
-    res.status(200).json("toggled!");
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
+app.delete(
+  "/todos/:todoId",
+  catchErrWrap(async function(req, res, next) {
+    await Todo.findByIdAndRemove(req.params.todoId);
+    res.sendStatus(200);
+  })
+);
 
-app.post("/delete", async (req, res, next) => {
-  try {
-    await Todo.findByIdAndRemove(req.body._id);
-    res.status(200).json("deleted!");
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
-
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(500).json(err);
-});
-
-app.listen(port, () => {
+app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });

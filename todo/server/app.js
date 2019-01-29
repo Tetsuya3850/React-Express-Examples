@@ -4,7 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 require("dotenv").config();
-const port = 5150;
+const port = 8081;
 const mongoDB = process.env.MONGODB;
 
 mongoose.connect(mongoDB);

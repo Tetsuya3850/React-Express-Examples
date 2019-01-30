@@ -7,19 +7,24 @@ require("dotenv").config();
 const port = 8081;
 const mongoDB = process.env.MONGODB;
 
-mongoose.connect(mongoDB);
+mongoose.connect(
+  mongoDB,
+  { useNewUrlParser: true }
+);
 mongoose.connection.on("error", err => {
   console.error(err.message);
 });
 
 const todoSchema = mongoose.Schema({
-  _id: String,
   task: {
     type: String,
     required: [true, "Input required!"],
     maxlength: [25, "Input too long!"]
   },
-  created: Date
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
 const Todo = mongoose.model("Todo", todoSchema);
 
@@ -34,7 +39,7 @@ const catchErrWrap = fn => (...args) => fn(...args).catch(args[2]);
 
 app.get(
   "/todos",
-  catchErrWrap(async function(req, res, next) {
+  catchErrWrap(async (req, res, next) => {
     const todos = await Todo.find().sort({ created: -1 });
     res.status(200).json(todos);
   })
@@ -42,21 +47,21 @@ app.get(
 
 app.post(
   "/todos",
-  catchErrWrap(async function(req, res, next) {
+  catchErrWrap(async (req, res, next) => {
     const newTodo = new Todo(req.body);
     await newTodo.save();
-    res.sendStatus(200);
+    res.status(200).json(newTodo);
   })
 );
 
 app.delete(
   "/todos/:todoId",
-  catchErrWrap(async function(req, res, next) {
-    await Todo.findByIdAndRemove(req.params.todoId);
+  catchErrWrap(async (req, res, next) => {
+    await Todo.findOneAndDelete(req.params.todoId);
     res.sendStatus(200);
   })
 );
 
-app.listen(port, function() {
+app.listen(port, () => {
   console.log(`listening on port ${port}`);
 });

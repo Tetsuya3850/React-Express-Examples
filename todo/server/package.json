@@ -4,8 +4,8 @@
   "description": "todo",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "DEBUG=express:* node app.js",
+    "dev": "DEBUG=express:* nodemon app.js"
   },
   "author": "Tetsuya Hasegawa",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "express-validator": "^5.3.1",
     "helmet": "^3.15.0",
     "mongoose": "^5.4.7"
   },

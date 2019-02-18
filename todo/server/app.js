@@ -1,10 +1,10 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const { check } = require("express-validator/check");
 const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 require("dotenv").config();
-const port = 8081;
+const port = process.env.PORT || 8081;
 const mongoDB = process.env.MONGODB;
 
 mongoose.connect(
@@ -18,10 +18,11 @@ mongoose.connection.on("error", err => {
 const todoSchema = mongoose.Schema({
   task: {
     type: String,
-    required: [true, "Input required!"],
-    maxlength: [25, "Input too long!"]
+    required: true,
+    trim: true,
+    maxlength: 25
   },
-  created: {
+  createdAt: {
     type: Date,
     default: Date.now
   }
@@ -35,32 +36,41 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const catchErrWrap = fn => (...args) => fn(...args).catch(args[2]);
-
-app.get(
-  "/todos",
-  catchErrWrap(async (req, res, next) => {
-    const todos = await Todo.find().sort({ created: -1 });
+app.get("/todos", async (req, res, next) => {
+  try {
+    const todos = await Todo.find().sort({ createdAt: -1 });
     res.status(200).json(todos);
-  })
-);
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.post(
   "/todos",
-  catchErrWrap(async (req, res, next) => {
-    const newTodo = new Todo(req.body);
-    await newTodo.save();
-    res.status(200).json(newTodo);
-  })
+  [
+    check("task")
+      .isLength({ min: 1, max: 25 })
+      .trim()
+      .escape()
+  ],
+  async (req, res, next) => {
+    try {
+      const todo = await Todo.create(req.body);
+      res.status(200).json(todo);
+    } catch (err) {
+      next(err);
+    }
+  }
 );
 
-app.delete(
-  "/todos/:todoId",
-  catchErrWrap(async (req, res, next) => {
-    await Todo.findOneAndDelete(req.params.todoId);
+app.delete("/todos/:todoId", async (req, res, next) => {
+  try {
+    await Todo.deleteOne(req.params.todoId);
     res.sendStatus(200);
-  })
-);
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);

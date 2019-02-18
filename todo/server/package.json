@@ -4,8 +4,8 @@
   "description": "todo",
   "main": "app.js",
   "scripts": {
-    "start": "DEBUG=express:* node app.js",
-    "dev": "DEBUG=express:* nodemon app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "author": "Tetsuya Hasegawa",
   "license": "MIT",

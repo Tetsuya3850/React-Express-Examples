@@ -7,10 +7,7 @@ require("dotenv").config();
 const port = process.env.PORT || 8081;
 const mongoDB = process.env.MONGODB;
 
-mongoose.connect(
-  mongoDB,
-  { useNewUrlParser: true }
-);
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.connection.on("error", err => {
   console.error(err.message);
 });
@@ -65,7 +62,7 @@ app.post(
 
 app.delete("/todos/:todoId", async (req, res, next) => {
   try {
-    await Todo.deleteOne(req.params.todoId);
+    await Todo.deleteOne({ _id: req.params.todoId });
     res.sendStatus(200);
   } catch (err) {
     next(err);

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`action creator add todo 1`] = `
+Object {
+  "payload": undefined,
+  "type": "ADD_TODO",
+}
+`;
+
+exports[`action creator add todo error 1`] = `
+Object {
+  "error": "Something went wrong!",
+  "type": "ADD_TODO_ERROR",
+}
+`;
+
+exports[`action creator delete todo 1`] = `
+Object {
+  "payload": "5c6a50807fb33895385d3b80",
+  "type": "DELETE_TODO",
+}
+`;
+
+exports[`action creator delete todo error 1`] = `
+Object {
+  "error": "Something went wrong!",
+  "type": "DELETE_TODO_ERROR",
+}
+`;
+
+exports[`action creator fetch todos 1`] = `
+Object {
+  "type": "FETCH_TODOS",
+}
+`;
+
+exports[`action creator fetch todos error 1`] = `
+Object {
+  "error": "Something went wrong!",
+  "type": "FETCH_TODOS_ERROR",
+}
+`;
+
+exports[`action creator fetch todos success 1`] = `
+Object {
+  "payload": Array [
+    Object {
+      "__v": 0,
+      "_id": "5c6a50587fb33895385d3b7f",
+      "createdAt": "2019-02-18T06:27:36.452Z",
+      "task": "test2",
+    },
+    Object {
+      "__v": 0,
+      "_id": "5c6a50557fb33895385d3b7e",
+      "createdAt": "2019-02-18T06:27:33.861Z",
+      "task": "test1",
+    },
+  ],
+  "type": "FETCH_TODOS_SUCCESS",
+}
+`;

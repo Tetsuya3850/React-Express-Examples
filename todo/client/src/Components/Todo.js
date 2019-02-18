@@ -1,6 +1,6 @@
 import React from "react";
 
-const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
+const Todo = ({ onDeleteClick, done, task }) => (
   <li>
     <div
       style={{
@@ -9,7 +9,6 @@ const Todo = ({ onToggleClick, onDeleteClick, done, task }) => (
       }}
     >
       <p
-        onClick={onToggleClick}
         style={{
           textDecoration: done ? "line-through" : "none",
           cursor: "pointer"

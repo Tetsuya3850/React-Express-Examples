@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { handleFetchTodos, toggleTodo, deleteTodo } from "../reducer";
+import { handleFetchTodos, handleDeleteTodo } from "../reducers";
 import Todo from "./Todo";
 
 class TodoListContainer extends Component {
@@ -10,7 +10,8 @@ class TodoListContainer extends Component {
   }
 
   render() {
-    const { todos, error, isFetching, toggleTodo, deleteTodo } = this.props;
+    const { todos, error, isFetching, handleDeleteTodo } = this.props;
+
     return (
       <div
         style={{
@@ -25,8 +26,7 @@ class TodoListContainer extends Component {
               <Todo
                 key={todo._id}
                 {...todo}
-                onToggleClick={() => toggleTodo(todo._id)}
-                onDeleteClick={() => deleteTodo(todo._id)}
+                onDeleteClick={() => handleDeleteTodo(todo._id)}
               />
             ))}
           </ul>
@@ -51,14 +51,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
-    { handleFetchTodos, toggleTodo, deleteTodo },
-    dispatch
-  );
+  return bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
 };
 
-TodoListContainer = connect(mapStateToProps, mapDispatchToProps)(
-  TodoListContainer
-);
+TodoListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoListContainer);
 
 export default TodoListContainer;

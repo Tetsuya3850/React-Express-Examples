@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -19,7 +18,7 @@ const validateEmail = email => {
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: [true, "Required!"],
+    required: true,
     validate: [validateEmail, "Invalid address!"],
     maxlength: [50, "Too Long!"],
     unique: true,
@@ -27,13 +26,12 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: [true, "Required!"],
+    required: true,
     maxlength: [50, "Too Long!"],
     trim: true
   },
   hash: String,
-  salt: String,
-  pushTokenId: String
+  salt: String
 });
 
 userSchema.methods.setPassword = function(password) {
@@ -62,6 +60,7 @@ userSchema.methods.generateJwt = function() {
       exp: parseInt(expiry.getTime() / 1000)
     },
     jwt_secret
+    // Where is the expire?
   );
 };
 

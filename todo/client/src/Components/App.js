@@ -1,16 +1,25 @@
 import React, { Component } from "react";
+import Header from "./Header";
 import AddTodo from "./AddTodo";
 import TodoListContainer from "./TodoListContainer";
 
 class App extends Component {
   render() {
     return (
-      <div style={{ width: 200, display: "block", margin: "auto" }}>
+      <div style={styles.container}>
+        <Header />
         <AddTodo />
         <TodoListContainer />
       </div>
     );
   }
 }
+
+const styles = {
+  container: {
+    width: 300,
+    margin: "0 auto"
+  }
+};
 
 export default App;

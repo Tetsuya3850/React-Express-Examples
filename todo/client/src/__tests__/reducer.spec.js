@@ -1,4 +1,4 @@
-import todoReducer, {
+import appReducer, {
   fetchTodos,
   fetchTodosSuccess,
   fetchTodosError,
@@ -134,7 +134,7 @@ test("thunk handle delete todo", done => {
 
 test("reducer fetch todos", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     { isFetching: false, error: "", todos: [] },
     { type: "FETCH_TODOS" }
   );
@@ -143,7 +143,7 @@ test("reducer fetch todos", () => {
 
 test("reducer fetch todos error", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     { isFetching: true, error: "", todos: [] },
     { type: "FETCH_TODOS_ERROR", error: "Something went wrong!" }
   );
@@ -156,7 +156,7 @@ test("reducer fetch todos error", () => {
 
 test("reducer fetch todos success", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     { isFetching: true, error: "", todos: [] },
     {
       type: "FETCH_TODOS_SUCCESS",
@@ -198,7 +198,7 @@ test("reducer fetch todos success", () => {
 
 test("reducer add todo", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     {
       isFetching: false,
       error: "",
@@ -255,7 +255,7 @@ test("reducer add todo", () => {
 
 test("reducer add todo error", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     {
       isFetching: false,
       error: "",
@@ -298,7 +298,7 @@ test("reducer add todo error", () => {
 
 test("reducer delete todo", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     {
       isFetching: false,
       error: "",
@@ -347,7 +347,7 @@ test("reducer delete todo", () => {
 
 test("reducer delete todo error", () => {
   let state;
-  state = todoReducer(
+  state = appReducer(
     {
       isFetching: false,
       error: "Something went wrong!",

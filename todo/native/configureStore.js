@@ -6,10 +6,6 @@ export default function configureStore(preloadedState) {
   return createStore(
     appReducer,
     preloadedState,
-    compose(
-      applyMiddleware(thunkMiddleware),
-      typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined" &&
-        window.__REDUX_DEVTOOLS_EXTENSION__()
-    )
+    compose(applyMiddleware(thunkMiddleware))
   );
 }

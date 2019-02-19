@@ -1,6 +1,6 @@
 import React from "react";
 
-const Todo = ({ onDeleteClick, done, task }) => (
+const Todo = ({ task, onDeleteClick }) => (
   <li>
     <div
       style={{
@@ -8,22 +8,15 @@ const Todo = ({ onDeleteClick, done, task }) => (
         justifyContent: "space-between"
       }}
     >
-      <p
-        style={{
-          textDecoration: done ? "line-through" : "none",
-          cursor: "pointer"
-        }}
-      >
-        {task}
-      </p>
-      <p
+      <span>{task}</span>
+      <span
         onClick={onDeleteClick}
         style={{
           cursor: "pointer"
         }}
       >
         &#10799;
-      </p>
+      </span>
     </div>
   </li>
 );

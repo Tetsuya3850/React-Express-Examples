@@ -13,7 +13,11 @@ class TodoListContainer extends Component {
     const { todos, error, isFetching, handleDeleteTodo } = this.props;
 
     return (
-      <div>
+      <div
+        style={{
+          textAlign: "center"
+        }}
+      >
         {isFetching ? (
           <p>LOADING</p>
         ) : (
@@ -21,7 +25,7 @@ class TodoListContainer extends Component {
             {todos.map(todo => (
               <Todo
                 key={todo._id}
-                task={todo.task}
+                {...todo}
                 onDeleteClick={() => handleDeleteTodo(todo._id)}
               />
             ))}

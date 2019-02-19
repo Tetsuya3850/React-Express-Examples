@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { TextInput, Platform } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleAddTodo } from "../reducers";
@@ -18,19 +19,19 @@ class AddTodo extends Component {
   };
 
   render() {
+    const { text } = this.state;
+
     return (
-      <form onSubmit={this.onHandleAddTodo}>
-        <input
-          value={this.state.task}
-          onChange={e => this.setState({ task: e.target.value })}
-          required
-          maxLength={25}
-          placeholder="What to get done?"
-          type="text"
-          autoFocus
-        />
-        <button type="submit">Go!</button>
-      </form>
+      <TextInput
+        style={styles.add}
+        value={text}
+        placeholder={"What to get done?"}
+        onChangeText={text => this.setState({ text })}
+        maxLength={25}
+        returnKeyType="go"
+        onSubmitEditing={this.onSubmitEditing}
+        {...(Platform.OS === "ios" ? { clearButtonMode: "while-editing" } : {})}
+      />
     );
   }
 }

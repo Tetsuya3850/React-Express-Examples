@@ -1,12 +1,12 @@
-const express = require("express");
-const helmet = require("helmet");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
-const { check, validationResult } = require("express-validator/check");
-const { sanitize } = require("express-validator/filter");
+var express = require("express");
+var helmet = require("helmet");
+var cors = require("cors");
+var bodyParser = require("body-parser");
+var nodemailer = require("nodemailer");
+var { check, validationResult } = require("express-validator/check");
+var { sanitize } = require("express-validator/filter");
 require("dotenv").config();
-const port = process.env.PORT;
+const port = 5150;
 const gmail_pwd = process.env.GMAIL_PWD;
 
 const app = express();

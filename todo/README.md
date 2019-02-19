@@ -6,10 +6,10 @@ Create MongoDB Deployment
 
 ## Features
 
-- Todos can be added, if not blank and is shorter than 25 letters.
-- Todos can be slashed to indicate that it is done.
-- Todos can be deleted to clean up the sheet.
-- All data are persisted to database.
+- Todos can be listed.
+- Todos can be added.
+- Todos can be deleted.
+- Data are persisted to database.
 
 ## Try it
 

@@ -10,11 +10,11 @@ class AddTodo extends Component {
 
   onHandleAddTodo = e => {
     e.preventDefault();
-    this.props.handleAddTodo({ task: this.state.task }, () => {
-      this.setState({
-        task: ""
-      });
-    });
+    const payload = { task: this.state.task };
+    const cleanup = () => {
+      this.setState({ task: "" });
+    };
+    this.props.handleAddTodo(payload, cleanup);
   };
 
   render() {

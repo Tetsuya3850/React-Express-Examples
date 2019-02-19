@@ -10,7 +10,7 @@ class TodoListContainer extends Component {
   }
 
   render() {
-    const { todos, error, isFetching, handleDeleteTodo } = this.props;
+    const { isFetching, error, todos, handleDeleteTodo } = this.props;
 
     return (
       <div>

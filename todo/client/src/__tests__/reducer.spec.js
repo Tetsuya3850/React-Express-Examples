@@ -84,7 +84,9 @@ test("thunk handle fetch todos", done => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({ status: 200, response: todos }).then(() => {
-        expect(request.url).toEqual(`http://localhost:8081/todos`);
+        expect(request.url).toEqual(
+          `https://todo-server-3850.herokuapp.com/todos`
+        );
         expect(dispatchMock).toBeCalledWith(fetchTodos());
         expect(dispatchMock).toBeCalledWith(fetchTodosSuccess(todos));
         done();
@@ -107,7 +109,9 @@ test("thunk handle add todo", done => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({ status: 200, response: newTodo }).then(() => {
-        expect(request.url).toEqual(`http://localhost:8081/todos`);
+        expect(request.url).toEqual(
+          `https://todo-server-3850.herokuapp.com/todos`
+        );
         expect(dispatchMock).toBeCalledWith(addTodo(newTodo));
         done();
       });
@@ -124,7 +128,9 @@ test("thunk handle delete todo", done => {
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({ status: 200 }).then(() => {
-        expect(request.url).toEqual(`http://localhost:8081/todos/${deleteId}`);
+        expect(request.url).toEqual(
+          `https://todo-server-3850.herokuapp.com/todos/${deleteId}`
+        );
         expect(dispatchMock).toBeCalledWith(deleteTodo(deleteId));
         done();
       });

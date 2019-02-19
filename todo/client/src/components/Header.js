@@ -1,5 +1,5 @@
 import React from "react";
 
-const Header = () => <p>Todo List</p>;
+const Header = () => <h2>Todo List</h2>;
 
 export default Header;

@@ -13,4 +13,8 @@ Create MongoDB Deployment
 
 ## Try it
 
-(https://todo-client-3850.herokuapp.com/)
+- Web
+  (https://todo-client-3850.herokuapp.com/)
+
+- Native
+  (https://exp.host/@tetsuya3850/todo)

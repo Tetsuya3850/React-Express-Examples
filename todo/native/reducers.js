@@ -22,9 +22,9 @@ export const fetchTodosError = error => ({
   error: "Something went wrong!"
 });
 
-export const addTodo = data => ({
+export const addTodo = new_todo => ({
   type: ADD_TODO,
-  payload: data
+  payload: new_todo
 });
 
 export const addTodoError = error => ({
@@ -52,11 +52,11 @@ export const handleFetchTodos = () => async dispatch => {
   }
 };
 
-export const handleAddTodo = (task, clearInput) => async dispatch => {
+export const handleAddTodo = (task, cleanup) => async dispatch => {
   try {
-    const { data } = await api.addTodo(task);
+    let { data } = await api.addTodo(task);
     dispatch(addTodo(data));
-    clearInput();
+    cleanup();
   } catch (error) {
     dispatch(addTodoError(error));
   }

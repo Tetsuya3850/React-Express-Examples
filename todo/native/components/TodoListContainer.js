@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet
+} from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleFetchTodos, handleDeleteTodo } from "../reducers";
@@ -10,38 +17,39 @@ class TodoListContainer extends Component {
   }
 
   render() {
-    const { todos, error, isFetching, handleDeleteTodo } = this.props;
+    const { isFetching, error, todos, handleDeleteTodo } = this.props;
 
     return (
-      <div
-        style={{
-          textAlign: "center"
-        }}
-      >
+      <View style={styles.container}>
         {isFetching ? (
-          <p>LOADING</p>
+          <ActivityIndicator size="large" />
         ) : (
-          <ul>
+          <ScrollView>
             {todos.map(todo => (
               <Todo
                 key={todo._id}
-                {...todo}
-                onDeleteClick={() => handleDeleteTodo(todo._id)}
+                task={todo.task}
+                onDeletePress={() => handleDeleteTodo(todo._id)}
               />
             ))}
-          </ul>
+            <Text style={styles.error}>{error}</Text>
+          </ScrollView>
         )}
-        <p style={styles.error}>{error}</p>
-      </div>
+      </View>
     );
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
   error: {
-    color: "red"
+    color: "red",
+    textAlign: "center"
   }
-};
+});
 
 const mapStateToProps = state => {
   return state;

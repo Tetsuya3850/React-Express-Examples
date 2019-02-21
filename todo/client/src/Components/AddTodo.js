@@ -8,8 +8,9 @@ class AddTodo extends Component {
     task: ""
   };
 
-  onHandleAddTodo = e => {
-    e.preventDefault();
+  onHandleAddTodo = event => {
+    event.preventDefault();
+    event.target.blur();
     const payload = { task: this.state.task };
     const cleanup = () => {
       this.setState({ task: "" });

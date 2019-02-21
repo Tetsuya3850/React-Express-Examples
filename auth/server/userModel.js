@@ -2,13 +2,7 @@ const mongoose = require("mongoose");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const mongoDB = process.env.MONGODB;
 const jwt_secret = process.env.JWT_SECRET;
-
-mongoose.connect(mongoDB);
-mongoose.connection.on("error", err => {
-  console.error(err.message);
-});
 
 const validateEmail = email => {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

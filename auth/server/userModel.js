@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
-const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const jwt_secret = process.env.JWT_SECRET;
+const bcrypt = require("bcryptjs");
 
 const validateEmail = email => {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -13,49 +10,47 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    validate: [validateEmail, "Invalid address!"],
-    maxlength: [50, "Too Long!"],
     unique: true,
-    trim: true
+    trim: true,
+    validate: [validateEmail, "Invalid address!"]
   },
   name: {
     type: String,
     required: true,
-    maxlength: [50, "Too Long!"],
     trim: true
   },
-  hash: String,
-  salt: String
+  password: {
+    type: String,
+    required: true
+  }
 });
 
-userSchema.methods.setPassword = function(password) {
-  this.salt = crypto.randomBytes(16).toString("hex");
-  this.hash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, "sha512")
-    .toString("hex");
+userSchema.pre("save", function(next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  bcrypt.hash(this.password, 8, (err, hash) => {
+    if (err) {
+      return next(err);
+    }
+
+    this.password = hash;
+    next();
+  });
+});
+
+userSchema.methods.checkPassword = function(password) {
+  const passwordHash = this.password;
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, passwordHash, (err, same) => {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(same);
+    });
+  });
 };
 
-userSchema.methods.validPassword = function(password) {
-  let hash = crypto
-    .pbkdf2Sync(password, this.salt, 1000, 64, "sha512")
-    .toString("hex");
-  return this.hash === hash;
-};
-
-userSchema.methods.generateJwt = function() {
-  const expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
-
-  return jwt.sign(
-    {
-      _id: this._id,
-      email: this.email,
-      name: this.name,
-      exp: parseInt(expiry.getTime() / 1000)
-    },
-    jwt_secret
-    // Where is the expire?
-  );
-};
-
-mongoose.model("User", userSchema);
+module.exports.User = mongoose.model("User", userSchema);

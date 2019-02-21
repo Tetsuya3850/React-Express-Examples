@@ -2,19 +2,18 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const { check } = require("express-validator/check");
-const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const port = process.env.PORT || 8081;
 const mongoDB = process.env.MONGODB;
-const jwt_secret = process.env.JWT_SECRET;
 
-mongoose.connect(mongoDB, { useNewUrlParser: true });
+mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });
 mongoose.connection.on("error", err => {
   console.error(err.message);
 });
 
-require("./userModel");
+const { User } = require("./userModel");
+const { newToken, protect } = require("./jwtUtils");
 
 const app = express();
 
@@ -23,41 +22,67 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post("/register", async (req, res, next) => {
-  const user = new User();
-
-  user.name = req.body.name;
-  user.email = req.body.email;
-
-  user.setPassword(req.body.password);
-
-  try {
-    await user.save();
-    const token = user.generateJwt();
-    res.status(200).json({
-      userInfo: user,
-      token: token
-    });
-  } catch (err) {
-    res.status(401).json(err);
+app.post(
+  "/signup",
+  [
+    check("email")
+      .isLength({ min: 1 })
+      .trim()
+      .escape(),
+    check("name")
+      .isLength({ min: 1 })
+      .trim()
+      .escape(),
+    check("password")
+      .isLength({ min: 1 })
+      .escape()
+  ],
+  async (req, res) => {
+    try {
+      const user = await User.create(req.body);
+      const token = newToken(user);
+      return res.status(201).send({ token });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).end();
+    }
   }
-});
+);
 
-app.post("/login", async (req, res, next) => {
-  if (err) {
-    res.status(401).json(err);
-    return;
-  }
+app.post(
+  "/signin",
+  [
+    check("email")
+      .isLength({ min: 1 })
+      .trim()
+      .escape(),
+    check("password")
+      .isLength({ min: 1 })
+      .escape()
+  ],
+  async (req, res) => {
+    try {
+      const user = await User.findOne({ email: req.body.email });
 
-  if (user) {
-    const token = user.generateJwt();
-    res.status(200).json({
-      userInfo: user,
-      token: token
-    });
-  } else {
-    res.status(401).json(info);
+      if (!user) {
+        return res.status(401).end();
+      }
+
+      const match = await user.checkPassword(req.body.password);
+      if (!match) {
+        return res.status(401).send({ message: "Password Wrong!" });
+      }
+      const token = newToken(user);
+      return res.status(201).send({ token });
+    } catch (error) {
+      console.error(error);
+      return res.status(400).end();
+    }
   }
+);
+
+app.get("/users", protect, (req, res) => {
+  res.status(201).send({ user: req.user });
 });
 
 app.listen(port, () => {

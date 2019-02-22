@@ -47,9 +47,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
 };
 
-TodoListContainer = connect(
+export const UnwrappedTodoListContainer = TodoListContainer;
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TodoListContainer);
-
-export default TodoListContainer;

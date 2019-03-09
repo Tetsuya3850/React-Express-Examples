@@ -12,8 +12,8 @@ mongoose.connection.on("error", err => {
   console.error(err.message);
 });
 
-const { User } = require("./userModel");
-const { newToken, protect } = require("./jwtUtils");
+const { protect } = require("./userModel");
+const userCtrl = require("./userController");
 
 const app = express();
 
@@ -37,16 +37,7 @@ app.post(
       .isLength({ min: 1 })
       .escape()
   ],
-  async (req, res) => {
-    try {
-      const user = await User.create(req.body);
-      const token = newToken(user);
-      return res.status(201).send({ token });
-    } catch (error) {
-      console.error(error);
-      return res.status(400).end();
-    }
-  }
+  userCtrl.signup
 );
 
 app.post(
@@ -60,29 +51,11 @@ app.post(
       .isLength({ min: 1 })
       .escape()
   ],
-  async (req, res) => {
-    try {
-      const user = await User.findOne({ email: req.body.email });
-
-      if (!user) {
-        return res.status(401).end();
-      }
-
-      const match = await user.checkPassword(req.body.password);
-      if (!match) {
-        return res.status(401).send({ message: "Password Wrong!" });
-      }
-      const token = newToken(user);
-      return res.status(201).send({ token });
-    } catch (error) {
-      console.error(error);
-      return res.status(400).end();
-    }
-  }
+  userCtrl.signin
 );
 
 app.get("/users", protect, (req, res) => {
-  res.status(201).send({ user: req.user });
+  res.status(201).send(req.user);
 });
 
 app.listen(port, () => {

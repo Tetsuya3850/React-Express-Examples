@@ -1,36 +1,49 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { reAuthUser } from "../reducer";
+import PrivateRoute from "./PrivateRoute";
+import { reAuthUser } from "../reducers";
 import NavBar from "./NavBar";
 import Home from "./Home";
-import Register from "./Register";
-import Login from "./Login";
-import SocialAuthRedirect from "./SocialAuthRedirect";
+import Signup from "./Signup";
+import Signin from "./Signin";
 import Profile from "./Profile";
-import PrivateRoute from "./PrivateRoute";
 
 class AppContainer extends Component {
-  componentWillMount() {
-    this.props.dispatch(reAuthUser());
+  componentDidMount() {
+    this.props.reAuthUser();
   }
 
   render() {
     return (
       <Router>
-        <div style={{ margin: "auto", width: 400 }}>
+        <div style={styles.container}>
           <NavBar />
           <Route exact path="/" component={Home} />
-          <Route path="/register" component={Register} />
-          <Route path="/login" component={Login} />
-          <Route path="/socialauthredirect/" component={SocialAuthRedirect} />
-          <PrivateRoute path="/profile/:uid?" component={Profile} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/signin" component={Signin} />
+          <PrivateRoute path="/profile" component={Profile} />
         </div>
       </Router>
     );
   }
 }
 
-AppContainer = connect()(AppContainer);
+const styles = {
+  container: {
+    width: 300,
+    margin: "0 auto"
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ reAuthUser }, dispatch);
+};
+
+AppContainer = connect(
+  null,
+  mapDispatchToProps
+)(AppContainer);
 
 export default AppContainer;

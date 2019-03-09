@@ -1,68 +1,84 @@
 import React from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { logoutUser } from "../reducer";
+import { handleSignout } from "../reducers";
 
-let NavBar = ({ isAuthed, dispatch, history, userInfo }) => {
-  if (isAuthed) {
-    return (
-      <div style={{ display: "flex" }}>
-        <NavLink
-          exact
-          to="/"
-          style={{ flexGrow: 10 }}
-          activeStyle={{ color: "red" }}
-        >
-          Home
-        </NavLink>
-        <NavLink
-          to={`/profile/${userInfo._id}`}
-          style={{ flexGrow: 1 }}
-          activeStyle={{ color: "red" }}
-        >
-          Profile
-        </NavLink>
-        <div
-          onClick={() => dispatch(logoutUser(() => history.push("/")))}
-          style={{ flexGrow: 1 }}
-        >
-          Logout
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div style={{ display: "flex" }}>
+const NavBar = ({ uid, history, handleSignout }) =>
+  uid === null ? (
+    <div style={styles.container}>
       <NavLink
         exact
         to="/"
-        style={{ flexGrow: 10 }}
+        style={styles.leftNav}
         activeStyle={{ color: "red" }}
       >
         Home
       </NavLink>
       <NavLink
-        to="/register"
-        style={{ flexGrow: 1 }}
+        to="/signup"
+        style={styles.rightNavs}
         activeStyle={{ color: "red" }}
       >
-        Register
+        Signup
       </NavLink>
       <NavLink
-        to="/login"
-        style={{ flexGrow: 1 }}
+        to="/signin"
+        style={styles.rightNavs}
         activeStyle={{ color: "red" }}
       >
-        Login
+        Signin
       </NavLink>
     </div>
+  ) : (
+    <div style={styles.container}>
+      <NavLink
+        exact
+        to="/"
+        style={styles.leftNav}
+        activeStyle={{ color: "red" }}
+      >
+        Home
+      </NavLink>
+      <NavLink
+        to={`/profile`}
+        style={styles.rightNavs}
+        activeStyle={{ color: "red" }}
+      >
+        Profile
+      </NavLink>
+      <div
+        onClick={() => handleSignout(() => history.push("/"))}
+        style={styles.rightNavs}
+      >
+        Logout
+      </div>
+    </div>
   );
+
+const styles = {
+  container: {
+    display: "flex"
+  },
+  leftNav: {
+    flexGrow: 10
+  },
+  rightNavs: {
+    flexGrow: 1
+  }
 };
 
 const mapStateToProps = state => {
   return state;
 };
 
-NavBar = connect(mapStateToProps, null)(NavBar);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({ handleSignout }, dispatch);
+};
 
-export default withRouter(NavBar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NavBar)
+);

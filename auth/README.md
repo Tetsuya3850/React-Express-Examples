@@ -1,13 +1,13 @@
-An auth app example written by React.js, React Native, and Node.js.
+An auth app example written by React.js, React Native, and Node.js
 
 ## Features
 
-- Users can register and login with email and password.
-- SocialAuth with Google & Facebook are supported as well.
-- Some content are protected for logged in users.
+- Users can signup with name, email, and password.
+- Users can signin with email and password.
+- Authed users can access protected client routes.
+- Authed users can access protected server resources.
 
 ## Try it
 
-(https://auth-client-3850.herokuapp.com/)
-
-## ToDo
+- Web
+  (https://auth-client-3850.herokuapp.com/)

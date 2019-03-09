@@ -10,7 +10,8 @@ A collection of basic apps built with React.js, React Native, and Node.js
 
 ## Auth
 
-(https://auth-client-3850.herokuapp.com/)
+- Web
+  (https://auth-client-3850.herokuapp.com/)
 
 ## Tic Tac Toe
 

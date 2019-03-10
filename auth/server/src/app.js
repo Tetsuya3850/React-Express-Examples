@@ -1,9 +1,13 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const mongoose = require("mongoose");
 require("dotenv").config();
 const port = process.env.PORT || 8081;
-const connectDB = require("./connectDB");
+const mongoDB =
+  process.env.NODE_ENV !== "test"
+    ? process.env.MONGODB
+    : process.env.MONGODBTEST;
 const { protect } = require("./userModel");
 const userCtrl = require("./userController");
 
@@ -20,20 +24,20 @@ const start = () => {
   app.get("/users", protect, userCtrl.getUser);
 
   return new Promise(resolve => {
-    try {
-      connectDB();
-      const server = app.listen(port, () => {
-        const originalClose = server.close.bind(server);
-        server.close = () => {
-          return new Promise(resolveClose => {
-            originalClose(resolveClose);
-          });
-        };
-        resolve(server);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });
+    mongoose.connection.on("error", err => {
+      console.error(err.message);
+    });
+
+    const server = app.listen(port, () => {
+      const originalClose = server.close.bind(server);
+      server.close = () => {
+        return new Promise(resolveClose => {
+          originalClose(resolveClose);
+        });
+      };
+      resolve(server);
+    });
   });
 };
 

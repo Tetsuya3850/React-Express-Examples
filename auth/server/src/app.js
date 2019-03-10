@@ -1,63 +1,40 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
-const { check } = require("express-validator/check");
-const mongoose = require("mongoose");
 require("dotenv").config();
 const port = process.env.PORT || 8081;
-const mongoDB = process.env.MONGODB;
-
-mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });
-mongoose.connection.on("error", err => {
-  console.error(err.message);
-});
-
+const connectDB = require("./connectDB");
 const { protect } = require("./userModel");
 const userCtrl = require("./userController");
 
-const app = express();
+const start = () => {
+  const app = express();
 
-app.use(helmet());
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+  app.use(helmet());
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
 
-app.post(
-  "/signup",
-  [
-    check("email")
-      .isLength({ min: 1 })
-      .trim()
-      .escape(),
-    check("name")
-      .isLength({ min: 1 })
-      .trim()
-      .escape(),
-    check("password")
-      .isLength({ min: 1 })
-      .escape()
-  ],
-  userCtrl.signup
-);
+  app.post("/signup", userCtrl.signup);
+  app.post("/signin", userCtrl.signin);
+  app.get("/users", protect, userCtrl.getUser);
 
-app.post(
-  "/signin",
-  [
-    check("email")
-      .isLength({ min: 1 })
-      .trim()
-      .escape(),
-    check("password")
-      .isLength({ min: 1 })
-      .escape()
-  ],
-  userCtrl.signin
-);
+  return new Promise(resolve => {
+    try {
+      connectDB();
+      const server = app.listen(port, () => {
+        const originalClose = server.close.bind(server);
+        server.close = () => {
+          return new Promise(resolveClose => {
+            originalClose(resolveClose);
+          });
+        };
+        resolve(server);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+};
 
-app.get("/users", protect, (req, res) => {
-  res.status(201).send(req.user);
-});
-
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
-});
+module.exports = start;

@@ -5,37 +5,6 @@ require("dotenv").config();
 const jwt_secret = process.env.JWT_SECRET;
 const jwt_expiry_time = 86400;
 
-const newToken = user => {
-  return jwt.sign({ _id: user._id }, jwt_secret, {
-    expiresIn: jwt_expiry_time
-  });
-};
-
-const verifyToken = token =>
-  new Promise((resolve, reject) => {
-    jwt.verify(token, jwt_secret, (err, payload) => {
-      if (err) return reject(err);
-      resolve(payload);
-    });
-  });
-
-const protect = async (req, res, next) => {
-  const bearer = req.headers.authorization;
-  if (!bearer || !bearer.startsWith("Bearer ")) {
-    return res.status(401).end();
-  }
-  const token = bearer.split("Bearer ")[1].trim();
-  try {
-    const payload = await verifyToken(token);
-    const user = await User.findById(payload._id).select("-password");
-    req.user = user.toJSON();
-    next();
-  } catch (error) {
-    console.error(error);
-    return res.status(401).end();
-  }
-};
-
 const validateEmail = email => {
   var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   return re.test(email);
@@ -90,9 +59,40 @@ userSchema.methods.checkPassword = function(password) {
 
 const User = mongoose.model("User", userSchema);
 
+const newToken = user => {
+  return jwt.sign({ _id: user._id }, jwt_secret, {
+    expiresIn: jwt_expiry_time
+  });
+};
+
+const verifyToken = token =>
+  new Promise((resolve, reject) => {
+    jwt.verify(token, jwt_secret, (err, payload) => {
+      if (err) return reject(err);
+      resolve(payload);
+    });
+  });
+
+const protect = async (req, res, next) => {
+  const bearer = req.headers.authorization;
+  if (!bearer || !bearer.startsWith("Bearer ")) {
+    return res.status(401).end();
+  }
+  const token = bearer.split("Bearer ")[1].trim();
+  try {
+    const payload = await verifyToken(token);
+    const user = await User.findById(payload._id).select("-password");
+    req.user = user.toJSON();
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(401).end();
+  }
+};
+
 module.exports = {
+  User,
   newToken,
   verifyToken,
-  protect,
-  User
+  protect
 };

@@ -1,7 +1,8 @@
 {
-  "name": "todo",
+  "name": "todo-client",
   "version": "0.1.0",
-  "private": true,
+  "author": "Tetsuya Hasegawa",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "react": "^16.8.2",

@@ -1,8 +1,7 @@
 {
   "name": "todo",
   "version": "1.0.0",
-  "description": "todo",
-  "main": "app.js",
+  "main": "index.js",
   "author": "Tetsuya Hasegawa",
   "license": "MIT",
   "scripts": {

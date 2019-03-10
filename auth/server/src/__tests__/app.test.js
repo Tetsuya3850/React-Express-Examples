@@ -132,7 +132,7 @@ test("getUser locked down for unauthed sources", async () => {
   });
 });
 
-test("getUser not locked down for authed sources", async () => {
+test("getUser open for authed sources", async () => {
   const token = await api.post("/signin", testSigninUser).then(getToken);
   const user = await api
     .get("/users", {

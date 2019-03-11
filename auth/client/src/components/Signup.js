@@ -12,6 +12,15 @@ class Signup extends Component {
     unMatchPwdErr: ""
   };
 
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  };
+
   handleFormSubmit = event => {
     event.preventDefault();
 
@@ -57,9 +66,10 @@ class Signup extends Component {
           </div>
 
           <input
+            name="name"
             type="text"
             value={name}
-            onChange={event => this.setState({ name: event.target.value })}
+            onChange={this.handleInputChange}
             required
             autoFocus
           />
@@ -72,9 +82,10 @@ class Signup extends Component {
             <span style={styles.error}>{signupError.email}</span>
           </div>
           <input
+            name="email"
             type="email"
             value={email}
-            onChange={event => this.setState({ email: event.target.value })}
+            onChange={this.handleInputChange}
             required
           />
         </div>
@@ -85,9 +96,10 @@ class Signup extends Component {
             <span> * </span>
           </div>
           <input
+            name="password"
             type="password"
             value={password}
-            onChange={event => this.setState({ password: event.target.value })}
+            onChange={this.handleInputChange}
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
             minLength="8"
             title="Password must be at least 8 characters and include at least 1 uppercase character, 1 lowercase character, and 1 number."
@@ -103,11 +115,10 @@ class Signup extends Component {
           </div>
 
           <input
+            name="passwordConfirm"
             type="password"
             value={passwordConfirm}
-            onChange={event =>
-              this.setState({ passwordConfirm: event.target.value })
-            }
+            onChange={this.handleInputChange}
             required
           />
         </div>

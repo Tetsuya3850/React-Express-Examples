@@ -9,6 +9,15 @@ class Signin extends Component {
     password: ""
   };
 
+  handleInputChange = event => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  };
+
   handleFormSubmit = event => {
     event.preventDefault();
     const { email, password } = this.state;
@@ -43,9 +52,10 @@ class Signin extends Component {
           </div>
 
           <input
+            name="email"
             type="email"
             value={email}
-            onChange={event => this.setState({ email: event.target.value })}
+            onChange={this.handleInputChange}
             required
           />
         </div>
@@ -58,9 +68,10 @@ class Signin extends Component {
           </div>
 
           <input
+            name="password"
             type="password"
             value={password}
-            onChange={event => this.setState({ password: event.target.value })}
+            onChange={this.handleInputChange}
             pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
             minLength="8"
             title="Password must be at least 8 characters and include at least 1 uppercase character, 1 lowercase character, and 1 number."

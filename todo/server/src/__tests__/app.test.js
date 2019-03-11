@@ -13,11 +13,11 @@ jest.unmock("axios");
 let baseURL, api, server;
 
 const testTodo = {
-  task: "Swim"
+  text: "Swim"
 };
 
 const anotherTestTodo = {
-  task: "Run"
+  text: "Run"
 };
 
 beforeAll(async () => {
@@ -33,18 +33,18 @@ afterAll(() => {
   server.close();
 });
 
-test("task required to postTodo", async () => {
+test("todo text required to postTodo", async () => {
   const error = await api
-    .post("/todos", _.omit(testTodo, "task"))
+    .post("/todos", _.omit(testTodo, "text"))
     .catch(getError);
   expect(error).toMatchObject({
     status: 400
   });
 });
 
-test("task no longer than 25 characters", async () => {
+test("todo text no longer than 25 characters", async () => {
   const error = await api
-    .post("/todos", { ...testTodo, task: "abcdefghijklmnopqrstuvwxyz" })
+    .post("/todos", { ...testTodo, text: "abcdefghijklmnopqrstuvwxyz" })
     .catch(getError);
   expect(error).toMatchObject({
     status: 400

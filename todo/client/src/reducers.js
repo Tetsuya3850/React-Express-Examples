@@ -52,9 +52,9 @@ export const handleFetchTodos = () => async dispatch => {
   }
 };
 
-export const handleAddTodo = (task, cleanup) => async dispatch => {
+export const handleAddTodo = (text, cleanup) => async dispatch => {
   try {
-    let { data } = await api.addTodo(task);
+    let { data } = await api.addTodo(text);
     dispatch(addTodo(data));
     cleanup();
   } catch (error) {

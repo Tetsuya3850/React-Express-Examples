@@ -5,15 +5,15 @@ import { handleAddTodo } from "../reducers";
 
 class AddTodo extends Component {
   state = {
-    task: ""
+    text: ""
   };
 
   onHandleAddTodo = event => {
     event.preventDefault();
     event.target.blur();
-    const payload = { task: this.state.task };
+    const payload = { text: this.state.text };
     const cleanup = () => {
-      this.setState({ task: "" });
+      this.setState({ text: "" });
     };
     this.props.handleAddTodo(payload, cleanup);
   };
@@ -22,8 +22,8 @@ class AddTodo extends Component {
     return (
       <form onSubmit={this.onHandleAddTodo}>
         <input
-          value={this.state.task}
-          onChange={e => this.setState({ task: e.target.value })}
+          value={this.state.text}
+          onChange={e => this.setState({ text: e.target.value })}
           required
           maxLength={25}
           placeholder="What to get done?"

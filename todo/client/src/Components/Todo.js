@@ -1,9 +1,9 @@
 import React from "react";
 
-const Todo = ({ task, onDeleteClick }) => (
+const Todo = ({ text, onDeleteClick }) => (
   <li>
     <div style={styles.container}>
-      <span>{task}</span>
+      <span>{text}</span>
       <span onClick={onDeleteClick} style={styles.cross}>
         &#10799;
       </span>

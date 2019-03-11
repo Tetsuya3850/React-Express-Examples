@@ -1,7 +1,7 @@
 const Todo = require("./todoModel");
 
 module.exports.postTodo = async (req, res) => {
-  if (!req.body.task || req.body.task.length > 25) {
+  if (!req.body.text || req.body.text.length > 25) {
     return res.status(400).end();
   }
 

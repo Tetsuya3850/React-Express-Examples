@@ -8,6 +8,10 @@ class AddTodo extends Component {
     text: ""
   };
 
+  handleChangeText = event => {
+    this.setState({ text: event.target.value });
+  };
+
   onHandleAddTodo = event => {
     event.preventDefault();
     event.target.blur();
@@ -23,7 +27,7 @@ class AddTodo extends Component {
       <form onSubmit={this.onHandleAddTodo}>
         <input
           value={this.state.text}
-          onChange={e => this.setState({ text: e.target.value })}
+          onChange={this.handleChangeText}
           required
           maxLength={25}
           placeholder="What to get done?"

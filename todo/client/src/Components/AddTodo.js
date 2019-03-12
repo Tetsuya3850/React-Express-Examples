@@ -14,8 +14,11 @@ class AddTodo extends Component {
 
   onHandleAddTodo = event => {
     event.preventDefault();
-    event.target.blur();
-    const payload = { text: this.state.text };
+    const { text } = this.state;
+    if (!text.trim()) {
+      return;
+    }
+    const payload = { text };
     const cleanup = () => {
       this.setState({ text: "" });
     };

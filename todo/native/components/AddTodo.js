@@ -6,17 +6,22 @@ import { handleAddTodo } from "../reducers";
 
 class AddTodo extends Component {
   state = {
-    task: ""
+    text: ""
+  };
+
+  handleChangeText = text => {
+    this.setState({ text });
   };
 
   onHandleAddTodo = event => {
     event.preventDefault();
-    if (this.state.task === "") {
+    const { text } = this.state;
+    if (!text.trim()) {
       return;
     }
-    const payload = { task: this.state.task };
+    const payload = { text };
     const cleanup = () => {
-      this.setState({ task: "" });
+      this.setState({ text: "" });
     };
     this.props.handleAddTodo(payload, cleanup);
   };
@@ -26,9 +31,9 @@ class AddTodo extends Component {
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
-          value={this.state.task}
+          value={this.state.text}
           placeholder={"What to get done?"}
-          onChangeText={text => this.setState({ task: text })}
+          onChangeText={this.handleChangeText}
           maxLength={25}
           returnKeyType="go"
           onSubmitEditing={this.onHandleAddTodo}

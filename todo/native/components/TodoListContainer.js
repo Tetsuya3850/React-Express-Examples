@@ -28,7 +28,7 @@ class TodoListContainer extends Component {
             {todos.map(todo => (
               <Todo
                 key={todo._id}
-                task={todo.task}
+                text={todo.text}
                 onDeletePress={() => handleDeleteTodo(todo._id)}
               />
             ))}

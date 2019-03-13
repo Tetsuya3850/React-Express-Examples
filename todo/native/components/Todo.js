@@ -1,9 +1,9 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const Todo = ({ onDeletePress, task }) => (
+const Todo = ({ onDeletePress, text }) => (
   <View style={styles.container}>
-    <Text>{task}</Text>
+    <Text>{text}</Text>
     <TouchableOpacity
       onPress={onDeletePress}
       hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}

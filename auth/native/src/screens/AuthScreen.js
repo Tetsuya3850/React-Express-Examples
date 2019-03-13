@@ -1,19 +1,21 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Button } from "react-native";
+import { saveToken } from "../tokenUtils";
 
 class AuthScreen extends React.Component {
   static navigationOptions = {
     title: "Auth"
   };
 
+  _signInAsync = () => {
+    saveToken("token");
+    this.props.navigation.navigate("App");
+  };
+
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Auth Screen</Text>
-        <Button
-          title="Login"
-          onPress={() => this.props.navigation.navigate("Profile")}
-        />
+      <View>
+        <Button title="Sign in!" onPress={this._signInAsync} />
       </View>
     );
   }

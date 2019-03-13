@@ -1,15 +1,24 @@
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import {
+  createStackNavigator,
+  createSwitchNavigator,
+  createAppContainer
+} from "react-navigation";
 import AuthScreen from "./src/screens/AuthScreen";
+import AuthLoadingScreen from "./src/screens/AuthLoadingScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 
-const AppNavigator = createStackNavigator(
-  {
-    Auth: AuthScreen,
-    Profile: ProfileScreen
-  },
-  {
-    initialRouteName: "Auth"
-  }
-);
+const AppStack = createStackNavigator({ Profile: ProfileScreen });
+const AuthStack = createStackNavigator({ Auth: AuthScreen });
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthLoading: AuthLoadingScreen,
+      App: AppStack,
+      Auth: AuthStack
+    },
+    {
+      initialRouteName: "AuthLoading"
+    }
+  )
+);

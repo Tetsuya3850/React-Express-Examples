@@ -1,8 +1,12 @@
-export const getToken = () => localStorage.getItem("jwt-token");
+import { AsyncStorage } from "react-native";
 
-export const saveToken = token => localStorage.setItem("jwt-token", token);
+export const getToken = async () => await AsyncStorage.getItem("jwt-token");
 
-export const removeToken = () => localStorage.removeItem("jwt-token");
+export const saveToken = async token =>
+  await AsyncStorage.setItem("jwt-token", token);
+
+export const removeToken = async () =>
+  await AsyncStorage.removeItem("jwt-token");
 
 export const parseToken = () => {
   try {

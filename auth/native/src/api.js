@@ -5,9 +5,9 @@ const SERVER_URL = "https://auth-server-3850.herokuapp.com";
 
 const signup = payload => axios.post(`${SERVER_URL}/signup`, payload);
 const signin = payload => axios.post(`${SERVER_URL}/signin`, payload);
-const getUser = () =>
+const getUser = async () =>
   axios.get(`${SERVER_URL}/users`, {
-    headers: { authorization: `Bearer ${getToken()}` }
+    headers: { authorization: `Bearer ${await getToken()}` }
   });
 
 const api = {

@@ -1,20 +1,17 @@
 import { AsyncStorage } from "react-native";
+import { decode } from "base-64";
 
-export const getToken = async () => await AsyncStorage.getItem("jwt-token");
+export const getToken = () => AsyncStorage.getItem("jwt-token");
 
-export const saveToken = async token =>
-  await AsyncStorage.setItem("jwt-token", token);
+export const saveToken = token => AsyncStorage.setItem("jwt-token", token);
 
-export const removeToken = async () =>
-  await AsyncStorage.removeItem("jwt-token");
+export const removeToken = () => AsyncStorage.removeItem("jwt-token");
 
-export const parseToken = () => {
+export const parseToken = async () => {
   try {
-    const token = getToken();
+    const token = await getToken();
     if (token) {
-      let payload;
-      payload = token.split(".")[1];
-      payload = window.atob(payload);
+      const payload = decode(token.split(".")[1]);
       return JSON.parse(payload);
     }
   } catch (error) {
@@ -22,8 +19,8 @@ export const parseToken = () => {
   }
 };
 
-export const isAuthed = () => {
-  const token_info = parseToken();
+export const isAuthed = async () => {
+  const token_info = await parseToken();
   if (token_info && token_info.exp > Math.round(new Date() / 1000)) {
     return token_info;
   } else {

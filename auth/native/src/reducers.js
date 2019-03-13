@@ -34,8 +34,8 @@ const getUser = payload => ({
 export const handleSignup = (payload, redirectCallBack) => async dispatch => {
   try {
     const { data } = await api.signup(payload);
-    saveToken(data.token);
-    const { _id } = parseToken();
+    await saveToken(data.token);
+    const { _id } = await parseToken();
     dispatch(authUser(_id));
     redirectCallBack();
   } catch (error) {
@@ -50,8 +50,8 @@ export const handleSignup = (payload, redirectCallBack) => async dispatch => {
 export const handleSignin = (payload, redirectCallBack) => async dispatch => {
   try {
     const { data } = await api.signin(payload);
-    saveToken(data.token);
-    const { _id } = parseToken();
+    await saveToken(data.token);
+    const { _id } = await parseToken();
     dispatch(authUser(_id));
     redirectCallBack();
   } catch (error) {
@@ -63,15 +63,21 @@ export const handleSignin = (payload, redirectCallBack) => async dispatch => {
   }
 };
 
-export const reAuthUser = () => async dispatch => {
-  const token_info = isAuthed();
-  if (token_info) {
-    dispatch(authUser(token_info._id));
+export const reAuthUser = (
+  redirectAuthSuccess,
+  redirectAuthFailure
+) => async dispatch => {
+  const { _id } = await isAuthed();
+  if (_id) {
+    dispatch(authUser(_id));
+    redirectAuthSuccess();
+  } else {
+    redirectAuthFailure();
   }
 };
 
 export const handleSignout = redirectCallBack => async dispatch => {
-  removeToken();
+  await removeToken();
   dispatch(unAuthUser());
   redirectCallBack();
 };

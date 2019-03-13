@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import { reAuthUser } from "../reducers";
 import NavBar from "./NavBar";
@@ -9,6 +9,7 @@ import Home from "./Home";
 import Signup from "./Signup";
 import Signin from "./Signin";
 import Profile from "./Profile";
+import NoMatch from "./NoMatch";
 
 class AppContainer extends Component {
   componentDidMount() {
@@ -20,10 +21,13 @@ class AppContainer extends Component {
       <Router>
         <div style={styles.container}>
           <NavBar />
-          <Route exact path="/" component={Home} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/signin" component={Signin} />
-          <PrivateRoute path="/profile" component={Profile} />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/signin" component={Signin} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <Route component={NoMatch} />
+          </Switch>
         </div>
       </Router>
     );

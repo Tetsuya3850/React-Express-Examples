@@ -1,4 +1,4 @@
-A collection of basic apps built with React.js, React Native, and Node.js
+A collection of basic apps built with React, React Native, and Express.
 
 ## Todo
 

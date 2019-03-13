@@ -1,15 +1,15 @@
 import api from "./api";
 
-const FETCH_TODOS = "FETCH_TODOS";
-const FETCH_TODOS_ERROR = "FETCH_TODOS_ERROR";
+const FETCH_TODOS_REQUEST = "FETCH_TODOS_REQUEST";
+const FETCH_TODOS_FAILURE = "FETCH_TODOS_FAILURE";
 const FETCH_TODOS_SUCCESS = "FETCH_TODOS_SUCCESS";
 const ADD_TODO = "ADD_TODO";
-const ADD_TODO_ERROR = "ADD_TODO_ERROR";
+const ADD_TODO_FAILURE = "ADD_TODO_FAILURE";
 const DELETE_TODO = "DELETE_TODO";
-const DELETE_TODO_ERROR = "DELETE_TODO_ERROR";
+const DELETE_TODO_FAILURE = "DELETE_TODO_FAILURE";
 
-export const fetchTodos = () => ({
-  type: FETCH_TODOS
+export const fetchTodosRequest = () => ({
+  type: FETCH_TODOS_REQUEST
 });
 
 export const fetchTodosSuccess = data => ({
@@ -17,8 +17,8 @@ export const fetchTodosSuccess = data => ({
   payload: data
 });
 
-export const fetchTodosError = error => ({
-  type: FETCH_TODOS_ERROR,
+export const fetchTodosFailure = error => ({
+  type: FETCH_TODOS_FAILURE,
   error: "Something went wrong!"
 });
 
@@ -27,8 +27,8 @@ export const addTodo = new_todo => ({
   payload: new_todo
 });
 
-export const addTodoError = error => ({
-  type: ADD_TODO_ERROR,
+export const addTodoFailure = error => ({
+  type: ADD_TODO_FAILURE,
   error: "Something went wrong!"
 });
 
@@ -37,18 +37,18 @@ export const deleteTodo = _id => ({
   payload: _id
 });
 
-export const deleteTodoError = error => ({
-  type: DELETE_TODO_ERROR,
+export const deleteTodoFailure = error => ({
+  type: DELETE_TODO_FAILURE,
   error: "Something went wrong!"
 });
 
 export const handleFetchTodos = () => async dispatch => {
-  dispatch(fetchTodos());
+  dispatch(fetchTodosRequest());
   try {
     let { data } = await api.fetchTodos();
     dispatch(fetchTodosSuccess(data));
   } catch (error) {
-    dispatch(fetchTodosError(error));
+    dispatch(fetchTodosFailure(error));
   }
 };
 
@@ -58,7 +58,7 @@ export const handleAddTodo = (text, cleanup) => async dispatch => {
     dispatch(addTodo(data));
     cleanup();
   } catch (error) {
-    dispatch(addTodoError(error));
+    dispatch(addTodoFailure(error));
   }
 };
 
@@ -67,7 +67,7 @@ export const handleDeleteTodo = _id => async dispatch => {
     await api.deleteTodo(_id);
     dispatch(deleteTodo(_id));
   } catch (error) {
-    dispatch(deleteTodoError(error));
+    dispatch(deleteTodoFailure(error));
   }
 };
 
@@ -79,12 +79,12 @@ const initialState = {
 
 const appReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_TODOS:
+    case FETCH_TODOS_REQUEST:
       return {
         ...state,
         isFetching: true
       };
-    case FETCH_TODOS_ERROR:
+    case FETCH_TODOS_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -103,7 +103,7 @@ const appReducer = (state = initialState, action) => {
         error: "",
         todos: [...[action.payload], ...state.todos]
       };
-    case ADD_TODO_ERROR:
+    case ADD_TODO_FAILURE:
       return {
         ...state,
         error: action.error
@@ -114,7 +114,7 @@ const appReducer = (state = initialState, action) => {
         error: "",
         todos: state.todos.filter(t => t._id !== action.payload)
       };
-    case DELETE_TODO_ERROR:
+    case DELETE_TODO_FAILURE:
       return {
         ...state,
         error: action.error

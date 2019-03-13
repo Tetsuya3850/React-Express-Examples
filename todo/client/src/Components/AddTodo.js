@@ -47,9 +47,7 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators({ handleAddTodo }, dispatch);
 };
 
-AddTodo = connect(
+export default connect(
   null,
   mapDispatchToProps
 )(AddTodo);
-
-export default AddTodo;

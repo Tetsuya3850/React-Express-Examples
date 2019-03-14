@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { handleSignup } from "../reducers";
+import { handleSignup } from "../reducers/authReducer";
 
 class Signup extends Component {
   state = {
@@ -135,8 +135,8 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => {
-  return state;
+const mapStateToProps = ({ auth }) => {
+  return auth;
 };
 
 const mapDispatchToProps = dispatch => {

@@ -1,5 +1,5 @@
-import api from "./api";
-import { saveToken, removeToken, parseToken, isAuthed } from "./tokenUtils";
+import api from "../api";
+import { saveToken, removeToken, parseToken, isAuthed } from "../tokenUtils";
 
 const AUTH_USER = "AUTH_USER";
 const UNAUTH_USER = "UNAUTH_USER";
@@ -76,7 +76,7 @@ const initialState = {
   signinError: {}
 };
 
-const appReducer = (state = initialState, action) => {
+const auth = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_USER:
       return {
@@ -107,4 +107,4 @@ const appReducer = (state = initialState, action) => {
   }
 };
 
-export default appReducer;
+export default auth;

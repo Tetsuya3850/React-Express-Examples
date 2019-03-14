@@ -2,10 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { handleSignout } from "../reducers";
+import { handleSignout } from "../reducers/authReducer";
+import { isAuthed } from "../tokenUtils";
 
-const NavBar = ({ uid, history, handleSignout }) =>
-  uid === null ? (
+const NavBar = ({ history, handleSignout }) =>
+  !isAuthed() ? (
     <div style={styles.container}>
       <NavLink
         exact

@@ -3,17 +3,16 @@ import { connect } from "react-redux";
 
 class Profile extends Component {
   render() {
-    const { uid } = this.props;
     return (
       <div>
-        <p>Your uid is {uid}</p>
+        <p>Profile</p>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return state;
+const mapStateToProps = ({ auth }) => {
+  return auth;
 };
 
 const mapDispatchToProps = dispatch => ({});

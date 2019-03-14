@@ -32,14 +32,10 @@ class AddTodo extends Component {
         <TextInput
           style={styles.textInput}
           value={this.state.text}
-          placeholder={"What to get done?"}
-          onChangeText={this.handleChangeText}
+          placeholder="What to get done?"
           maxLength={25}
-          returnKeyType="go"
+          onChangeText={this.handleChangeText}
           onSubmitEditing={this.onHandleAddTodo}
-          {...(Platform.OS === "ios"
-            ? { clearButtonMode: "while-editing" }
-            : {})}
         />
       </View>
     );

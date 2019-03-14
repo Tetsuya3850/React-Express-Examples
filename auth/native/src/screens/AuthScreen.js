@@ -39,7 +39,7 @@ class AuthScreen extends React.Component {
           <TextInput
             style={styles.textInput}
             value={email}
-            placeholder={"Email"}
+            placeholder="Email"
             onChangeText={text => this.setState({ email: text })}
           />
         </View>
@@ -48,7 +48,7 @@ class AuthScreen extends React.Component {
           <TextInput
             style={styles.textInput}
             value={password}
-            placeholder={"Password"}
+            placeholder="Password"
             onChangeText={text => this.setState({ password: text })}
             onSubmitEditing={this.handleFormSubmit}
           />

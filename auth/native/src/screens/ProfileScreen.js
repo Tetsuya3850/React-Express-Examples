@@ -24,7 +24,7 @@ class ProfileScreen extends Component {
         <Text>Your uid is {uid}</Text>
         <Text>Your user name is {userInfo.name}</Text>
         <Text>Your email address is {userInfo.email}</Text>
-        <Button title="Actually, sign me out :)" onPress={this._signOutAsync} />
+        <Button title="Sign out" onPress={this._signOutAsync} />
       </View>
     );
   }

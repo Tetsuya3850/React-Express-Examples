@@ -1,6 +1,6 @@
 const Comment = require("./commentModel");
 
-module.exports.getCommnetByPost = async (req, res) => {
+module.exports.getCommnetByArticle = async (req, res) => {
   try {
     const comments = await Comment.find({ postId: req.params.postId });
     res.status(200).json(comments);

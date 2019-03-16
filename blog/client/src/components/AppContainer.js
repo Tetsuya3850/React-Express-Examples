@@ -11,6 +11,7 @@ import Signin from "./Signin";
 import NewArticle from "./NewArticle";
 import User from "./User";
 import ArticleDetail from "./ArticleDetail";
+import EditArticle from "./EditArticle";
 
 class AppContainer extends Component {
   render() {
@@ -32,7 +33,14 @@ class AppContainer extends Component {
           <Route path="/signin" component={Signin} />
           <PrivateRoute path="/new-article" component={NewArticle} />
           <PrivateRoute path="/users/:userId" component={User} />
-          <PrivateRoute path="/articles/:articleId" component={ArticleDetail} />
+          <PrivateRoute
+            path="/articles/edit/:articleId"
+            component={EditArticle}
+          />
+          <PrivateRoute
+            path="/articles/details/:articleId"
+            component={ArticleDetail}
+          />
         </div>
       </Router>
     );

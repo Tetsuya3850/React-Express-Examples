@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { handleGetArticle } from "../reducers/articlesReducer";
+import { isAuthed } from "../tokenUtils";
+import * as api from "../api";
 
 class ArticleDetail extends Component {
   componentDidMount() {
@@ -11,11 +13,23 @@ class ArticleDetail extends Component {
   }
 
   render() {
-    const { article, authorInfo } = this.props;
+    const { article, authorInfo, history } = this.props;
+    const isOwner = isAuthed() === article.author;
     return (
       <div>
         <h3>Title: {article.title}</h3>
-        <Link to={`users/${article.author}`}>Author: {authorInfo.name}</Link>
+        <Link to={`/users/${article.author}`}>Author: {authorInfo.name}</Link>
+        {isOwner && <p>Edit</p>}
+        {isOwner && (
+          <p
+            onClick={() => {
+              api.deleteArticle(article._id);
+              history.push("/");
+            }}
+          >
+            Delete
+          </p>
+        )}
         <p>Text: {article.text}</p>
       </div>
     );

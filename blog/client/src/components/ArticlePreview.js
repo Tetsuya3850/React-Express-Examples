@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 const ArticlePreview = ({ article, authorInfo }) => (
   <div>
     <hr />
-    <Link to={`articles/${article._id}`}>
+    <Link to={`/articles/details/${article._id}`}>
       <h3>Title: {article.title}</h3>
     </Link>
-    <Link to={`users/${article.author}`}>Author: {authorInfo.name}</Link>
+    <Link to={`/users/${article.author}`}>Author: {authorInfo.name}</Link>
     <p>Text: {article.text}</p>
   </div>
 );

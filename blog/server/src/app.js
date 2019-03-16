@@ -11,7 +11,6 @@ const mongoDB =
 const { protect } = require("./user/userModel");
 const userRoutes = require("./user/userRoutes");
 const articleRoutes = require("./article/articleRoutes");
-const commentRoutes = require("./comment/commentRoutes");
 
 const start = () => {
   const app = express();
@@ -23,7 +22,6 @@ const start = () => {
 
   app.use("/users", userRoutes);
   app.use("/articles", protect, articleRoutes);
-  app.use("/comments", protect, commentRoutes);
 
   return new Promise(resolve => {
     mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });

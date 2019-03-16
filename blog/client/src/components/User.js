@@ -1,33 +1,58 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { handleGetArticlesByUser } from "../reducers/articlesReducer";
+import { handleFetchUserFeed } from "../reducers/userFeedReducer";
+import ArticlePreview from "./ArticlePreview";
 
 class User extends Component {
   componentDidMount() {
-    const { match, handleGetArticlesByUser } = this.props;
-
-    handleGetArticlesByUser(match.params.userId);
+    const { match, handleFetchUserFeed } = this.props;
+    handleFetchUserFeed(match.params.userId);
   }
+
   render() {
-    const { user } = this.props;
+    const { isFetching, error, userInfo, userArticleIds } = this.props;
+
     return (
       <div>
-        <h3>{user.name}</h3>
+        <p>{userInfo.name}</p>
+        {isFetching ? (
+          <p>LOADING</p>
+        ) : (
+          <div>
+            {userArticleIds.map(articleId => (
+              <ArticlePreview key={articleId} articleId={articleId} />
+            ))}
+          </div>
+        )}
+        <p style={styles.error}>{error}</p>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ articles, users }, { match }) => {
-  const user = users[match.params.userId] ? users[match.params.userId] : {};
+const styles = {
+  error: {
+    color: "red"
+  }
+};
+
+const mapStateToProps = ({ users, userFeed }, { match }) => {
+  const userInfo = users[match.params.userId] ? users[match.params.userId] : {};
+  const userArticleIds = userFeed.userFeedByIds[match.params.userId]
+    ? userFeed.userFeedByIds[match.params.userId]
+    : [];
+  const { isFetching, error } = userFeed;
   return {
-    user
+    isFetching,
+    error,
+    userInfo,
+    userArticleIds
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleGetArticlesByUser }, dispatch);
+  return bindActionCreators({ handleFetchUserFeed }, dispatch);
 };
 
 export default connect(

@@ -1,11 +1,17 @@
 import React, { Component } from "react";
 import * as api from "../api";
 
-class NewArticle extends Component {
+class EditArticle extends Component {
   state = {
     title: "",
     text: ""
   };
+
+  async componentDidMount() {
+    const { data } = await api.getArticle(this.props.match.params.articleId);
+    const { _id, title, text, author } = data;
+    this.setState({ _id, title, text, author: author._id });
+  }
 
   handleInputChange = event => {
     const target = event.target;
@@ -20,9 +26,9 @@ class NewArticle extends Component {
     event.preventDefault();
     const { title, text } = this.state;
     if (title && text) {
-      const payload = { title, text, author: this.props.authedId };
+      const payload = this.state;
       try {
-        await api.addArticle(payload);
+        await api.editArticle(payload);
         this.props.history.push("/");
       } catch (error) {
         console.log(error);
@@ -35,7 +41,7 @@ class NewArticle extends Component {
 
     return (
       <form onSubmit={this.handleFormSubmit}>
-        <h3>New Article Form</h3>
+        <h3>Edit Article Form</h3>
 
         <div>
           <div>
@@ -73,4 +79,4 @@ class NewArticle extends Component {
   }
 }
 
-export default NewArticle;
+export default EditArticle;

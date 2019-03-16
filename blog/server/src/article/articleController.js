@@ -1,9 +1,22 @@
 const Article = require("./articleModel");
 
-module.exports.getArticles = async (req, res) => {
+module.exports.postArticle = async (req, res) => {
+  if (!req.body.title || !req.body.text) {
+    return res.status(400).end();
+  }
+
+  try {
+    await Article.create(req.body);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).end();
+  }
+};
+
+module.exports.getFeed = async (req, res) => {
   try {
     const articles = await Article.find()
-      .populate("author")
+      .populate("author", { password: 0 })
       .sort({ createdAt: -1 });
     res.status(200).json(articles);
   } catch (error) {
@@ -14,7 +27,8 @@ module.exports.getArticles = async (req, res) => {
 module.exports.getArticle = async (req, res) => {
   try {
     const article = await Article.findById(req.params.articleId).populate(
-      "author"
+      "author",
+      { password: 0 }
     );
     res.status(200).json(article);
   } catch (error) {
@@ -22,10 +36,11 @@ module.exports.getArticle = async (req, res) => {
   }
 };
 
-module.exports.getArticlesByUser = async (req, res) => {
+module.exports.getUserFeed = async (req, res) => {
   try {
     const articles = await Article.find({ author: req.params.userId }).populate(
-      "author"
+      "author",
+      { password: 0 }
     );
     res.status(200).json(articles);
   } catch (error) {
@@ -33,36 +48,17 @@ module.exports.getArticlesByUser = async (req, res) => {
   }
 };
 
-module.exports.postArticle = async (req, res) => {
-  if (
-    !req.body.title ||
-    req.body.text.title > 50 ||
-    !req.body.text ||
-    req.body.text.length > 1000
-  ) {
-    return res.status(400).end();
-  }
-
-  try {
-    const article = await Article.create(req.body);
-    res.sendStatus(200);
-  } catch (error) {
-    res.status(500).end();
-  }
-};
-
 module.exports.editArticle = async (req, res) => {
-  if (
-    !req.body.title ||
-    req.body.text.title > 50 ||
-    !req.body.text ||
-    req.body.text.length > 1000
-  ) {
+  if (!req.user._id.equals(req.body.author)) {
+    return res.status(401).end();
+  }
+
+  if (!req.body.title || !req.body.text) {
     return res.status(400).end();
   }
 
   try {
-    const article = await Article.findByIdAndUpdate(req.body._id, req.body, {
+    await Article.findOneAndUpdate({ _id: req.body._id }, req.body, {
       runValidators: true
     });
     res.sendStatus(200);

@@ -1,4 +1,4 @@
-import api from "../api";
+import * as api from "../api";
 import { addArticles } from "./articlesReducer";
 import { addUsers } from "./usersReducer";
 import { normalize } from "normalizr";

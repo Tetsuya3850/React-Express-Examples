@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import api from "../api";
+import * as api from "../api";
 import { saveToken } from "../tokenUtils";
 
 class Signup extends Component {

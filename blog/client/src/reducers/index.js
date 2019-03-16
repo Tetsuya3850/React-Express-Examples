@@ -1,8 +1,8 @@
-import auth from "./authReducer";
-import article from "./articleReducer";
-import feed from "./feedReducer";
 import { combineReducers } from "redux";
+import articles from "./articlesReducer";
+import feed from "./feedReducer";
+import users from "./usersReducer";
 
-const appReducer = combineReducers({ auth, article, feed });
+const appReducer = combineReducers({ articles, feed, users });
 
 export default appReducer;

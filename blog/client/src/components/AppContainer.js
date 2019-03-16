@@ -1,30 +1,38 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import AuthRoute from "./AuthRoute";
 import PrivateRoute from "./PrivateRoute";
-import NavBar from "./NavBar";
-import Home from "./Home";
+import AuthNavBar from "./AuthNavBar";
+import UnAuthNavBar from "./UnAuthNavBar";
+import Feed from "./Feed";
+import Hello from "./Hello";
 import Signup from "./Signup";
 import Signin from "./Signin";
 import NewArticle from "./NewArticle";
-import Profile from "./Profile";
-import NoMatch from "./NoMatch";
+import User from "./User";
+import ArticleDetail from "./ArticleDetail";
 
 class AppContainer extends Component {
   render() {
     return (
       <Router>
         <div style={styles.container}>
-          <NavBar />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/signin" component={Signin} />
-            <Route path="/new-article" component={NewArticle} />
-            <PrivateRoute path="/profile" component={Profile} />
-            <Route component={NoMatch} />
-          </Switch>
+          <AuthRoute
+            path="/"
+            authComponent={AuthNavBar}
+            unAuthComponent={UnAuthNavBar}
+          />
+          <AuthRoute
+            exact
+            path="/"
+            authComponent={Feed}
+            unAuthComponent={Hello}
+          />
+          <Route path="/signup" component={Signup} />
+          <Route path="/signin" component={Signin} />
+          <PrivateRoute path="/new-article" component={NewArticle} />
+          <PrivateRoute path="/users/:userId" component={User} />
+          <PrivateRoute path="/articles/:articleId" component={ArticleDetail} />
         </div>
       </Router>
     );

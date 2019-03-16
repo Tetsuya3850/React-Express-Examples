@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { handleSignin } from "../reducers/authReducer";
+import api from "../api";
+import { saveToken } from "../tokenUtils";
 
 class Signin extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
+    signinError: {}
   };
 
   handleInputChange = event => {
@@ -18,27 +18,30 @@ class Signin extends Component {
     });
   };
 
-  handleFormSubmit = event => {
+  handleFormSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
     if (email && password) {
-      const payload = { email, password };
-      this.props.handleSignin(payload, () => {
-        this.setState({
-          email: "",
-          password: ""
-        });
+      try {
+        const payload = { email, password };
+        const { data } = await api.signin(payload);
+        saveToken(data.token);
         const { from } = this.props.location.state || {
-          from: { pathname: "/profile" }
+          from: { pathname: "/" }
         };
         this.props.history.push(from.pathname);
-      });
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          const { data } = error.response;
+          this.setState({ signinError: data });
+        }
+      }
     }
   };
 
   render() {
-    const { signinError } = this.props;
-    const { email, password } = this.state;
+    const { email, password, signinError } = this.state;
 
     return (
       <form onSubmit={this.handleFormSubmit}>
@@ -72,9 +75,6 @@ class Signin extends Component {
             type="password"
             value={password}
             onChange={this.handleInputChange}
-            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
-            minLength="8"
-            title="Password must be at least 8 characters and include at least 1 uppercase character, 1 lowercase character, and 1 number."
             required
           />
         </div>
@@ -91,15 +91,4 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ auth }) => {
-  return auth;
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleSignin }, dispatch);
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signin);
+export default Signin;

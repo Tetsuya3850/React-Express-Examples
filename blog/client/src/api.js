@@ -13,11 +13,22 @@ const getFeed = () =>
   axios.get(`${SERVER_URL}/articles`, {
     headers: { authorization: `Bearer ${getToken()}` }
   });
+const getArticle = _id =>
+  axios.get(`${SERVER_URL}/articles/${_id}`, {
+    headers: { authorization: `Bearer ${getToken()}` }
+  });
+
+const getArticlesByUser = _id =>
+  axios.get(`${SERVER_URL}/articles/users/${_id}`, {
+    headers: { authorization: `Bearer ${getToken()}` }
+  });
 
 const api = {
   signup,
   signin,
   addArticle,
-  getFeed
+  getFeed,
+  getArticle,
+  getArticlesByUser
 };
 export default api;

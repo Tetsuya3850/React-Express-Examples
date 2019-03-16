@@ -1,5 +1,8 @@
 import api from "../api";
-import { addArticles } from "./articleReducer";
+import { addArticles } from "./articlesReducer";
+import { addUsers } from "./usersReducer";
+import { normalize } from "normalizr";
+import { article } from "./schema";
 
 const FETCH_FEED_REQUEST = "FETCH_FEED_REQUEST";
 const FETCH_FEED_FAILURE = "FETCH_FEED_FAILURE";
@@ -14,23 +17,25 @@ const fetchFeedFailure = error => ({
   error: "Something Went Wrong!"
 });
 
-const fetchFeedSuccess = payload => ({
+const fetchFeedSuccess = data => ({
   type: FETCH_FEED_SUCCESS,
-  payload
+  data
 });
 
-export const handleFetchFeed = () => async dispatch => {
+export const handleFetchFeed = () => async (dispatch, getState) => {
+  const { feed } = getState();
+  if (feed.isFetching) {
+    return;
+  }
   dispatch(fetchFeedRequest);
   try {
     const { data } = await api.getFeed();
-    const feedIds = data.map(article => article._id);
-    const normalizedArticles = {};
-    data.forEach(article => {
-      normalizedArticles[article._id] = { ...article };
-    });
-    dispatch(addArticles(normalizedArticles));
-    dispatch(fetchFeedSuccess(feedIds));
+    const normalizedData = normalize(data, [article]);
+    dispatch(addArticles(normalizedData.entities.articles));
+    dispatch(addUsers(normalizedData.entities.users));
+    dispatch(fetchFeedSuccess(normalizedData.result));
   } catch (error) {
+    console.log(error);
     dispatch(fetchFeedFailure(error));
   }
 };
@@ -59,7 +64,7 @@ const feed = (state = initialState, action) => {
         ...state,
         isFetching: false,
         error: "",
-        feedByIds: action.payload
+        feedByIds: action.data
       };
     default:
       return state;

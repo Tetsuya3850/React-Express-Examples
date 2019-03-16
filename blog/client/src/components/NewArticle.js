@@ -20,13 +20,13 @@ class NewArticle extends Component {
     event.preventDefault();
     const { title, text } = this.state;
     if (title && text) {
-      const payload = { title, text };
-      await api.addArticle(payload);
-      this.setState({
-        title: "",
-        text: ""
-      });
-      this.props.history.push("/");
+      const payload = { title, text, author: this.props.authedId };
+      try {
+        await api.addArticle(payload);
+        this.props.history.push("/");
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

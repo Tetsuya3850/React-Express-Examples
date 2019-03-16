@@ -2,12 +2,13 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isAuthed } from "../tokenUtils";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+const PrivateRoute = ({ authedId, component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      isAuthed() ? (
-        <Component {...props} />
+    render={props => {
+      const authedId = isAuthed();
+      return authedId ? (
+        <Component {...props} authedId={authedId} />
       ) : (
         <Redirect
           to={{
@@ -15,8 +16,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
             state: { from: props.location }
           }}
         />
-      )
-    }
+      );
+    }}
   />
 );
 

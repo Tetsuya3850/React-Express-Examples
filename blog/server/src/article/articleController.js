@@ -2,7 +2,9 @@ const Article = require("./articleModel");
 
 module.exports.getArticles = async (req, res) => {
   try {
-    const articles = await Article.find().sort({ createdAt: -1 });
+    const articles = await Article.find()
+      .populate("author")
+      .sort({ createdAt: -1 });
     res.status(200).json(articles);
   } catch (error) {
     res.status(500).end();
@@ -11,7 +13,9 @@ module.exports.getArticles = async (req, res) => {
 
 module.exports.getArticle = async (req, res) => {
   try {
-    const article = await Article.findById(req.params.articleId);
+    const article = await Article.findById(req.params.articleId).populate(
+      "author"
+    );
     res.status(200).json(article);
   } catch (error) {
     res.status(500).end();
@@ -20,7 +24,9 @@ module.exports.getArticle = async (req, res) => {
 
 module.exports.getArticlesByUser = async (req, res) => {
   try {
-    const articles = await Article.find({ userId: req.params.userId });
+    const articles = await Article.find({ author: req.params.userId }).populate(
+      "author"
+    );
     res.status(200).json(articles);
   } catch (error) {
     res.status(500).end();

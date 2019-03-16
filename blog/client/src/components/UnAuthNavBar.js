@@ -3,20 +3,20 @@ import { NavLink } from "react-router-dom";
 
 const UnAuthNavBar = () => (
   <div style={styles.container}>
-    <NavLink exact to="/" style={styles.leftNav} activeStyle={{ color: "red" }}>
+    <NavLink to="/" exact activeStyle={{ color: "red" }} style={styles.leftNav}>
       Home
     </NavLink>
     <NavLink
       to="/signup"
-      style={styles.rightNavs}
       activeStyle={{ color: "red" }}
+      style={styles.rightNavs}
     >
       Signup
     </NavLink>
     <NavLink
       to="/signin"
-      style={styles.rightNavs}
       activeStyle={{ color: "red" }}
+      style={styles.rightNavs}
     >
       Signin
     </NavLink>

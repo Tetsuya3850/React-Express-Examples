@@ -49,10 +49,6 @@ module.exports.getUserFeed = async (req, res) => {
 };
 
 module.exports.editArticle = async (req, res) => {
-  if (!req.user._id.equals(req.body.author)) {
-    return res.status(401).end();
-  }
-
   if (!req.body.title || !req.body.text) {
     return res.status(400).end();
   }

@@ -27,7 +27,7 @@ export const handleFetchFeed = () => async (dispatch, getState) => {
   if (feed.isFetching) {
     return;
   }
-  dispatch(fetchFeedRequest);
+  dispatch(fetchFeedRequest());
   try {
     const { data } = await api.getFeed();
     const normalizedData = normalize(data, [article]);

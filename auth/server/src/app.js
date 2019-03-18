@@ -3,7 +3,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 3001;
 const mongoDB =
   process.env.NODE_ENV !== "test"
     ? process.env.MONGODB

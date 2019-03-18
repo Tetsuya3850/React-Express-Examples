@@ -1,7 +1,7 @@
 const Todo = require("./todoModel");
 
 module.exports.postTodo = async (req, res) => {
-  if (!req.body.text || req.body.text.length > 25) {
+  if (!req.body.text) {
     return res.status(400).end();
   }
 
@@ -24,7 +24,12 @@ module.exports.getTodos = async (req, res) => {
 
 module.exports.deleteTodo = async (req, res) => {
   try {
-    await Todo.deleteOne({ _id: req.params.todoId });
+    const deleted = await Todo.deleteOne({ _id: req.params.todoId });
+
+    if (!deleted) {
+      return res.status(400).end();
+    }
+
     res.sendStatus(200);
   } catch (error) {
     console.log(error);

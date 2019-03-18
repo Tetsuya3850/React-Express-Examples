@@ -42,15 +42,6 @@ test("todo text required to postTodo", async () => {
   });
 });
 
-test("todo text no longer than 25 characters", async () => {
-  const error = await api
-    .post("/todos", { ...testTodo, text: "abcdefghijklmnopqrstuvwxyz" })
-    .catch(getError);
-  expect(error).toMatchObject({
-    status: 400
-  });
-});
-
 test("successful postTodo", async () => {
   const todo = await api.post("/todos", testTodo).then(getData);
   expect(todo).toMatchObject({

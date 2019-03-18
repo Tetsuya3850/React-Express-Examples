@@ -4,8 +4,7 @@ const todoSchema = mongoose.Schema({
   text: {
     type: String,
     required: true,
-    trim: true,
-    maxlength: 25
+    trim: true
   },
   createdAt: {
     type: Date,

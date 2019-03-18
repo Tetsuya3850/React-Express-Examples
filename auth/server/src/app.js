@@ -21,7 +21,7 @@ const start = () => {
 
   app.post("/signup", userCtrl.signup);
   app.post("/signin", userCtrl.signin);
-  app.get("/users", protect, userCtrl.getUser);
+  app.get("/users/:userId", protect, userCtrl.getUser);
 
   return new Promise(resolve => {
     mongoose.connect(mongoDB, { useNewUrlParser: true, useCreateIndex: true });

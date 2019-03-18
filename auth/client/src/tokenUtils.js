@@ -21,7 +21,7 @@ export const parseToken = () => {
 export const isAuthed = () => {
   const token_info = parseToken();
   if (token_info && token_info.exp > Math.round(new Date() / 1000)) {
-    return token_info;
+    return token_info._id;
   } else {
     return false;
   }

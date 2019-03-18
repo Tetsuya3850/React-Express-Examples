@@ -2,17 +2,12 @@ import axios from "axios";
 import { getToken } from "./tokenUtils";
 
 const SERVER_URL = "https://auth-server-3850.herokuapp.com";
+axios.defaults.baseURL = SERVER_URL;
 
-const signup = payload => axios.post(`${SERVER_URL}/signup`, payload);
-const signin = payload => axios.post(`${SERVER_URL}/signin`, payload);
-const getUser = () =>
-  axios.get(`${SERVER_URL}/users`, {
-    headers: { authorization: `Bearer ${getToken()}` }
-  });
+const setAuthHeader = () => ({
+  headers: { authorization: `Bearer ${getToken()}` }
+});
 
-const api = {
-  signup,
-  signin,
-  getUser
-};
-export default api;
+export const signup = payload => axios.post(`/signup`, payload);
+export const signin = payload => axios.post(`/signin`, payload);
+export const getUser = userId => axios.get(`/users/${userId}`, setAuthHeader());

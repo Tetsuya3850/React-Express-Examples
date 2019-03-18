@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { handleSignup } from "../reducers";
+import * as api from "../api";
+import { saveToken } from "../tokenUtils";
 
 class Signup extends Component {
   state = {
@@ -9,7 +8,8 @@ class Signup extends Component {
     email: "",
     password: "",
     passwordConfirm: "",
-    unMatchPwdErr: ""
+    unMatchPwdErr: "",
+    signupError: {}
   };
 
   handleInputChange = event => {
@@ -21,38 +21,37 @@ class Signup extends Component {
     });
   };
 
-  handleFormSubmit = event => {
+  handleFormSubmit = async event => {
     event.preventDefault();
-
     if (this.state.password !== this.state.passwordConfirm) {
       this.setState({ unMatchPwdErr: "Doesn't match!" });
       return;
     }
-
     const { name, email, password } = this.state;
     if (name && email && password) {
-      const payLoad = { name, email, password };
-      this.props.handleSignup(payLoad, () => {
-        this.setState({
-          name: "",
-          email: "",
-          password: "",
-          passwordConfirm: "",
-          unMatchPwdErr: ""
-        });
-        this.props.history.push("/profile");
-      });
+      const payload = { name, email, password };
+      try {
+        const { data } = await api.signup(payload);
+        saveToken(data.token);
+        this.props.history.push("/");
+      } catch (error) {
+        if (error.response) {
+          console.log(error);
+          const { data } = error.response;
+          this.setState({ signupError: data });
+        }
+      }
     }
   };
 
   render() {
-    const { signupError } = this.props;
     const {
       name,
       email,
       password,
       passwordConfirm,
-      unMatchPwdErr
+      unMatchPwdErr,
+      signupError
     } = this.state;
 
     return (
@@ -134,18 +133,5 @@ const styles = {
     color: "red"
   }
 };
-
-const mapStateToProps = state => {
-  return state;
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleSignup }, dispatch);
-};
-
-Signup = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Signup);
 
 export default Signup;

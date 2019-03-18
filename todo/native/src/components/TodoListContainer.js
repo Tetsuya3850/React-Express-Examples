@@ -51,13 +51,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
 
 TodoListContainer = connect(
   mapStateToProps,

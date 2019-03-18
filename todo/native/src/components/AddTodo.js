@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, StyleSheet, Platform } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { handleAddTodo } from "../reducers";
@@ -33,7 +33,6 @@ class AddTodo extends Component {
           style={styles.textInput}
           value={this.state.text}
           placeholder="What to get done?"
-          maxLength={25}
           onChangeText={this.handleChangeText}
           onSubmitEditing={this.onHandleAddTodo}
         />
@@ -54,9 +53,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleAddTodo }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleAddTodo }, dispatch);
 
 AddTodo = connect(
   null,

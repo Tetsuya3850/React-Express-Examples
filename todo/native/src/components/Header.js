@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { Constants } from "expo";
 
-const Header = () => (
+const Header = ({ title }) => (
   <View style={styles.container}>
-    <Text style={styles.title}>Todo List</Text>
+    <Text style={styles.title}>{title}</Text>
   </View>
 );
 

@@ -29,7 +29,9 @@ class EditArticle extends Component {
       const payload = this.state;
       try {
         await api.editArticle(payload);
-        this.props.history.push("/");
+        this.props.history.push(
+          `/articles/details/${this.props.match.params.articleId}`
+        );
       } catch (error) {
         console.log(error);
       }
@@ -70,6 +72,8 @@ class EditArticle extends Component {
             value={text}
             onChange={this.handleInputChange}
             required
+            rows="15"
+            style={styles.textarea}
           />
         </div>
 
@@ -78,5 +82,11 @@ class EditArticle extends Component {
     );
   }
 }
+
+const styles = {
+  textarea: {
+    width: "100%"
+  }
+};
 
 export default EditArticle;

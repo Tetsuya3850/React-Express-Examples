@@ -64,6 +64,8 @@ class NewArticle extends Component {
             value={text}
             onChange={this.handleInputChange}
             required
+            rows="15"
+            style={styles.textarea}
           />
         </div>
 
@@ -72,5 +74,11 @@ class NewArticle extends Component {
     );
   }
 }
+
+const styles = {
+  textarea: {
+    width: "100%"
+  }
+};
 
 export default NewArticle;

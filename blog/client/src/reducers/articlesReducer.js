@@ -1,21 +1,9 @@
-import { normalize } from "normalizr";
-import { article } from "./schema";
-import * as api from "../api";
-import { addUsers } from "./usersReducer";
-
 const ADD_ARTICLES = "ADD_ARTICLES";
 
 export const addArticles = articles => ({
   type: ADD_ARTICLES,
   articles
 });
-
-export const handleGetArticle = _id => async dispatch => {
-  const { data } = await api.getArticle(_id);
-  const normalizedData = normalize(data, article);
-  dispatch(addArticles(normalizedData.entities.articles));
-  dispatch(addUsers(normalizedData.entities.users));
-};
 
 const initialState = {};
 

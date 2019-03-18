@@ -25,7 +25,10 @@ const UnAuthNavBar = () => (
 
 const styles = {
   container: {
-    display: "flex"
+    display: "flex",
+    paddingTop: "4px",
+    paddingBottom: "4px",
+    borderBottom: "1px solid grey"
   },
   leftNav: {
     flexGrow: 10

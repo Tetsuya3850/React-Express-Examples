@@ -8,7 +8,7 @@ module.exports.signup = async (req, res) => {
   try {
     const user = await User.create(req.body);
     const token = newToken(user);
-    return res.status(201).send({ token });
+    return res.status(200).send({ token });
   } catch (error) {
     console.error(error);
     if (error.code === 11000) {
@@ -36,7 +36,24 @@ module.exports.signin = async (req, res) => {
     }
 
     const token = newToken(user);
-    return res.status(201).send({ token });
+    return res.status(200).send({ token });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).end();
+  }
+};
+
+module.exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.params.userId }).select(
+      "-password"
+    );
+
+    if (!user) {
+      return res.status(400).end();
+    }
+
+    res.status(200).send(user);
   } catch (error) {
     console.error(error);
     return res.status(500).end();

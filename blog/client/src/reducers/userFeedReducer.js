@@ -30,10 +30,15 @@ export const handleFetchUserFeed = userId => async (dispatch, getState) => {
   }
   dispatch(fetchUserFeedRequest());
   try {
+    const response = await api.getUser(userId);
+    const normalizedUser = { [response.data._id]: response.data };
+    dispatch(addUsers(normalizedUser));
+
     const { data } = await api.getUserFeed(userId);
     const normalizedData = normalize(data, [article]);
     dispatch(addArticles(normalizedData.entities.articles));
     dispatch(addUsers(normalizedData.entities.users));
+
     dispatch(fetchUserFeedSuccess(userId, normalizedData.result));
   } catch (error) {
     console.log(error);

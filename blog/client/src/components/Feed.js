@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { bindActionCreators } from "redux";
 import { handleFetchFeed } from "../reducers/feedReducer";
 import ArticlePreview from "./ArticlePreview";
 
@@ -13,20 +12,21 @@ class Feed extends Component {
   render() {
     const { isFetching, error, feedByIds } = this.props;
 
+    if (isFetching) {
+      return <div>LOADING...</div>;
+    }
+
+    if (!isFetching && error) {
+      return <div style={styles.error}>{error}</div>;
+    }
+
     return (
       <div>
-        <p>Feed!</p>
-        <Link to="new-article">New Article</Link>
-        {isFetching ? (
-          <p>LOADING</p>
-        ) : (
-          <div>
-            {feedByIds.map(articleId => (
-              <ArticlePreview key={articleId} articleId={articleId} />
-            ))}
-          </div>
-        )}
-        <p style={styles.error}>{error}</p>
+        <div>
+          {feedByIds.map(articleId => (
+            <ArticlePreview key={articleId} articleId={articleId} />
+          ))}
+        </div>
       </div>
     );
   }
@@ -40,9 +40,8 @@ const styles = {
 
 const mapStateToProps = ({ feed }) => feed;
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleFetchFeed }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleFetchFeed }, dispatch);
 
 export default connect(
   mapStateToProps,

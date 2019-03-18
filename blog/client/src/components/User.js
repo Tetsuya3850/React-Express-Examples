@@ -13,19 +13,22 @@ class User extends Component {
   render() {
     const { isFetching, error, userInfo, userArticleIds } = this.props;
 
+    if (isFetching) {
+      return <div>LOADING...</div>;
+    }
+
+    if (!isFetching && error) {
+      return <div style={styles.error}>{error}</div>;
+    }
+
     return (
       <div>
-        <p>{userInfo.name}</p>
-        {isFetching ? (
-          <p>LOADING</p>
-        ) : (
-          <div>
-            {userArticleIds.map(articleId => (
-              <ArticlePreview key={articleId} articleId={articleId} />
-            ))}
-          </div>
-        )}
-        <p style={styles.error}>{error}</p>
+        <div>{userInfo.name}</div>
+        <div>
+          {userArticleIds.map(articleId => (
+            <ArticlePreview key={articleId} articleId={articleId} />
+          ))}
+        </div>
       </div>
     );
   }

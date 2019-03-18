@@ -6,8 +6,8 @@ module.exports.postArticle = async (req, res) => {
   }
 
   try {
-    await Article.create(req.body);
-    res.sendStatus(200);
+    const article = await Article.create(req.body);
+    res.status(200).json(article);
   } catch (error) {
     res.status(500).end();
   }
@@ -26,12 +26,17 @@ module.exports.getFeed = async (req, res) => {
 
 module.exports.getArticle = async (req, res) => {
   try {
-    const article = await Article.findById(req.params.articleId).populate(
-      "author",
-      { password: 0 }
-    );
+    const article = await Article.findOne({
+      _id: req.params.articleId
+    }).populate("author", { password: 0 });
+
+    if (!article) {
+      return res.status(400).end();
+    }
+
     res.status(200).json(article);
   } catch (error) {
+    console.error(error);
     res.status(500).end();
   }
 };
@@ -44,6 +49,7 @@ module.exports.getUserFeed = async (req, res) => {
     );
     res.status(200).json(articles);
   } catch (error) {
+    console.error(error);
     res.status(500).end();
   }
 };
@@ -54,18 +60,37 @@ module.exports.editArticle = async (req, res) => {
   }
 
   try {
-    await Article.findOneAndUpdate({ _id: req.body._id }, req.body, {
-      runValidators: true
-    });
-    res.sendStatus(200);
+    const editedArticle = await Article.findOneAndUpdate(
+      { _id: req.body._id, author: req.user._id },
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!editedArticle) {
+      return res.status(400).end();
+    }
+
+    res.status(200).json(editedArticle);
   } catch (error) {
+    console.error(error);
     res.status(500).end();
   }
 };
 
 module.exports.deleteArticle = async (req, res) => {
   try {
-    await Article.deleteOne({ _id: req.params.articleId });
+    const deleted = await Article.deleteOne({
+      _id: req.params.articleId,
+      author: req.user._id
+    });
+
+    if (!deleted) {
+      return res.status(400).end();
+    }
+
     res.sendStatus(200);
   } catch (error) {
     res.status(500).end();

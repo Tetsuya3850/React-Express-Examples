@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
-import { handleGetArticle } from "../reducers/articlesReducer";
+import { handleGetArticle } from "../reducers/detailReducer";
 import { isAuthed } from "../tokenUtils";
 import * as api from "../api";
 
@@ -13,35 +13,71 @@ class ArticleDetail extends Component {
   }
 
   render() {
-    const { article, authorInfo, history } = this.props;
+    const { detail, article, authorInfo, history } = this.props;
+    const { isFetching, error } = detail;
     const isOwner = isAuthed() === article.author;
+
+    if (isFetching) {
+      return <div>LOADING...</div>;
+    }
+
+    if (!isFetching && error) {
+      return <div style={styles.error}>{error}</div>;
+    }
+
     return (
       <div>
-        <h3>Title: {article.title}</h3>
-        <Link to={`/users/${article.author}`}>Author: {authorInfo.name}</Link>
-        {isOwner && <p>Edit</p>}
-        {isOwner && (
-          <p
-            onClick={() => {
-              api.deleteArticle(article._id);
-              history.push("/");
-            }}
-          >
-            Delete
-          </p>
-        )}
-        <p>Text: {article.text}</p>
+        <div style={styles.title}>
+          <div>{article.title}</div>
+          {isOwner && (
+            <div>
+              <Link to={`/articles/edit/${article._id}`}>Edit</Link>
+              <span
+                onClick={() => {
+                  api.deleteArticle(article._id);
+                  history.push(`/`);
+                }}
+                style={styles.deleteBtn}
+              >
+                Delete
+              </span>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <span>by </span>
+          <Link to={`/users/${article.author}`}>{authorInfo.name}</Link>
+        </div>
+
+        <p>{article.text}</p>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ articles, users }, { match }) => {
+const styles = {
+  error: {
+    color: "red"
+  },
+  title: {
+    display: "flex",
+    justifyContent: "space-between",
+    paddingTop: "4px",
+    paddingBottom: "4px"
+  },
+  deleteBtn: {
+    cursor: "pointer"
+  }
+};
+
+const mapStateToProps = ({ articles, users, detail }, { match }) => {
   const article = articles[match.params.articleId]
     ? articles[match.params.articleId]
     : {};
   const authorInfo = users[article.author] ? users[article.author] : {};
   return {
+    detail,
     article,
     authorInfo
   };

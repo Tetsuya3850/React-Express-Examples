@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const articleSchema = new mongoose.Schema({
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: "User"
-  },
   title: {
     type: String,
     required: true,
@@ -15,6 +11,11 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true
   },
   createdAt: {
     type: Date,

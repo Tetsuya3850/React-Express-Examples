@@ -4,9 +4,9 @@ import appReducer from "./reducers/index";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
-  appReducer,
-  composeEnhancers(applyMiddleware(thunkMiddleware))
-);
-
-export default store;
+export default function configureStore() {
+  return createStore(
+    appReducer,
+    composeEnhancers(applyMiddleware(thunkMiddleware))
+  );
+}

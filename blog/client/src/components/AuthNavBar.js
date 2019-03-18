@@ -14,12 +14,19 @@ const AuthNavBar = ({ history, authedId }) => (
     >
       Profile
     </NavLink>
+    <NavLink
+      to="/new-article"
+      activeStyle={{ color: "red" }}
+      style={styles.rightNavs}
+    >
+      New Article
+    </NavLink>
     <div
       onClick={() => {
         removeToken();
         history.push("/");
       }}
-      style={styles.rightNavs}
+      style={{ ...styles.rightNavs, ...styles.logoutBtn }}
     >
       Logout
     </div>
@@ -28,13 +35,19 @@ const AuthNavBar = ({ history, authedId }) => (
 
 const styles = {
   container: {
-    display: "flex"
+    display: "flex",
+    paddingTop: "4px",
+    paddingBottom: "4px",
+    borderBottom: "1px solid grey"
   },
   leftNav: {
-    flexGrow: 10
+    flexGrow: 4
   },
   rightNavs: {
     flexGrow: 1
+  },
+  logoutBtn: {
+    cursor: "pointer"
   }
 };
 

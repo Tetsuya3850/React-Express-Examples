@@ -1,4 +1,4 @@
-import api from "./api";
+import * as api from "./api";
 
 const FETCH_TODOS_REQUEST = "FETCH_TODOS_REQUEST";
 const FETCH_TODOS_FAILURE = "FETCH_TODOS_FAILURE";
@@ -8,59 +8,59 @@ const ADD_TODO_FAILURE = "ADD_TODO_FAILURE";
 const DELETE_TODO = "DELETE_TODO";
 const DELETE_TODO_FAILURE = "DELETE_TODO_FAILURE";
 
-export const fetchTodosRequest = () => ({
+const fetchTodosRequest = () => ({
   type: FETCH_TODOS_REQUEST
 });
 
-export const fetchTodosSuccess = data => ({
+const fetchTodosSuccess = todos => ({
   type: FETCH_TODOS_SUCCESS,
-  payload: data
+  todos
 });
 
-export const fetchTodosFailure = error => ({
+const fetchTodosFailure = error => ({
   type: FETCH_TODOS_FAILURE,
-  error: "Something went wrong!"
-});
-
-export const addTodo = new_todo => ({
-  type: ADD_TODO,
-  payload: new_todo
-});
-
-export const addTodoFailure = error => ({
-  type: ADD_TODO_FAILURE,
-  error: "Something went wrong!"
-});
-
-export const deleteTodo = _id => ({
-  type: DELETE_TODO,
-  payload: _id
-});
-
-export const deleteTodoFailure = error => ({
-  type: DELETE_TODO_FAILURE,
   error: "Something went wrong!"
 });
 
 export const handleFetchTodos = () => async dispatch => {
   dispatch(fetchTodosRequest());
   try {
-    let { data } = await api.fetchTodos();
+    const { data } = await api.fetchTodos();
     dispatch(fetchTodosSuccess(data));
   } catch (error) {
     dispatch(fetchTodosFailure(error));
   }
 };
 
-export const handleAddTodo = (text, cleanup) => async dispatch => {
+const addTodo = todo => ({
+  type: ADD_TODO,
+  todo
+});
+
+const addTodoFailure = error => ({
+  type: ADD_TODO_FAILURE,
+  error: "Something went wrong!"
+});
+
+export const handleAddTodo = (payload, cleanup) => async dispatch => {
   try {
-    let { data } = await api.addTodo(text);
+    const { data } = await api.addTodo(payload);
     dispatch(addTodo(data));
     cleanup();
   } catch (error) {
     dispatch(addTodoFailure(error));
   }
 };
+
+const deleteTodo = _id => ({
+  type: DELETE_TODO,
+  _id
+});
+
+const deleteTodoFailure = error => ({
+  type: DELETE_TODO_FAILURE,
+  error: "Something went wrong!"
+});
 
 export const handleDeleteTodo = _id => async dispatch => {
   try {
@@ -84,24 +84,24 @@ const appReducer = (state = initialState, action) => {
         ...state,
         isFetching: true
       };
+    case FETCH_TODOS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        error: "",
+        todos: action.todos
+      };
     case FETCH_TODOS_FAILURE:
       return {
         ...state,
         isFetching: false,
         error: action.error
       };
-    case FETCH_TODOS_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        error: "",
-        todos: action.payload
-      };
     case ADD_TODO:
       return {
         ...state,
         error: "",
-        todos: [...[action.payload], ...state.todos]
+        todos: [action.todo].concat(state.todos)
       };
     case ADD_TODO_FAILURE:
       return {
@@ -112,7 +112,7 @@ const appReducer = (state = initialState, action) => {
       return {
         ...state,
         error: "",
-        todos: state.todos.filter(t => t._id !== action.payload)
+        todos: state.todos.filter(t => t._id !== action._id)
       };
     case DELETE_TODO_FAILURE:
       return {

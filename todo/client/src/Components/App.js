@@ -17,7 +17,7 @@ class App extends Component {
 
 const styles = {
   container: {
-    width: 300,
+    width: 320,
     position: "relative",
     margin: "0 auto"
   }

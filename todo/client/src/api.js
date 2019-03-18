@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const SERVER_URL = "https://todo-server-3850.herokuapp.com";
-const fetchTodos = () => axios.get(`${SERVER_URL}/todos`);
-const addTodo = new_todo => axios.post(`${SERVER_URL}/todos`, new_todo);
-const deleteTodo = _id => axios.delete(`${SERVER_URL}/todos/${_id}`);
+axios.defaults.baseURL = SERVER_URL;
 
-const api = { fetchTodos, addTodo, deleteTodo };
-export default api;
+export const fetchTodos = () => axios.get(`/todos`);
+export const addTodo = new_todo => axios.post(`/todos`, new_todo);
+export const deleteTodo = _id => axios.delete(`/todos/${_id}`);

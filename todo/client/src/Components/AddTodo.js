@@ -32,20 +32,18 @@ class AddTodo extends Component {
           value={this.state.text}
           onChange={this.handleChangeText}
           required
-          maxLength={25}
           placeholder="What to get done?"
           type="text"
           autoFocus
         />
-        <button type="submit">Go!</button>
+        <button type="submit">Do!</button>
       </form>
     );
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleAddTodo }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleAddTodo }, dispatch);
 
 export default connect(
   null,

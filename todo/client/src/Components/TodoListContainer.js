@@ -15,7 +15,7 @@ class TodoListContainer extends Component {
     return (
       <div>
         {isFetching ? (
-          <p>LOADING</p>
+          <p>LOADING...</p>
         ) : (
           <ul>
             {todos.map(todo => (
@@ -39,13 +39,10 @@ const styles = {
   }
 };
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = state => state;
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
-};
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ handleFetchTodos, handleDeleteTodo }, dispatch);
 
 export default connect(
   mapStateToProps,

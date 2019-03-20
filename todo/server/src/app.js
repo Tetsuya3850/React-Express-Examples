@@ -10,6 +10,12 @@ const mongoDB =
     : process.env.MONGODBTEST;
 const todoCtrl = require("./todoController");
 
+const catchErrors = fn => {
+  return function(req, res, next) {
+    return fn(req, res, next).catch(next);
+  };
+};
+
 const start = () => {
   const app = express();
 
@@ -18,9 +24,9 @@ const start = () => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
 
-  app.post("/todos", todoCtrl.postTodo);
-  app.get("/todos", todoCtrl.getTodos);
-  app.delete("/todos/:todoId", todoCtrl.deleteTodo);
+  app.post("/todos", catchErrors(todoCtrl.postTodo));
+  app.get("/todos", catchErrors(todoCtrl.getTodos));
+  app.delete("/todos/:todoId", catchErrors(todoCtrl.deleteTodo));
 
   return new Promise(resolve => {
     mongoose.connect(mongoDB, { useNewUrlParser: true });

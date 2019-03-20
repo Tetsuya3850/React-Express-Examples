@@ -1,4 +1,4 @@
-# A collection of basic apps built with React, React Native, and Express.
+## A collection of basic apps built with React, React Native, and Express.
 
 ### Tech Stack
 

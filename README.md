@@ -14,6 +14,8 @@ A collection of basic apps built with React, React Native, and Express.
 - [React Navigation](https://reactnavigation.org/)
 - [Express](https://expressjs.com/)
 - [JSON Web Tokens](https://github.com/auth0/node-jsonwebtoken)
+- [mLab](https://mlab.com/home)
+- [Mongoose](http://mongoosejs.com/)
 - [Axios](https://github.com/axios/axios)
 - [Jest](https://jestjs.io/)
 
@@ -29,6 +31,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [API Design in Node.js, v3](https://frontendmasters.com/courses/api-design-nodejs-v3/)
 - [Secure Authentication for Web Apps & APIs Using JWTs](https://frontendmasters.com/courses/secure-auth-jwt/)
 - [JavaScript Testing Practices and Principles](https://frontendmasters.com/courses/testing-practices-principles/)
+- [M220JS: MongoDB for Javascript Developers](https://university.mongodb.com/courses/M220JS/about)
 
 ## Try it
 

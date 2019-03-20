@@ -14,6 +14,8 @@ A collection of basic apps built with React, React Native, and Express.
 - [React Navigation](https://reactnavigation.org/)
 - [Express](https://expressjs.com/)
 - [JSON Web Tokens](https://github.com/auth0/node-jsonwebtoken)
+- [Axios](https://github.com/axios/axios)
+- [Jest](https://jestjs.io/)
 
 ## Learning Resources
 

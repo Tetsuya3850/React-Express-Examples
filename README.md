@@ -1,6 +1,6 @@
-A collection of basic apps built with React, React Native, and Express.
+# A collection of basic apps built with React, React Native, and Express.
 
-## Tech Stack
+### Tech Stack
 
 - [React](https://reactjs.org/)
 - [Redux](http://redux.js.org/)
@@ -19,7 +19,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [Axios](https://github.com/axios/axios)
 - [Jest](https://jestjs.io/)
 
-## Learning Resources
+### Learning Resources
 
 - [tylermcginnis.com](https://tylermcginnis.com/)
 - [Complete Intro to React](https://frontendmasters.com/courses/react/)
@@ -33,7 +33,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [JavaScript Testing Practices and Principles](https://frontendmasters.com/courses/testing-practices-principles/)
 - [M220JS: MongoDB for Javascript Developers](https://university.mongodb.com/courses/M220JS/about)
 
-## Demo
+### Demo
 
 Todo
 

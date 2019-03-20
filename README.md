@@ -37,16 +37,13 @@ A collection of basic apps built with React, React Native, and Express.
 
 Todo
 
-- Web
-  (https://todo-client-3850.herokuapp.com/)
+- Web (https://todo-client-3850.herokuapp.com/)
 
-- Native
-  (https://exp.host/@tetsuya3850/todo)
+- Native (https://exp.host/@tetsuya3850/todo)
 
 Auth
 
-- Web
-  (https://auth-client-3850.herokuapp.com/)
+- Web (https://auth-client-3850.herokuapp.com/)
 
 EC
 

@@ -19,7 +19,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [Axios](https://github.com/axios/axios)
 - [Jest](https://jestjs.io/)
 
-### Learning Resources
+### Learning Resources (besides official docs)
 
 - [tylermcginnis.com](https://tylermcginnis.com/)
 - [Complete Intro to React](https://frontendmasters.com/courses/react/)

@@ -28,6 +28,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [React Native Express](http://www.reactnativeexpress.com/)
 - [Fullstack React Native](https://www.fullstackreact.com/react-native/)
 - [ReactEurope 2017 React Native Workshop with Expo](https://www.youtube.com/playlist?list=PLCC436JpVnK2RFms3NG9ubPToWCNbMLbT)
+- [Learn Node](https://learnnode.com/)
 - [API Design in Node.js, v3](https://frontendmasters.com/courses/api-design-nodejs-v3/)
 - [Secure Authentication for Web Apps & APIs Using JWTs](https://frontendmasters.com/courses/secure-auth-jwt/)
 - [JavaScript Testing Practices and Principles](https://frontendmasters.com/courses/testing-practices-principles/)

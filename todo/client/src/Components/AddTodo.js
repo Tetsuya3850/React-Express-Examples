@@ -36,7 +36,7 @@ class AddTodo extends Component {
           type="text"
           autoFocus
         />
-        <button type="submit">Do!</button>
+        <button type="submit">Later!</button>
       </form>
     );
   }

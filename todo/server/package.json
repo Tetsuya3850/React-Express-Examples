@@ -1,6 +1,10 @@
 {
   "name": "todo-server",
   "main": "index.js",
+  "engines": {
+    "node": "10.15.1",
+    "npm": "6.9.0"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",

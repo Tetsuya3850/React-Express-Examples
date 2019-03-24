@@ -12,7 +12,7 @@ const mongoDB =
 
 require("./todoModel");
 const todoCtrl = require("./todoController");
-const { catchErrors } = require("./catchErrors");
+const { catchErrors } = require("./errorHandlers");
 
 const start = () => {
   const app = express();

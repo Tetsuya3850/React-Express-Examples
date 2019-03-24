@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React, { Component } from "react";
+import { View, StyleSheet } from "react-native";
 import { Provider } from "react-redux";
 import configureStore from "./src/configureStore";
 import Header from "./src/components/Header";
@@ -8,7 +8,7 @@ import TodoListContainer from "./src/components/TodoListContainer";
 
 const store = configureStore();
 
-export default class App extends React.Component {
+class App extends Component {
   render() {
     return (
       <Provider store={store}>
@@ -27,3 +27,5 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
+
+export default App;

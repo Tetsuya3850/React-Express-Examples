@@ -2,9 +2,9 @@ A todo app example written by React.js, React Native, and Node.js
 
 ## Features
 
-- Todos can be read.
-- Todos can be added.
-- Todos can be deleted.
+- A todo can be added.
+- All todos can be read.
+- A todo can be deleted.
 
 ## Try it
 

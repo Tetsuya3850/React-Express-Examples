@@ -3,11 +3,11 @@ import {
   createSwitchNavigator,
   createAppContainer
 } from "react-navigation";
-import AuthScreen from "./src/screens/AuthScreen";
-import AuthLoadingScreen from "./src/screens/AuthLoadingScreen";
-import ProfileScreen from "./src/screens/ProfileScreen";
+import AuthScreen from "./screens/AuthScreen";
+import AuthLoadingScreen from "./screens/AuthLoadingScreen";
+import UserScreen from "./screens/UserScreen";
 
-const AppStack = createStackNavigator({ Profile: ProfileScreen });
+const AppStack = createStackNavigator({ User: UserScreen });
 const AuthStack = createStackNavigator({ Auth: AuthScreen });
 
 export default createAppContainer(

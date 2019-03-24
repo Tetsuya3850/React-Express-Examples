@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { ActivityIndicator, StatusBar, View } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { reAuthUser } from "../reducers";
+import { isAuthed } from "../tokenUtils";
 
 class AuthLoadingScreen extends Component {
   constructor(props) {
@@ -11,10 +9,11 @@ class AuthLoadingScreen extends Component {
   }
 
   _bootstrapAsync = () => {
-    this.props.reAuthUser(
-      () => this.props.navigation.navigate("App"),
-      () => this.props.navigation.navigate("Auth")
-    );
+    if (isAuthed) {
+      this.props.navigation.navigate("App");
+    } else {
+      this.props.navigation.navigate("Auth");
+    }
   };
 
   render() {
@@ -27,11 +26,4 @@ class AuthLoadingScreen extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ reAuthUser }, dispatch);
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(AuthLoadingScreen);
+export default AuthLoadingScreen;

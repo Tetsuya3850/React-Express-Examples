@@ -1,8 +1,7 @@
 import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { handleSignin } from "../reducers";
+import * as api from "../api";
+import { saveToken } from "../tokenUtils";
 
 class AuthScreen extends React.Component {
   static navigationOptions = {
@@ -10,28 +9,32 @@ class AuthScreen extends React.Component {
   };
 
   state = {
-    email: "deploy@gmail.com",
-    password: "Test3850"
+    email: "",
+    password: "",
+    signinError: {}
   };
 
-  handleFormSubmit = event => {
+  handleFormSubmit = async event => {
     event.preventDefault();
     const { email, password } = this.state;
     if (email && password) {
-      const payload = { email, password };
-      this.props.handleSignin(payload, () => {
-        this.setState({
-          email: "",
-          password: ""
-        });
+      try {
+        const payload = { email, password };
+        const { data } = await api.signin(payload);
+        saveToken(data);
         this.props.navigation.navigate("App");
-      });
+      } catch (error) {
+        console.log(error);
+        if (error.response) {
+          const { data } = error.response;
+          this.setState({ signinError: data });
+        }
+      }
     }
   };
 
   render() {
-    const { signinError } = this.props;
-    const { email, password } = this.state;
+    const { email, password, signinError } = this.state;
 
     return (
       <View>
@@ -70,15 +73,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
-  return state;
-};
-
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators({ handleSignin }, dispatch);
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AuthScreen);
+export default AuthScreen;

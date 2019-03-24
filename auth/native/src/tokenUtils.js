@@ -7,7 +7,7 @@ export const saveToken = token => AsyncStorage.setItem("jwt-token", token);
 
 export const removeToken = () => AsyncStorage.removeItem("jwt-token");
 
-export const parseToken = async () => {
+export const getTokenInfo = async () => {
   try {
     const token = await getToken();
     if (token) {

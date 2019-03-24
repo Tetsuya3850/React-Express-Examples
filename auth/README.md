@@ -8,7 +8,7 @@ An auth app example written by React.js, React Native, and Node.js
 - Authed user can access protected client routes.
 - Navbar UI changes based on auth.
 
-## Try it
+## Demo
 
 - Web
   (https://auth-client-3850.herokuapp.com/)

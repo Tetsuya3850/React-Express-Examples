@@ -1,16 +1,29 @@
+let baseURL, api, server;
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const { User } = require("../userModel");
+const mongoose = require("mongoose");
 const start = require("../app");
+
+beforeAll(() => {
+  server = start();
+  baseURL = `http://localhost:${server.address().port}`;
+  api = axios.create({ baseURL });
+});
+
+afterAll(async () => {
+  await User.deleteMany({});
+  server.close();
+});
+
+const User = mongoose.model("User");
 
 const getData = res => res.data;
 const getError = error => error.response;
+const getStatus = res => res.status;
 const getToken = res => res.data.token;
 
 jest.unmock("axios");
-
-let baseURL, api, server;
 
 const testSignupUser = {
   name: "Tetsuya",
@@ -21,20 +34,7 @@ const testSigninUser = _.omit(testSignupUser, "name");
 const NON_EXIST_EMAIL = "nonexist@gmail.com";
 const WRONG_PASSWORD = "WRONG";
 
-beforeAll(async () => {
-  server = await start();
-  baseURL = `http://localhost:${server.address().port}`;
-  api = axios.create({ baseURL });
-});
-
-afterAll(() => {
-  User.deleteMany({}, function(error) {
-    console.log(error);
-  });
-  server.close();
-});
-
-test("username required to signup", async () => {
+test("signup: username required", async () => {
   const error = await api
     .post("/signup", _.omit(testSignupUser, "name"))
     .catch(getError);
@@ -43,7 +43,7 @@ test("username required to signup", async () => {
   });
 });
 
-test("email required to signup", async () => {
+test("signup: email required", async () => {
   const error = await api
     .post("/signup", _.omit(testSignupUser, "email"))
     .catch(getError);
@@ -52,7 +52,7 @@ test("email required to signup", async () => {
   });
 });
 
-test("password required to signup", async () => {
+test("signup: password required", async () => {
   const error = await api
     .post("/signup", _.omit(testSignupUser, "password"))
     .catch(getError);
@@ -61,8 +61,8 @@ test("password required to signup", async () => {
   });
 });
 
-test("successful signup", async () => {
-  const token = await api.post("/signup", testSignupUser).then(getToken);
+test("signup: success", async () => {
+  const token = await api.post("/signup", testSignupUser).then(getData);
   const payload = jwt.decode(token);
   expect(payload).toMatchObject({
     _id: expect.any(String),
@@ -70,15 +70,15 @@ test("successful signup", async () => {
   });
 });
 
-test("email must be unique to signup", async () => {
+test("signup: email must be unique", async () => {
   const error = await api.post("/signup", testSignupUser).catch(getError);
   expect(error).toMatchObject({
     status: 400,
-    data: { email: "Duplicate email!" }
+    data: { email: "Address already in use!" }
   });
 });
 
-test("email required to signin", async () => {
+test("signin: email required", async () => {
   const error = await api
     .post("/signin", _.omit(testSigninUser, "email"))
     .catch(getError);
@@ -87,7 +87,7 @@ test("email required to signin", async () => {
   });
 });
 
-test("password required to signin", async () => {
+test("signin: password required", async () => {
   const error = await api
     .post("/signin", _.omit(testSigninUser, "password"))
     .catch(getError);
@@ -96,7 +96,7 @@ test("password required to signin", async () => {
   });
 });
 
-test("user must exist to signin", async () => {
+test("signin: email must be signedup", async () => {
   const error = await api
     .post("/signin", { ...testSigninUser, email: NON_EXIST_EMAIL })
     .catch(getError);
@@ -106,7 +106,7 @@ test("user must exist to signin", async () => {
   });
 });
 
-test("password must be correct to signin", async () => {
+test("signin: password must be correct", async () => {
   const error = await api
     .post("/signin", { ...testSigninUser, password: WRONG_PASSWORD })
     .catch(getError);
@@ -116,8 +116,8 @@ test("password must be correct to signin", async () => {
   });
 });
 
-test("successful signin", async () => {
-  const token = await api.post("/signin", testSigninUser).then(getToken);
+test("signin: success", async () => {
+  const token = await api.post("/signin", testSigninUser).then(getData);
   const payload = jwt.decode(token);
   expect(payload).toMatchObject({
     _id: expect.any(String),
@@ -125,20 +125,23 @@ test("successful signin", async () => {
   });
 });
 
-test("getUser locked down for unauthed sources", async () => {
-  const error = await api.get("/users").catch(getError);
+test("getUser: closed for unauthed user", async () => {
+  const userId = new mongoose.Types.ObjectId();
+  const error = await api.get(`/users/${userId}`).catch(getError);
   expect(error).toMatchObject({
     status: 401
   });
 });
 
-test("getUser open for authed sources", async () => {
-  const token = await api.post("/signin", testSigninUser).then(getToken);
+test("getUser: open for authed user", async () => {
+  const token = await api.post("/signin", testSigninUser).then(getData);
+  const { _id } = jwt.decode(token);
   const user = await api
-    .get("/users", {
+    .get(`/users/${_id}`, {
       headers: { authorization: `Bearer ${token}` }
     })
     .then(getData);
 
+  expect(user).not.toMatchObject(testSigninUser);
   expect(user).toMatchObject(_.omit(testSigninUser, "password"));
 });

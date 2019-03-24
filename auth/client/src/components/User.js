@@ -20,8 +20,8 @@ class User extends Component {
 
     return (
       <div>
-        <p>Your user name is {userInfo.name}</p>
-        <p>Your email address is {userInfo.email}</p>
+        <p>Name is {userInfo.name}</p>
+        <p>Email is {userInfo.email}</p>
       </div>
     );
   }

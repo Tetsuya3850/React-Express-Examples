@@ -31,7 +31,7 @@ const styles = {
     display: "flex"
   },
   leftNav: {
-    flexGrow: 10
+    flexGrow: 4
   },
   rightNavs: {
     flexGrow: 1

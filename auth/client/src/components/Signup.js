@@ -32,7 +32,7 @@ class Signup extends Component {
       const payload = { name, email, password };
       try {
         const { data } = await api.signup(payload);
-        saveToken(data.token);
+        saveToken(data);
         this.props.history.push("/");
       } catch (error) {
         if (error.response) {
@@ -63,7 +63,6 @@ class Signup extends Component {
             <label>User Name</label>
             <span> * </span>
           </div>
-
           <input
             name="name"
             type="text"

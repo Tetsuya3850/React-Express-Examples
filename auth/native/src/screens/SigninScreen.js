@@ -1,11 +1,17 @@
 import React from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import {
+  View,
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  StyleSheet
+} from "react-native";
 import * as api from "../api";
 import { saveToken } from "../tokenUtils";
 
-class AuthScreen extends React.Component {
+class SigninScreen extends React.Component {
   static navigationOptions = {
-    title: "Auth"
+    title: "Signin"
   };
 
   state = {
@@ -21,7 +27,7 @@ class AuthScreen extends React.Component {
       try {
         const payload = { email, password };
         const { data } = await api.signin(payload);
-        saveToken(data);
+        await saveToken(data);
         this.props.navigation.navigate("Home");
       } catch (error) {
         console.log(error);
@@ -37,8 +43,9 @@ class AuthScreen extends React.Component {
     const { email, password, signinError } = this.state;
 
     return (
-      <View>
-        <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+        <Text style={styles.formTitle}>Sign in</Text>
+        <View style={styles.inputcontainer}>
           <TextInput
             style={styles.textInput}
             value={email}
@@ -47,7 +54,7 @@ class AuthScreen extends React.Component {
           />
         </View>
 
-        <View style={styles.container}>
+        <View style={styles.inputcontainer}>
           <TextInput
             style={styles.textInput}
             value={password}
@@ -56,13 +63,21 @@ class AuthScreen extends React.Component {
             onSubmitEditing={this.handleFormSubmit}
           />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  formTitle: {
+    textAlign: "center",
+    fontSize: 30
+  },
+  inputcontainer: {
     height: 50,
     paddingHorizontal: 15,
     borderBottomColor: "#f2f2f2",
@@ -73,4 +88,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AuthScreen;
+export default SigninScreen;

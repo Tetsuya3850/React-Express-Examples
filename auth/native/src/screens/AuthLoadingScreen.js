@@ -8,8 +8,9 @@ class AuthLoadingScreen extends Component {
     this._bootstrapAsync();
   }
 
-  _bootstrapAsync = () => {
-    if (isAuthed) {
+  _bootstrapAsync = async () => {
+    const authedId = await isAuthed();
+    if (authedId) {
       this.props.navigation.navigate("Home");
     } else {
       this.props.navigation.navigate("Auth");

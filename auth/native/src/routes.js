@@ -1,17 +1,20 @@
 import {
-  createTabNavigator,
+  createBottomTabNavigator,
   createSwitchNavigator,
   createAppContainer
 } from "react-navigation";
-import AuthScreen from "./screens/AuthScreen";
+import SignupScreen from "./screens/SignupScreen";
+import SigninScreen from "./screens/SigninScreen";
 import AuthLoadingScreen from "./screens/AuthLoadingScreen";
-import UserScreen from "./screens/UserScreen";
 import HomeScreen from "./screens/HomeScreen";
 
-const AuthStack = createTabNavigator({ Auth: AuthScreen });
-const AppStack = createTabNavigator({
-  Home: HomeScreen,
-  User: UserScreen
+const AuthStack = createBottomTabNavigator({
+  Signup: SignupScreen,
+  Signin: SigninScreen
+});
+
+const AppStack = createBottomTabNavigator({
+  Home: HomeScreen
 });
 
 export default createAppContainer(

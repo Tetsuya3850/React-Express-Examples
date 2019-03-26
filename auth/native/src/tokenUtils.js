@@ -20,7 +20,7 @@ export const getTokenInfo = async () => {
 };
 
 export const isAuthed = async () => {
-  const token_info = await parseToken();
+  const token_info = await getTokenInfo();
   if (token_info && token_info.exp > Math.round(new Date() / 1000)) {
     return token_info;
   } else {

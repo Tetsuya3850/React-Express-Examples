@@ -1,25 +1,32 @@
-import React, { Component } from "react";
-import { View, Text } from "react-native";
+import React from "react";
+import { View, Button, Text, StyleSheet } from "react-native";
 import { removeToken } from "../tokenUtils";
 
-class HomeScreen extends Component {
+class HomeScreen extends React.Component {
   static navigationOptions = {
     title: "Home"
   };
 
   handleSignout = async () => {
-    await removeToken;
+    await removeToken();
     this.props.navigation.navigate("Auth");
   };
 
   render() {
     return (
-      <View>
-        <Text>Home</Text>
+      <View style={styles.container}>
         <Button title="Sign out" onPress={this.handleSignout} />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+});
 
 export default HomeScreen;

@@ -14,10 +14,13 @@ A collection of basic apps built with React, React Native, and Express.
 - [React Navigation](https://reactnavigation.org/)
 - [Express](https://expressjs.com/)
 - [JSON Web Tokens](https://github.com/auth0/node-jsonwebtoken)
+- [Nodemailer](https://nodemailer.com/about/)
+- [socket.io](https://socket.io/)
 - [mLab](https://mlab.com/home)
 - [Mongoose](http://mongoosejs.com/)
 - [Axios](https://github.com/axios/axios)
 - [Jest](https://jestjs.io/)
+- [Stripe](https://stripe.com/)
 
 ### Learning Resources (besides official docs)
 

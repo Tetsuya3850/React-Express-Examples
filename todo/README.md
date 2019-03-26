@@ -6,10 +6,7 @@ A todo app example written by React.js, React Native, and Node.js
 - All todos can be read.
 - A todo can be deleted.
 
-## Try it
+## Demo
 
-- Web
-  (https://todo-client-3850.herokuapp.com/)
-
-- Native
-  (https://exp.host/@tetsuya3850/todo)
+- Web (https://todo-client-3850.herokuapp.com/)
+- Native (https://exp.host/@tetsuya3850/todo)

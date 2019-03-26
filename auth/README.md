@@ -7,6 +7,7 @@ An auth example written by React.js, React Native, and Node.js
 - Authed user can access protected server resources.
 - Authed user can access protected client routes.
 - Navbar UI changes based on auth.
+- User can change password with email.
 
 ## Demo
 

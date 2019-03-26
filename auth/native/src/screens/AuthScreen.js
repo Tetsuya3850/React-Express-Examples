@@ -22,7 +22,7 @@ class AuthScreen extends React.Component {
         const payload = { email, password };
         const { data } = await api.signin(payload);
         saveToken(data);
-        this.props.navigation.navigate("App");
+        this.props.navigation.navigate("Home");
       } catch (error) {
         console.log(error);
         if (error.response) {

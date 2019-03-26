@@ -1,5 +1,3 @@
-import jwt from "jsonwebtoken";
-
 export const getToken = () => localStorage.getItem("jwt-token");
 
 export const saveToken = token => localStorage.setItem("jwt-token", token);
@@ -7,8 +5,15 @@ export const saveToken = token => localStorage.setItem("jwt-token", token);
 export const removeToken = () => localStorage.removeItem("jwt-token");
 
 export const getTokenInfo = () => {
-  const token = getToken();
-  return jwt.decode(token);
+  try {
+    const token = getToken();
+    if (token) {
+      const payload = window.atob(token.split(".")[1]);
+      return JSON.parse(payload);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const isAuthed = () => {

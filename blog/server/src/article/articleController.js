@@ -1,6 +1,7 @@
-const Article = require("./articleModel");
+const mongoose = require("mongoose");
+const Article = mongoose.model("Article");
 
-module.exports.postArticle = async (req, res) => {
+exports.postArticle = async (req, res) => {
   if (!req.body.title || !req.body.text) {
     return res.status(400).end();
   }
@@ -13,7 +14,7 @@ module.exports.postArticle = async (req, res) => {
   }
 };
 
-module.exports.getFeed = async (req, res) => {
+exports.getFeed = async (req, res) => {
   try {
     const articles = await Article.find()
       .populate("author", { password: 0 })
@@ -24,7 +25,7 @@ module.exports.getFeed = async (req, res) => {
   }
 };
 
-module.exports.getArticle = async (req, res) => {
+exports.getArticle = async (req, res) => {
   try {
     const article = await Article.findOne({
       _id: req.params.articleId
@@ -41,12 +42,11 @@ module.exports.getArticle = async (req, res) => {
   }
 };
 
-module.exports.getUserFeed = async (req, res) => {
+exports.getUserArticles = async (req, res) => {
   try {
-    const articles = await Article.find({ author: req.params.userId }).populate(
-      "author",
-      { password: 0 }
-    );
+    const articles = await Article.find({
+      author: req.params.userId
+    });
     res.status(200).json(articles);
   } catch (error) {
     console.error(error);
@@ -54,7 +54,7 @@ module.exports.getUserFeed = async (req, res) => {
   }
 };
 
-module.exports.editArticle = async (req, res) => {
+exports.editArticle = async (req, res) => {
   if (!req.body.title || !req.body.text) {
     return res.status(400).end();
   }
@@ -80,7 +80,7 @@ module.exports.editArticle = async (req, res) => {
   }
 };
 
-module.exports.deleteArticle = async (req, res) => {
+exports.deleteArticle = async (req, res) => {
   try {
     const deleted = await Article.deleteOne({
       _id: req.params.articleId,

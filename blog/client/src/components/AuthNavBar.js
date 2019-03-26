@@ -15,7 +15,7 @@ const AuthNavBar = ({ history, authedId }) => (
       Profile
     </NavLink>
     <NavLink
-      to="/new-article"
+      to="/articles/new"
       activeStyle={{ color: "red" }}
       style={styles.rightNavs}
     >

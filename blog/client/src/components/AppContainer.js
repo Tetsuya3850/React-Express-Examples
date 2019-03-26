@@ -31,8 +31,8 @@ class AppContainer extends Component {
           />
           <Route path="/signup" component={Signup} />
           <Route path="/signin" component={Signin} />
-          <PrivateRoute path="/new-article" component={NewArticle} />
           <PrivateRoute path="/users/:userId" component={User} />
+          <PrivateRoute path="/articles/new" component={NewArticle} />
           <PrivateRoute
             path="/articles/edit/:articleId"
             component={EditArticle}

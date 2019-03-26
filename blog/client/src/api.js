@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getToken } from "./tokenUtils";
 
-const SERVER_URL = "http://localhost:3001";
+const SERVER_URL = "https://blog-server-3850.herokuapp.com";
 axios.defaults.baseURL = SERVER_URL;
 
 const setAuthHeader = () => ({

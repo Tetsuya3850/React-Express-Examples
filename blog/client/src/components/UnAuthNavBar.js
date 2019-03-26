@@ -31,7 +31,7 @@ const styles = {
     borderBottom: "1px solid grey"
   },
   leftNav: {
-    flexGrow: 10
+    flexGrow: 4
   },
   rightNavs: {
     flexGrow: 1

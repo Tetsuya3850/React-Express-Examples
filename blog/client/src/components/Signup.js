@@ -32,7 +32,7 @@ class Signup extends Component {
       const payload = { name, email, password };
       try {
         const { data } = await api.signup(payload);
-        saveToken(data.token);
+        saveToken(data);
         this.props.history.push("/");
       } catch (error) {
         if (error.response) {

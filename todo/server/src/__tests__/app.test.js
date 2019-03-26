@@ -65,7 +65,7 @@ test("deleteTodo: Error in deleting non existing todo", async () => {
   const todoId = new mongoose.Types.ObjectId();
   const error = await api.delete(`/todos/${todoId}`).catch(getError);
   expect(error).toMatchObject({
-    status: 400
+    status: 404
   });
   const todos = await api.get("/todos").then(getData);
   expect(todos).toHaveLength(2);

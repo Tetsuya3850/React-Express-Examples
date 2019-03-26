@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const morgan = require("morgan");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
@@ -21,6 +22,9 @@ const start = () => {
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+  if (process.env.NODE_ENV !== "production") {
+    app.use(morgan("tiny"));
+  }
 
   app.post("/todos", catchErrors(todoCtrl.postTodo));
   app.get("/todos", catchErrors(todoCtrl.getTodos));

@@ -1,4 +1,4 @@
-A Yelp example written by React, React Native, and Express
+A Yelp app example written by React, React Native, and Express
 
 ## Features
 

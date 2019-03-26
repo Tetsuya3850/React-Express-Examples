@@ -1,4 +1,4 @@
-A blog example written by React.js, React Native, and Node.js
+A blog app example written by React.js, React Native, and Node.js
 
 ## Features
 

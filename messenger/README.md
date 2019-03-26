@@ -1,4 +1,4 @@
-A messenger example written by React, React Native, and Express
+A messenger app example written by React, React Native, and Express
 
 ## Features
 

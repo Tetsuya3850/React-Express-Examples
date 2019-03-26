@@ -1,4 +1,4 @@
-An auth example written by React.js, React Native, and Node.js
+An auth app example written by React.js, React Native, and Node.js
 
 ## Features
 

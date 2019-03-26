@@ -50,3 +50,33 @@ exports.getUser = async (req, res) => {
 
   res.status(200).send(user);
 };
+
+exports.forgotPassword = (req, res) => {
+  const user = await User.findOne({email: req.body.email})
+  if (!user){
+    return res.status(400).send("Email not Found!");
+  }
+  user.resetPasswordToken = crypto.randomBytes(20).toString('hex')
+  user.resetPasswrodExpires = Date.now() + 3600000
+  await user.save()
+  const resetURL = ``
+  await mail.send({user, subject: "Password Reset", resetURL})
+  res.status(200).send("You have been emailed a password reset link")
+}
+
+exports.updatePassword = (req, res) => {
+  const user = await User.findOne({
+    resetPasswordToken: req.params.token, 
+    resetPasswrodExpires: {$gt: Date.now()}
+  })
+  if(!user){
+    return res.status(400).send("Token is invalid or have expired");
+  }
+
+  user.password = req.body.password
+  user.resetPasswordToken = undefined
+  user.resetPasswrodExpires = undefined
+  const updateUser = await user.save()
+  const token = newToken(updateUser);
+  return res.status(200).send(token);
+}

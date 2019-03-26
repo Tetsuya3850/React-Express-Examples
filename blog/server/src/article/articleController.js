@@ -7,6 +7,7 @@ exports.postArticle = async (req, res) => {
   }
 
   try {
+    req.body.author = req.user._id;
     const article = await Article.create(req.body);
     res.status(200).json(article);
   } catch (error) {

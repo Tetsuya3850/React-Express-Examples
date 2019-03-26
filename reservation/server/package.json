@@ -1,5 +1,5 @@
 {
-  "name": "booking-server",
+  "name": "reservation-server",
   "main": "index.js",
   "engines": {
     "node": "10.15.1",

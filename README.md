@@ -25,16 +25,16 @@ A collection of basic apps built with React, React Native, and Express.
 ### Learning Resources (besides official docs)
 
 - [tylermcginnis.com](https://tylermcginnis.com/)
-- [Complete Intro to React](https://frontendmasters.com/courses/react/)
-- [Getting Started with Redux](https://egghead.io/courses/getting-started-with-redux)
-- [Building React Applications with Idiomatic Redux](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
+- [Complete Intro to React by Brian Hold](https://frontendmasters.com/courses/react/)
+- [Getting Started with Redux by Dan Abramov](https://egghead.io/courses/getting-started-with-redux)
+- [Building React Applications with Idiomatic Redux by Dan Abramov](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
 - [React Native Express](http://www.reactnativeexpress.com/)
 - [Fullstack React Native](https://www.fullstackreact.com/react-native/)
 - [ReactEurope 2017 React Native Workshop with Expo](https://www.youtube.com/playlist?list=PLCC436JpVnK2RFms3NG9ubPToWCNbMLbT)
-- [Learn Node](https://learnnode.com/)
-- [API Design in Node.js, v3](https://frontendmasters.com/courses/api-design-nodejs-v3/)
-- [Secure Authentication for Web Apps & APIs Using JWTs](https://frontendmasters.com/courses/secure-auth-jwt/)
-- [JavaScript Testing Practices and Principles](https://frontendmasters.com/courses/testing-practices-principles/)
+- [Learn Node by Wes Bos](https://learnnode.com/)
+- [API Design in Node.js, v3 in Frontend Masters](https://frontendmasters.com/courses/api-design-nodejs-v3/)
+- [Secure Authentication for Web Apps & APIs Using JWTs by Auth0](https://frontendmasters.com/courses/secure-auth-jwt/)
+- [JavaScript Testing Practices and Principles by Kent C. Dodds](https://frontendmasters.com/courses/testing-practices-principles/)
 - [M220JS: MongoDB for Javascript Developers](https://university.mongodb.com/courses/M220JS/about)
 
 ### Demo

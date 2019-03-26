@@ -1,4 +1,4 @@
-Twitter example written by React, React Native, and Express
+A Twitter example written by React, React Native, and Express
 
 ## Features
 

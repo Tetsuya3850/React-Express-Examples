@@ -20,11 +20,13 @@ A Twitter app example written by React, React Native, and Express
 - Availability over consistency
 - Timeline generation's latency should be minimal (preferrably under 200ms)
 - Read-Heavy.
-- 200 million DAUs
-- 100 million new tweets every day and on average each user follows 3 people.
+- 800 million DAUs
+- 400 million tweets every day and on average each user follows 3 people.
 - each user favorites five tweets per day
 - on average a user visits their timeline two times a day and visits five other people’s pages. On each page if a user sees 20 tweets
+- The average size of a tweet is 300 bytes.
 - Let’s say each tweet has 140 characters and we need two bytes to store a character without compression. Let’s assume we need 30 bytes to store metadata with each tweet (like ID, timestamp, user ID, etc.).
+- Let’s assume on average a user has 300 friends and follows 200 pages.
 
 Trending topics – current hot topics/searches.
 
@@ -41,3 +43,46 @@ How do we serve feeds? Get all the latest tweets from the people someone follows
 Alternately, we can pre-generate the feed to improve efficiency; for details please see ‘Ranking and timeline generation’ under Designing Instagram.
 
 Retweet: With each Tweet object in the database, we can store the ID of the original Tweet and not store any contents on this retweet object.
+
+Traffic estimates: Let’s assume 300M daily active users with each user fetching their timeline an average of five times a day. This will result in 1.5B newsfeed requests per day or approximately 17,500 requests per second.
+
+Storage estimates: On average, let’s assume we need to have around 500 posts in every user’s feed that we want to keep in memory for a quick fetch. Let’s also assume that on average each post would be 1KB in size. This would mean that we need to store roughly 500KB of data per user. To store all this data for all the active users we would need 150TB of memory. If a server can hold 100GB we would need around 1500 machines to keep the top 500 posts in memory for all active users.
+
+Retrieve IDs of all users and entities that Jane follows.
+Retrieve latest, most popular and relevant posts for those IDs. These are the potential posts that we can show in Jane’s newsfeed.
+Rank these posts based on the relevance to Jane. This represents Jane’s current feed.
+Store this feed in the cache and return top posts (say 20) to be rendered on Jane’s feed.
+On the front-end, when Jane reaches the end of her current feed, she can fetch the next 20 posts from the server and so on.
+
+One thing to notice here is that we generated the feed once and stored it in the cache. What about new incoming posts from people that Jane follows? If Jane is online, we should have a mechanism to rank and add those new posts to her feed. We can periodically (say every five minutes) perform the above steps to rank and add the newer posts to her feed. Jane can then be notified that there are newer items in her feed that she can fetch.
+
+(SELECT FeedItemID FROM FeedItem WHERE UserID in (
+SELECT EntityOrFriendID FROM UserFollow WHERE UserID = <current_user_id> and type = 0(user))
+)
+UNION
+(SELECT FeedItemID FROM FeedItem WHERE EntityID in (
+SELECT EntityOrFriendID FROM UserFollow WHERE UserID = <current_user_id> and type = 1(entity))
+)
+ORDER BY CreationDate DESC
+LIMIT 100
+
+Offline generation for newsfeed: We can have dedicated servers that are continuously generating users’ newsfeed and storing them in memory. So, whenever a user requests for the new posts for their feed, we can simply serve it from the pre-generated, stored location. Using this scheme, user’s newsfeed is not compiled on load, but rather on a regular basis and returned to users whenever they request for it.
+
+Whenever these servers need to generate the feed for a user, they will first query to see what was the last time the feed was generated for that user. Then, new feed data would be generated from that time onwards. We can store this data in a hash table where the “key” would be UserID and “value” would be a STRUCT like this:
+
+Struct {
+LinkedHashMap<FeedItemID, FeedItem> feedItems;
+DateTime lastGenerated;
+}
+We can store FeedItemIDs in a data structure similar to Linked HashMap or TreeMap, which can allow us to not only jump to any feed item but also iterate through the map easily. Whenever users want to fetch more feed items, they can send the last FeedItemID they currently see in their newsfeed, we can then jump to that FeedItemID in our hash-map and return next batch/page of feed items from there.
+
+How many feed items should we store in memory for a user’s feed? Initially, we can decide to store 500 feed items per user, but this number can be adjusted later based on the usage pattern. For example, if we assume that one page of a user’s feed has 20 posts and most of the users never browse more than ten pages of their feed, we can decide to store only 200 posts per user. For any user who wants to see more posts (more than what is stored in memory), we can always query backend servers.
+
+Should we generate (and keep in memory) newsfeeds for all users? There will be a lot of users that don’t login frequently. Here are a few things we can do to handle this; 1) a more straightforward approach could be, to use a LRU based cache that can remove users from memory that haven’t accessed their newsfeed for a long time 2) a smarter solution can figure out the login pattern of users to pre-generate their newsfeed, e.g., at what time of the day a user is active and which days of the week does a user access their newsfeed? etc.
+
+The most straightforward way to rank posts in a newsfeed is by the creation time of the posts, but today’s ranking algorithms are doing a lot more than that to ensure “important” posts are ranked higher. The high-level idea of ranking is first to select key “signals” that make a post important and then to find out how to combine them to calculate a final ranking score.
+
+More specifically, we can select features that are relevant to the importance of any feed item, e.g., number of likes, comments, shares, time of the update, whether the post has images/videos, etc., and then, a score can be calculated using these features. This is generally enough for a simple ranking system. A better ranking system can significantly improve itself by constantly evaluating if we are making progress in user stickiness, retention, ads revenue, etc.
+
+b. Sharding feed data
+For feed data, which is being stored in memory, we can partition it based on UserID. We can try storing all the data of a user on one server. When storing, we can pass the UserID to our hash function that will map the user to a cache server where we will store the user’s feed objects. Also, for any given user, since we don’t expect to store more than 500 FeedItmeIDs, we will not run into a scenario where feed data for a user doesn’t fit on a single server. To get the feed of a user, we would always have to query only one server. For future growth and replication, we must use Consistent Hashing.

@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const tweetSchema = new mongoose.Schema({
+const tweetSchema = new Schema({
   text: {
     type: String,
     required: true,
     trim: true
   },
-  author: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true

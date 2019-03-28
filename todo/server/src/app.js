@@ -11,9 +11,8 @@ const mongoDB =
     ? process.env.MONGODB
     : process.env.MONGODBTEST;
 
-require("./todoModel");
-const todoCtrl = require("./todoController");
-const { catchErrors } = require("./errorHandlers");
+require("./todo/todoModel");
+const todoRoutes = require("./todo/todoRoutes");
 
 const start = () => {
   const app = express();
@@ -26,9 +25,7 @@ const start = () => {
     app.use(morgan("tiny"));
   }
 
-  app.post("/todos", catchErrors(todoCtrl.postTodo));
-  app.get("/todos", catchErrors(todoCtrl.getTodos));
-  app.delete("/todos/:todoId", catchErrors(todoCtrl.deleteTodo));
+  app.use("/todos", todoRoutes);
 
   mongoose.connect(mongoDB, { useNewUrlParser: true });
   mongoose.connection.on("error", err => {

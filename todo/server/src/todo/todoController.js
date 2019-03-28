@@ -15,8 +15,8 @@ exports.getTodos = async (req, res) => {
 };
 
 exports.deleteTodo = async (req, res) => {
-  const deleted = await Todo.deleteOne({ _id: req.params.todoId });
-  if (deleted.n === 0) {
+  const deleted = await Todo.findOneAndDelete({ _id: req.params.todoId });
+  if (!deleted) {
     return res.status(404).end();
   }
   res.status(200).end();

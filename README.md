@@ -25,7 +25,7 @@ A collection of basic apps built with React, React Native, and Express.
 ### Learning Resources (besides official docs)
 
 - [tylermcginnis.com](https://tylermcginnis.com/)
-- [Complete Intro to React by Brian Hold](https://frontendmasters.com/courses/react/)
+- [Complete Intro to React by Brian Holt](https://frontendmasters.com/courses/react/)
 - [Getting Started with Redux by Dan Abramov](https://egghead.io/courses/getting-started-with-redux)
 - [Building React Applications with Idiomatic Redux by Dan Abramov](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
 - [React Native Express](http://www.reactnativeexpress.com/)

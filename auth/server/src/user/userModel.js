@@ -1,18 +1,12 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const validateEmail = email => {
-  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return re.test(email);
-};
-
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
     unique: true,
-    trim: true,
-    validate: [validateEmail, "Invalid address!"]
+    trim: true
   },
   name: {
     type: String,
@@ -42,9 +36,12 @@ userSchema.pre("save", function(next) {
 
 userSchema.methods.checkPassword = function(password) {
   const passwordHash = this.password;
+
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, passwordHash, (err, same) => {
-      if (err) return reject(err);
+      if (err) {
+        return reject(err);
+      }
       resolve(same);
     });
   });

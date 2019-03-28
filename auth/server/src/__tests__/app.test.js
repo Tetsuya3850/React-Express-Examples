@@ -7,7 +7,7 @@ const start = require("../app");
 
 beforeAll(() => {
   server = start();
-  baseURL = `http://localhost:${server.address().port}`;
+  baseURL = `http://localhost:${server.address().port}/users`;
   api = axios.create({ baseURL });
 });
 
@@ -127,7 +127,7 @@ test("signin: success", async () => {
 
 test("getUser: closed for unauthed user", async () => {
   const userId = new mongoose.Types.ObjectId();
-  const error = await api.get(`/users/${userId}`).catch(getError);
+  const error = await api.get(`/${userId}`).catch(getError);
   expect(error).toMatchObject({
     status: 401
   });
@@ -137,7 +137,7 @@ test("getUser: open for authed user", async () => {
   const token = await api.post("/signin", testSigninUser).then(getData);
   const { _id } = jwt.decode(token);
   const user = await api
-    .get(`/users/${_id}`, {
+    .get(`/${_id}`, {
       headers: { authorization: `Bearer ${token}` }
     })
     .then(getData);

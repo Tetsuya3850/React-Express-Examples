@@ -3,8 +3,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-require("dotenv").config();
 
+require("dotenv").config();
 const port = process.env.PORT || 3001;
 const mongoDB =
   process.env.NODE_ENV !== "test"
@@ -17,10 +17,10 @@ const todoRoutes = require("./todo/todoRoutes");
 const start = () => {
   const app = express();
 
-  app.use(helmet());
-  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
+  app.use(helmet());
+  app.use(cors());
   if (process.env.NODE_ENV !== "production") {
     app.use(morgan("tiny"));
   }
@@ -29,7 +29,7 @@ const start = () => {
 
   mongoose.connect(mongoDB, { useNewUrlParser: true });
   mongoose.connection.on("error", err => {
-    console.error(err.message);
+    console.log(err.message);
   });
 
   const server = app.listen(port, () => {

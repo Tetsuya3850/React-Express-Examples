@@ -1,4 +1,4 @@
-An Instagram app example written by React, React Native, and Express
+An Instagram app example written by React, React Native, and Express.
 
 ## Features
 
@@ -26,3 +26,7 @@ Who to follow? How to give suggestions? This feature will improve user engagemen
 Let’s assume we have 500M total users, with 1M daily active users.
 2M new photos every day, 23 new photos every second.
 Average photo file size => 200KB
+
+### Demo
+
+- Native (https://exp.host/@tetsuya3850/instagram) [WIP]

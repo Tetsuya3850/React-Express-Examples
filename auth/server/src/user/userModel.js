@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+require("dotenv").config();
+const jwt_secret = process.env.JWT_SECRET;
+const jwt_expiry_time = "3h";
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -44,6 +49,12 @@ userSchema.methods.checkPassword = function(password) {
       }
       resolve(same);
     });
+  });
+};
+
+userSchema.methods.newToken = function() {
+  return jwt.sign({ _id: this._id }, jwt_secret, {
+    expiresIn: jwt_expiry_time
   });
 };
 

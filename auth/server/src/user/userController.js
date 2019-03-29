@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
-const { newToken } = require("./jwtUtils");
 
 exports.signup = async (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
@@ -9,7 +8,7 @@ exports.signup = async (req, res) => {
 
   try {
     const user = await User.create(req.body);
-    const token = newToken(user);
+    const token = user.newToken();
     return res.status(200).send(token);
   } catch (error) {
     if (error.code === 11000) {
@@ -35,7 +34,7 @@ exports.signin = async (req, res) => {
     return res.status(401).send({ password: "Password wrong!" });
   }
 
-  const token = newToken(user);
+  const token = user.newToken();
   return res.status(200).send(token);
 };
 

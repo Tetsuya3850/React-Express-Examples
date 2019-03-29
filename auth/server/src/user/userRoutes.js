@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userCtrl = require("./userController");
 const { catchErrors } = require("../utils/errorHandlers");
-const { protect } = require("./jwtUtils");
+const { protect } = require("./userMiddleware");
 
 router.post("/signup", userCtrl.signup);
 router.post("/signin", catchErrors(userCtrl.signin));

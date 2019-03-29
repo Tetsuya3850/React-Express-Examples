@@ -16,5 +16,9 @@ const videoSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now()
-  }
+  },
+  thumbnail: [mongoose.Schema.Types.ObjectId],
+  likes: Number,
+  dislikes: Number,
+  views: Number
 });

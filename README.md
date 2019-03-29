@@ -36,6 +36,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [Secure Authentication for Web Apps & APIs Using JWTs by Auth0](https://frontendmasters.com/courses/secure-auth-jwt/)
 - [JavaScript Testing Practices and Principles by Kent C. Dodds](https://frontendmasters.com/courses/testing-practices-principles/)
 - [M220JS: MongoDB for Javascript Developers](https://university.mongodb.com/courses/M220JS/about)
+- [6 Rules of Thumb for MongoDB Schema Design](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1)
 - [system-design-primer](https://github.com/donnemartin/system-design-primer)
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)

@@ -15,6 +15,13 @@ A Twitter app example written by React, React Native, and Express
 
 ## Demo
 
+- Web
+- Native
+
+## References
+
+- [Scaling Twitter: Making Twitter 10000 Percent Faster](http://highscalability.com/blog/2009/6/27/scaling-twitter-making-twitter-10000-percent-faster.html)
+
 ## Ststem Design Considerations
 
 - Availability over consistency
@@ -88,3 +95,40 @@ b. Sharding feed data
 For feed data, which is being stored in memory, we can partition it based on UserID. We can try storing all the data of a user on one server. When storing, we can pass the UserID to our hash function that will map the user to a cache server where we will store the user’s feed objects. Also, for any given user, since we don’t expect to store more than 500 FeedItmeIDs, we will not run into a scenario where feed data for a user doesn’t fit on a single server. To get the feed of a user, we would always have to query only one server. For future growth and replication, we must use Consistent Hashing.
 
 Should we always notify users if there are new posts available for their newsfeed? It could be useful for users to get notified whenever new data is available. However, on mobile devices, where data usage is relatively expensive, it can consume unnecessary bandwidth. Hence, at least for mobile devices, we can choose not to push data, instead, let users “Pull to Refresh” to get new posts.
+
+Over 350,000 users. The actual numbers are as always, very super super top secret.
+600 requests per second.
+Average 200-300 connections per second. Spiking to 800 connections per second.
+MySQL handled 2,400 requests per second.
+180 Rails instances. Uses Mongrel as the "web" server.
+1 MySQL Server (one big 8 core box) and 1 slave. Slave is read only for statistics and reporting.
+30+ processes for handling odd jobs.
+8 Sun X4100s.
+Process a request in 200 milliseconds in Rails.
+Average time spent in the database is 50-100 milliseconds.
+Over 16 GB of memcached.
+
+Use caching with memcached a lot.
+
+- For example, if getting a count is slow, you can memoize the count into memcache in a millisecond.
+- Getting your friends status is complicated. There are security and other issues. So rather than doing a query, a friend's status is updated in cache instead. It never touches the database. This gives a predictable response time frame (upper bound 20 msecs).
+
+Use message a lot. Producers produce messages, which are queued, and then are distributed to consumers. Twitter's main functionality is to act as a messaging bridge between different formats (SMS, web, IM, etc).
+
+Twitter's API Traffic is 10x Twitter’s Site
+
+- Their API is the most important thing Twitter has done.
+- Keeping the service simple allowed developers to build on top of their infrastructure and come up with ideas that are way better than Twitter could come up with. For example, Twitterrific, which is a beautiful way to use Twitter that a small team with different priorities could create.
+
+A lot of down time because people crawl the site and add everyone as friends. 9000 friends in 24 hours. It would take down the site.
+
+- Build tools to detect these problems so you can pinpoint when and where they are happening.
+- Be ruthless. Delete them as users
+
+Denormalize a lot. Single handedly saved them. For example, they store all a user IDs friend IDs together, which prevented a lot of costly joins.
+
+- Avoid complex joins.
+
+155 million tweets per day.
+
+Graph cannot be handled with MySQL in scale.

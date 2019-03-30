@@ -5,7 +5,7 @@ A netflix app example written by React, React Native, and Express.
 - Users can view videos.
 - Users can search based on video titles.
 - Stats of videos e.g., likes/dislikes, total number of views are recorded.
-- Recommend Videos.
+- (Recommend Videos.)
 - (Popular videos are delivered efficiently through CDNs.)
 - (Cache hot search results with memcached.)
 
@@ -17,6 +17,7 @@ A netflix app example written by React, React Native, and Express.
 ## References
 
 - [YouTube Architecture](http://highscalability.com/youtube-architecture)
+- [7 Years Of YouTube Scalability Lessons In 30 Minutes](http://highscalability.com/blog/2012/3/26/7-years-of-youtube-scalability-lessons-in-30-minutes.html)
 
 ## System Design Considerations
 
@@ -37,6 +38,7 @@ A netflix app example written by React, React Native, and Express.
 - Resuming video upload after connection drop.
 - How to handle illegal uploads.
 - Handle thumbnails with big table.
+- Single server, went to a single master with multiple read slaves, then partitioned the database, and then settled on a sharding approach.
 
 ## Learning Topics
 

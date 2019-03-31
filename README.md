@@ -42,7 +42,7 @@ A collection of basic apps built with React, React Native, and Express.
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 
-### Demo
+### Demo (Be ware, Heroku free plan requires an initial loading time)
 
 Todo
 

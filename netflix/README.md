@@ -43,3 +43,7 @@ A netflix app example written by React, React Native, and Express.
 ## Learning Topics
 
 - Video Encoding: Newly uploaded videos are stored on the server and a new task is added to the processing queue to encode the video into multiple formats. Once all the encoding will be completed the uploader will be notified and the video is made available for view/sharing.
+
+Although Netflix uses adaptive bitrate streaming technology to adjust the video and audio quality to match the customer’s download speed, they also provide users the ability to choose the quality of video on its website.
+
+You can watch instantly from any Internet-connected device that offers a Netflix app, such as a computer, gaming console, DVD or Blu-ray player, HDTV, set-top box, home theater system, phone or tablet.

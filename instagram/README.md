@@ -8,6 +8,10 @@ An Instagram app example written by React, React Native, and Express.
 - Adding tags to photos
 - Searching photos on tags
 
+## References
+
+- [What Powers Instagram: Hundreds of Instances, Dozens of Technologies](https://instagram-engineering.com/what-powers-instagram-hundreds-of-instances-dozens-of-technologies-adf2e22da2ad)
+
 ## System Design Considerations
 
 - Availability over consistency
@@ -30,3 +34,11 @@ Average photo file size => 200KB
 ### Demo
 
 - Native (https://exp.host/@tetsuya3850/instagram) [WIP]
+
+The photos themselves go straight to Amazon S3, which currently stores several terabytes of photo data for us. We use Amazon CloudFront as our CDN, which helps with image load times from users around the world (like in Japan, our second most-popular country).
+
+We also use Redis extensively; it powers our main feed, our activity feed, our sessions system (here’s our Django session backend), and other related systems. All of Redis’ data needs to fit in memory, so we end up running several Quadruple Extra-Large Memory instances for Redis, too, and occasionally shard across a few Redis instances for any given subsystem. We run Redis in a master-replica setup, and have the replicas constantly saving the DB out to disk, and finally use EBS snapshots to backup those DB dumps (we found that dumping the DB on the master was too taxing). Since Redis allows writes to its replicas, it makes for very easy online failover to a new Redis machine, without requiring any downtime.
+
+For our geo-search API, we used PostgreSQL for many months, but once our Media entries were sharded, moved over to using Apache Solr. It has a simple JSON interface, so as far as our application is concerned, it’s just another API to consume.
+
+Finally, like any modern Web service, we use Memcached for caching, and currently have 6 Memcached instances, which we connect to using pylibmc & libmemcached. Amazon has an Elastic Cache service they’ve recently launched, but it’s not any cheaper than running our instances, so we haven’t pushed ourselves to switch quite yet.

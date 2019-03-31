@@ -20,6 +20,7 @@ A Twitter app example written by React, React Native, and Express
 
 ## References
 
+- [The Architecture Twitter Uses To Deal With 150M Active Users, 300K QPS, A 22 MB/S Firehose, And Send Tweets In Under 5 Seconds](http://highscalability.com/blog/2013/7/8/the-architecture-twitter-uses-to-deal-with-150m-active-users.html)
 - [Scaling Twitter: Making Twitter 10000 Percent Faster](http://highscalability.com/blog/2009/6/27/scaling-twitter-making-twitter-10000-percent-faster.html)
 
 ## Ststem Design Considerations
@@ -132,3 +133,64 @@ Denormalize a lot. Single handedly saved them. For example, they store all a use
 155 million tweets per day.
 
 Graph cannot be handled with MySQL in scale.
+
+Twitter now has 150M world wide active users, handles 300K QPS to generate timelines, and a firehose that churns out 22 MB/sec. 400 million tweets a day flow through the system and it can take up to 5 minutes for a tweet to flow from Lady Gaga’s fingers to her 31 million followers.
+
+Twitter is primarily a consumption mechanism, not a production mechanism. 300K QPS are spent reading timelines and only 6000 requests per second are spent on writes.
+
+Your home timeline sits in a Redis cluster and has a maximum of 800 entries.
+
+They run things called the Timeline Service, Tweet Service, User Service, Social Graph Service, all the machinery that powers the Twitter platform.
+
+The real challenge is the real-time constraint. Goal is to have a message flow to a user in no more than 5 seconds.
+Delivery means gathering content and exerting pressure on the Internet to get it back out again as fast as possible.
+Delivery is to in-memory timeline clusters, push notifications, emails that are triggered, all the iOS notifications as well as Blackberry and Android, SMSs.
+Twitter is the largest generator of SMSs on a per active user basis of anyone in the world.
+Elections can be one of the biggest drivers of content coming in and fanouts of content going out.
+
+Twitter runs one of the largest real-time event systems pushing tweets at 22 MB/sec through the Firehose.
+Open a socket to Twitter and they will push all public tweets to you within 150 msec.
+At any given time there’s about 1 million sockets open to the push cluster.
+Goes to firehose clients like search engines. All public tweets go out these sockets.
+No, you can’t have it. (You can’t handle/afford the truth.)
+
+Immediately the fanout process occurs. Tweets that come in are placed into a massive Redis cluster.
+
+Let’s say you tweet and you have 20K followers. What the fanout daemon will do is look up the location of all 20K users inside the Redis cluster. Then it will start inserting the Tweet ID of the tweet into all those lists throughout the Redis cluster. So for every write of a tweet as many as 20K inserts are occurring across the Redis cluster.
+
+What is being stored is the tweet ID of the generated tweet, the user ID of the originator of the tweet, and 4 bytes of bits used to mark if it’s a retweet or a reply or something else.
+
+Your home timeline sits in a Redis cluster and is 800 entries long. If you page back long enough you’ll hit the limit. RAM is the limiting resource determining how long your current tweet set can be.
+Every active user is stored in RAM to keep latencies down.
+Active user is someone who has logged into Twitter within 30 days, which can change depending on cache capacity or Twitter’s usage.
+If you are not an active user then the tweet does not go into the cache.
+
+If a tweet is actually a retweet then a pointer is stored to the original tweet.
+
+When you query for your home timeline the Timeline Service is queried. The Timeline Service then only has to find one machine that has your home timeline on it.
+Effectively running 3 different hash rings because your timeline is in 3 different places.
+They find the first one they can get to fastest and return it as fast as they can.
+The tradeoff is fanout takes a little longer, but the read process is fast. About 2 seconds from a cold cache to the browser. For an API call it’s about 400 msec.
+
+Since the timeline only contains tweet IDs they must “hydrate” those tweets, that is find the text of the tweets. Given an array of IDs they can do a multiget and get the tweets in parallel from T-bird.
+
+As a tweet comes in, the Ingester tokenizes and figures out everything they want to index against and stuffs it into a single Early Bird machine. Early Bird is a modified version of Lucene. The index is stored in RAM.
+
+Blender creates the search timeline. It has to scatter-gather across the datacenter. It queries every Early Bird shard and asks do you have content that matches this query? If you ask for “New York Times” all shards are queried, the results are returned, sorted, merged, and reranked. Rerank is by social proof, which means looking at the number of retweets, favorites, and replies.
+
+Search and pull look remarkably similar but they have a property that is inverted from each other.
+On the home timeline:
+Write. when a tweet comes in there’s an O(n) process to write to Redis clusters, where n is the number of people following you. Painful for Lady Gaga and Barack Obama where they are doing 10s of millions of inserts across the cluster. All the Redis clusters are backing disk, the Flock cluster stores the user timeline to disk, but usually timelines are found in RAM in the Redis cluster.
+Read. Via API or the web it’s 0(1) to find the right Redis machine. Twitter is optimized to be highly available on the read path on the home timeline. Read path is in the 10s of milliseconds. Twitter is primarily a consumption mechanism, not a production mechanism. 300K requests per second for reading and 6000 RPS for writing.
+On the search timeline:
+Write. when a tweet comes in and hits the Ingester only one Early Bird machine is hit. Write time path is O(1). A single tweet is ingested in under 5 seconds between the queuing and processing to find the one Early Bird to write it to.
+Read. When a read comes in it must do an 0(n) read across the cluster. Most people don’t use search so they can be efficient on how to store tweets for search. But they pay for it in time. Reading is on the order of 100 msecs. Search never hits disk. The entire Lucene index is in RAM so scatter-gather reading is efficient as they never hit disk.
+
+Problem is for large cardinality graphs. @ladygaga has 31 million followers. @katyperry has 28 million followers. @justinbieber has 28 million followers. @barackobama has 23 million followers.
+
+It’s a lot of tweets to write in the datacenter when one of these people tweets. It’s especially challenging when they start talking to each other, which happens all the time.
+
+These high fanout users are the biggest challenge for Twitter. Replies are being seen all the time before the original tweets for celebrities. They introduce race conditions throughout the site. If it takes minutes for a tweet from Lady Gaga to fanout then people are seeing her tweets at different points in time. Someone who followed Lady Gaga recently could see her tweets potentially 5 minutes before someone who followed her far in the past. Let’s say a person on the early receive list replies then the fanout for that reply is being processed while her fanout is still occurring so the reply is injected before the original tweet in the people receiving her tweets later. Causes much user confusion. Tweets are sorted by ID before going out because they are mostly monotonically increasing, but that doesn’t solve the problem at that scale. Queues back up all the time for high value fanouts.
+
+400m tweets per day; 5K/sec daily average; 7K/sec daily peak; >12K/sec during large events.
+Timeline delivery statistics: 30b deliveries / day (~21m / min); 3.5 seconds @ p50 (50th percentile) to deliver to 1m; 300k deliveries /sec; @ p99 it could take up to 5 minutes

@@ -29,7 +29,6 @@ A collection of basic apps built with React, React Native, and Express.
 - [Getting Started with Redux by Dan Abramov](https://egghead.io/courses/getting-started-with-redux)
 - [Building React Applications with Idiomatic Redux by Dan Abramov](https://egghead.io/courses/building-react-applications-with-idiomatic-redux)
 - [React Native Express](http://www.reactnativeexpress.com/)
-- [ReactEurope 2017 React Native Workshop with Expo](https://www.youtube.com/playlist?list=PLCC436JpVnK2RFms3NG9ubPToWCNbMLbT)
 - [Fullstack React Native](https://www.fullstackreact.com/react-native/)
 - [The Complete Node.js Course by Mosh](https://codewithmosh.com/p/the-complete-node-js-course)
 - [Learn Node by Wes Bos](https://learnnode.com/)
@@ -38,7 +37,6 @@ A collection of basic apps built with React, React Native, and Express.
 - [JavaScript Testing Practices and Principles by Kent C. Dodds](https://frontendmasters.com/courses/testing-practices-principles/)
 - [M220JS: MongoDB for Javascript Developers](https://university.mongodb.com/courses/M220JS/about)
 - [6 Rules of Thumb for MongoDB Schema Design](https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1)
-- [system-design-primer](https://github.com/donnemartin/system-design-primer)
 - [Grokking the System Design Interview](https://www.educative.io/collection/5668639101419520/5649050225344512)
 - [High Scalability](http://highscalability.com/)
 

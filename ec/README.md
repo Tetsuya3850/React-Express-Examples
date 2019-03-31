@@ -21,3 +21,15 @@ How about if we want to rank the search results by social graph distance, popula
 Let’s assume we want to rank tweets by popularity, like how many likes or comments a tweet is getting, etc. In such a case, our ranking algorithm can calculate a ‘popularity number’ (based on the number of likes etc.) and store it with the index. Each partition can sort the results based on this popularity number before returning results to the aggregator server. The aggregator server combines all these results, sorts them based on the popularity number, and sends the top results to the user.
 
 How many feed items can we return to the client in each request? We should have a maximum limit for the number of items a user can fetch in one request (say 20). But, we should let the client specify how many feed items they want with each request as the user may like to fetch a different number of posts depending on the device (mobile vs. desktop).
+
+More than 55 million active customer accounts.
+More than 1 million active retail partners worldwide.
+Between 100-150 services are accessed to build a page.
+
+back-end databases scale to hold more items, more customers, more orders, and to support multiple international sites.
+
+For the checkout process you always want to honor requests to add items to a shopping cart because it's revenue producing. In this case you choose high availability. Errors are hidden from the customer and sorted out later.
+
+- When a customer submits an order you favor consistency because several services--credit card processing, shipping and handling, reporting--are simultaneously accessing the data.
+
+Design amazon's frequently viewed product page (eg. which shows the last 5 items you saw)

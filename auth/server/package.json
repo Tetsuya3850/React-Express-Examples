@@ -6,8 +6,8 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "jest --watch --env=node"
   },
   "dependencies": {
@@ -17,12 +17,12 @@
     "express": "^4.16.4",
     "helmet": "^3.16.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.4.22",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
     "axios": "^0.18.0",
-    "jest": "^24.5.0",
+    "jest": "^24.7.1",
     "lodash": "^4.17.11",
     "nodemon": "^1.18.10"
   }

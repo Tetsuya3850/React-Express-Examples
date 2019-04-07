@@ -1,22 +1,17 @@
-let baseURL, api, server;
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const mongoose = require("mongoose");
-const start = require("../app");
 
-beforeAll(() => {
-  server = start();
-  baseURL = `http://localhost:${server.address().port}/users`;
-  api = axios.create({ baseURL });
-});
+const server = require("../../app");
+const baseURL = `http://localhost:${server.address().port}/users`;
+const api = axios.create({ baseURL });
+const User = mongoose.model("User");
 
 afterAll(async () => {
   await User.deleteMany({});
   server.close();
 });
-
-const User = mongoose.model("User");
 
 const getData = res => res.data;
 const getError = error => error.response;
